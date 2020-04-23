@@ -79,3 +79,10 @@ Clone this GitHub repository.
     ```sh
     $ truffle migrate --network rinkeby
     ```
+    
+    
+## Inspiration & References
+
+## About
+
+Project created by [Bianca Trovò](https://github.com/biancasama) & [Nazzareno Massari](http://nazzarenomassari.com)
