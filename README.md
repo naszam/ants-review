@@ -6,7 +6,7 @@
 
 
 # Ants-Review
-> ETHTurin 2020 Hackathon project
+> ETHTurin 2020 Hackathon team 2 (MetaBounty) project
 
 Project Setup
 ============
