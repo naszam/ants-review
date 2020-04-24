@@ -1,5 +1,5 @@
 ![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
-[![#npm 13.13.0](https://img.shields.io/badge/npm-v13.13.0-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
+[![#npm 12.16.2](https://img.shields.io/badge/npm-v12.16.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc ^0.6.0](https://img.shields.io/badge/solc-^0.6.0-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/^0.6.0)
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)]()
