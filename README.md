@@ -82,6 +82,14 @@ Clone this GitHub repository.
     
     
 ## Inspiration & References
+- [oscoin](http://oscoin.io/oscoin.pdf)
+- [Towards Open Science: The Case for a Decentralized Autonomous Academic Endorsement System](https://zenodo.org/record/60054#.XqMYqnVKg5k)
+- [ERC20](https://eips.ethereum.org/EIPS/eip-20)
+- [Bounties-Network](https://www.bounties.network/)
+- [Gitcion](gitcoin.co)
+- [IPFS](https://ipfs.io/)
+- [ZKPs](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Zero%20Knowledge/Noninteractive_Zero-Knowkedge.pdf)
+- [AZTEC Protocol](https://www.aztecprotocol.com/)
 
 ## About
 
