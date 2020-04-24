@@ -93,4 +93,4 @@ Clone this GitHub repository.
 
 ## About
 
-Project created by [Nazzareno Massari](http://nazzarenomassari.com) & [Bianca Trovò](https://github.com/biancasama)
+Project created by [Nazzareno Massari](http://nazzarenomassari.com) and [Bianca Trovò](https://github.com/biancasama)
