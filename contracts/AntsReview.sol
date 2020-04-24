@@ -6,7 +6,12 @@ pragma solidity ^0.6.0;
  * @dev Simple smart contract which allows any user to issue an antReview in ETH linked to requirements stored in ipfs
  * which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment
  */
+
+import "@openzeppelin/contracts/math/SafeMath.sol";
+
 contract AntsReview {
+
+  using SafeMath for uint256;
 
 
   // Enums
@@ -20,7 +25,7 @@ contract AntsReview {
 
   AntReview[] public antreviews ;
 
-  mapping(uint=>Fulfillment[]) fulfillments;
+  mapping(uint256 => Fulfillment[]) fulfillments;
 
 
   // Structs
@@ -28,10 +33,10 @@ contract AntsReview {
 
   struct AntReview {
       address payable issuer;
-      uint deadline;
+      uint256 deadline;
       string data;
       AntReviewStatus status;
-      uint amount; //in wei
+      uint256 amount; //in wei
   }
 
   struct Fulfillment {
@@ -43,10 +48,10 @@ contract AntsReview {
 
   // Events
 
-  event AntReviewIssued(uint antReview_id, address issuer, uint amount, string data);
-  event AntReviewFulfilled(uint antReview_id, address fulfiller, uint fulfillment_id, string data);
-  event FulfillmentAccepted(uint antReview_id, address issuer, address fulfiller, uint indexed fulfillment_id, uint amount);
-  event AntReviewCancelled(uint indexed antReview_id, address indexed issuer, uint amount);
+  event AntReviewIssued(uint256 antReview_id, address issuer, uint256 amount, string data);
+  event AntReviewFulfilled(uint256 antReview_id, address fulfiller, uint256 fulfillment_id, string data);
+  event FulfillmentAccepted(uint256 antReview_id, address issuer, address fulfiller, uint256 indexed fulfillment_id, uint256 amount);
+  event AntReviewCancelled(uint256 indexed antReview_id, address indexed issuer, uint256 amount);
 
   constructor() public {}
 
@@ -58,42 +63,42 @@ contract AntsReview {
       _;
   }
 
-  modifier antReviewExists(uint _antReviewId){
+  modifier antReviewExists(uint256 _antReviewId){
     require(_antReviewId < antreviews.length);
     _;
   }
 
-  modifier fulfillmentExists(uint _antReviewId, uint _fulfillmentId){
+  modifier fulfillmentExists(uint256 _antReviewId, uint256 _fulfillmentId){
     require(_fulfillmentId < fulfillments[_antReviewId].length);
     _;
   }
 
-  modifier hasStatus(uint _antReviewId, AntReviewStatus _desiredStatus) {
+  modifier hasStatus(uint256 _antReviewId, AntReviewStatus _desiredStatus) {
     require(antreviews[_antReviewId].status == _desiredStatus);
     _;
   }
 
-  modifier onlyIssuer(uint _antReviewId) {
+  modifier onlyIssuer(uint256 _antReviewId) {
       require(msg.sender == antreviews[_antReviewId].issuer);
       _;
   }
 
-  modifier notIssuer(uint _antReviewId) {
+  modifier notIssuer(uint256 _antReviewId) {
       require(msg.sender != antreviews[_antReviewId].issuer);
       _;
   }
 
-  modifier fulfillmentNotYetAccepted(uint _antReviewId, uint _fulfillmentId) {
+  modifier fulfillmentNotYetAccepted(uint256 _antReviewId, uint256 _fulfillmentId) {
     require(fulfillments[_antReviewId][_fulfillmentId].accepted == false);
     _;
   }
 
-  modifier validateDeadline(uint _newDeadline) {
+  modifier validateDeadline(uint256 _newDeadline) {
       require(_newDeadline > now);
       _;
   }
 
-  modifier isBeforeDeadline(uint _antReviewId) {
+  modifier isBeforeDeadline(uint256 _antReviewId) {
     require(now < antreviews[_antReviewId].deadline);
     _;
   }
@@ -111,11 +116,11 @@ contract AntsReview {
       payable
       hasValue()
       validateDeadline(_deadline)
-      returns (uint)
+      returns (uint256)
   {
       antreviews.push(AntReview(msg.sender, _deadline, _data, AntReviewStatus.CREATED, msg.value));
-      emit AntReviewIssued(antreviews.length - 1,msg.sender, msg.value, _data);
-      return (antreviews.length - 1);
+      emit AntReviewIssued(antreviews.length.sub(1),msg.sender, msg.value, _data);
+      return (antreviews.length.sub(1));
   }
 
   /**
@@ -123,7 +128,7 @@ contract AntsReview {
   * @param _antReviewId the index of the antReview to be fufilled
   * @param _data the ipfs hash which contains evidence of the fufillment
   */
-  function fulfillAntReview(uint _antReviewId, string memory _data)
+  function fulfillAntReview(uint256 _antReviewId, string memory _data)
     public
     antReviewExists(_antReviewId)
     notIssuer(_antReviewId)
@@ -131,7 +136,7 @@ contract AntsReview {
     isBeforeDeadline(_antReviewId)
   {
     fulfillments[_antReviewId].push(Fulfillment(false, msg.sender, _data));
-    emit AntReviewFulfilled(_antReviewId, msg.sender, (fulfillments[_antReviewId].length - 1),_data);
+    emit AntReviewFulfilled(_antReviewId, msg.sender, (fulfillments[_antReviewId].length.sub(1)),_data);
   }
 
   /**
@@ -139,7 +144,7 @@ contract AntsReview {
   * @param _antReviewId the index of the antReview
   * @param _fulfillmentId the index of the fulfillment being accepted
   */
-  function acceptFulfillment(uint _antReviewId, uint _fulfillmentId)
+  function acceptFulfillment(uint256 _antReviewId, uint256 _fulfillmentId)
       public
       antReviewExists(_antReviewId)
       fulfillmentExists(_antReviewId,_fulfillmentId)
@@ -156,7 +161,7 @@ contract AntsReview {
   /** @dev cancelAntReview(): cancels the antReview and send the funds back to the issuer
   * @param _antReviewId the index of the antReview
   */
-  function cancelAntReview(uint _antReviewId)
+  function cancelAntReview(uint256 _antReviewId)
       public
       antReviewExists(_antReviewId)
       onlyIssuer(_antReviewId)
