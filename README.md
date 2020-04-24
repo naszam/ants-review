@@ -98,5 +98,5 @@ Clone this GitHub repository.
 - [AZTEC Protocol](https://www.aztecprotocol.com/)
 
 ## About
-Project created by [Nazzareno Massari](http://nazzarenomassari.com) and [Bianca Trovò](https://github.com/biancasama)  
+Project created by [Nazzareno Massari](http://nazzarenomassari.com) and [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
 Team MetaBounty at ETHTurin 2020 Hackathon.
