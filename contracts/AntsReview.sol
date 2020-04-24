@@ -101,7 +101,7 @@ contract AntsReview {
   /**
   * @dev issueAntReview(): instantiates a new bounty
   * @param _deadline the unix timestamp after which fulfillments will no longer be accepted
-  * @param _data the requirements of the bounty
+  * @param _data the requirements of the antReview
   */
   function issueAntReview(
       string calldata _data,
