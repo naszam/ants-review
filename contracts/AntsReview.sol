@@ -3,7 +3,7 @@ pragma solidity ^0.6.0;
 /**
  * @title AntsReview
  * @author Nazzareno Massari, Bianca Trovò
- * @dev Simple smart contract which allows any user to issue a bounty in ETH linked to requirements stored in ipfs
+ * @dev Simple smart contract which allows any user to issue an antReview in ETH linked to requirements stored in ipfs
  * which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment
  */
 contract AntsReview {
