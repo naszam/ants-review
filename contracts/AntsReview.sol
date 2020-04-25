@@ -7,13 +7,18 @@ pragma solidity ^0.6.0;
  * which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment
  */
 
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
-contract AntsReview {
+contract AntsReview is AccessControl {
 
   using SafeMath for uint256;
   using Address for address;
+
+  // Create a new role identifier for the issuer role
+  bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
+
 
   // Enums
 
@@ -75,7 +80,7 @@ contract AntsReview {
   }
 
   modifier onlyIssuer(uint256 _antReviewId) {
-      require(msg.sender == antreviews[_antReviewId].issuer);
+      require(hasRole(ISSUER_ROLE, msg.sender), "Caller is not an issuer");
       _;
   }
 
@@ -114,6 +119,9 @@ contract AntsReview {
       validateDeadline(_deadline)
       returns (uint256)
   {
+      if (!hasRole(ISSUER_ROLE, msg.sender)) {
+          _setupRole(ISSUER_ROLE, msg.sender);
+      }
       antreviews.push(AntReview(msg.sender, _deadline, _data, AntReviewStatus.CREATED, msg.value));
       emit AntReviewIssued(antreviews.length.sub(1),msg.sender, msg.value, _data);
       return (antreviews.length.sub(1));
