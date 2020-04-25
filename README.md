@@ -4,6 +4,8 @@
 [![#solc ^0.6.0](https://img.shields.io/badge/solc-^0.6.0-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/^0.6.0)
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)]()
 
+[![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethturin.com)
+
 
 # Ants-Review
 > Bounty-like system for Open Anonymous Scientific Peer-Reviews  
