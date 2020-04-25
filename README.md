@@ -105,6 +105,6 @@ Clone this GitHub repository.
 - [Ethereum 9 3/4](https://ethresear.ch/t/ethereum-9-send-erc20-privately-using-mimblewimble-and-zk-snarks/6217)
 
 ## About
-Project created by Team MetaBounty for ETHTurin 2020 Hackathon.
+Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
 Idea by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
 Smart Contract by [Nazzareno Massari](http://nazzarenomassari.com)
