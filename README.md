@@ -15,7 +15,7 @@ The Project implements a basic Bounty-like contract called AntsReview to allow a
 
 The Project is intended to be used as a template for developing the idea presented in the white paper, extending his functionality via the following steps:
 
-- an ERC20 token, symbol ANT.
+- an ERC20 token, name Ant, symbol ANT.
 - zkANT, allowing private ANT transactions on Ethereum using ZK-SNARKs.
 - Storing on IPFS.
 - ENS, allowing human-readable Ethereum addresses
