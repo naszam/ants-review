@@ -6,6 +6,7 @@
 
 
 # Ants-Review
+> Bounty-like system for Open Anonymous Scientific Peer-Reviews  
 > ETHTurin 2020 Hackathon project (team 2: MetaBounty)
 
 The Project implements a basic Bounty-like contract called AntsReview to allow anyone to issue an antReview in ETH, a bounty for peer-review in scientific publication, linked to requirements stored in ipfs which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment.
