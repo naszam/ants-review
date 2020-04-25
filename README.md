@@ -13,6 +13,7 @@
 
 The Project implements a basic Bounty-like contract called AntsReview to allow anyone to issue an antReview in ETH, a bounty for peer-review in scientific publication, linked to requirements stored in ipfs which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment.
 After the submission of successful peer-reviews, they will be audited by an external Editor and payed by the Issuer.
+To incentivise ethical behaviour the system will implement a quadratic funding on AntsReview.
 
 The Project is intended to be used as a template for developing the idea presented in the white paper, extending his functionality via the following steps:
 
@@ -21,6 +22,7 @@ The Project is intended to be used as a template for developing the idea present
 - Storing on IPFS via PoE (Proof of Existence).
 - ENS, allowing human-readable Ethereum addresses
 - Upgradability, to allow the logic to be extended and improved.
+- Quadratic Funding Gitcoin-like for AntsReview.
 - ...
 
 Project Setup
@@ -102,6 +104,8 @@ Clone this GitHub repository.
 - [ERC20](https://eips.ethereum.org/EIPS/eip-20)
 - [Bounties-Network](https://www.bounties.network/)
 - [Gitcion](gitcoin.co)
+- [Gitcoin Quadratic Funding](https://vitalik.ca/general/2020/01/28/round4.html)
+- [Quadratic Payments](https://vitalik.ca/general/2019/12/07/quadratic.html)
 - [IPFS](https://ipfs.io/)
 - [ZKPs](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Zero%20Knowledge/Noninteractive_Zero-Knowkedge.pdf)
 - [AZTEC Protocol](https://www.aztecprotocol.com/)
