@@ -169,7 +169,8 @@ contract AntsReview {
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
   {
       antreviews[_antReviewId].status = AntReviewStatus.CANCELLED;
-      antreviews[_antReviewId].issuer.transfer(antreviews[_antReviewId].amount);
+      (bool success, ) = antreviews[_antReviewId].issuer.call{value:(antreviews[_antReviewId].amount)}("");
+      require(success, "Transfer failed.");
       emit AntReviewCancelled(_antReviewId, msg.sender, antreviews[_antReviewId].amount);
   }
 
