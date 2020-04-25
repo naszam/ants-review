@@ -19,7 +19,7 @@ The Project is intended to be used as a template for developing the idea present
 - zkANT, allowing private ANT transactions on Ethereum using ZK-SNARKs.
 - Storing on IPFS via PoE (Proof of Existence).
 - ENS, allowing human-readable Ethereum addresses
-- Upgradability, to allow to code to be extended and improved.
+- Upgradability, to allow the logic to be extended and improved.
 - ...
 
 Project Setup
