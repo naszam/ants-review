@@ -113,5 +113,5 @@ Clone this GitHub repository.
 
 ## About
 Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
-Idea by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
-Smart Contract by [Nazzareno Massari](http://nazzarenomassari.com)
+Design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
+Code by [Nazzareno Massari](http://nazzarenomassari.com)
