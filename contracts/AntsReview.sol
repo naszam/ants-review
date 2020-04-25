@@ -8,28 +8,24 @@ pragma solidity ^0.6.0;
  */
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
 
 contract AntsReview {
 
   using SafeMath for uint256;
-
+  using Address for address;
 
   // Enums
 
-
   enum AntReviewStatus { CREATED, ACCEPTED, CANCELLED }
 
-
   // Storage
-
 
   AntReview[] public antreviews ;
 
   mapping(uint256 => Fulfillment[]) fulfillments;
 
-
   // Structs
-
 
   struct AntReview {
       address payable issuer;
@@ -50,7 +46,7 @@ contract AntsReview {
 
   event AntReviewIssued(uint256 antReview_id, address issuer, uint256 amount, string data);
   event AntReviewFulfilled(uint256 antReview_id, address fulfiller, uint256 fulfillment_id, string data);
-  event FulfillmentAccepted(uint256 antReview_id, address issuer, address fulfiller, uint256 indexed fulfillment_id, uint256 amount);
+  event FulfillmentAccepted(address issuer, address fulfiller, uint256 indexed fulfillment_id, uint256 amount);
   event AntReviewCancelled(uint256 indexed antReview_id, address indexed issuer, uint256 amount);
 
   constructor() public {}
@@ -154,8 +150,13 @@ contract AntsReview {
   {
       fulfillments[_antReviewId][_fulfillmentId].accepted = true;
       antreviews[_antReviewId].status = AntReviewStatus.ACCEPTED;
-      fulfillments[_antReviewId][_fulfillmentId].fulfiller.transfer(antreviews[_antReviewId].amount);
-      emit FulfillmentAccepted(_antReviewId, antreviews[_antReviewId].issuer, fulfillments[_antReviewId][_fulfillmentId].fulfiller, _fulfillmentId, antreviews[_antReviewId].amount);
+      (bool success, ) = fulfillments[_antReviewId][_fulfillmentId].fulfiller.call{value:(antreviews[_antReviewId].amount)}("");
+      require(success, "Transfer failed.");
+      emit FulfillmentAccepted(
+        antreviews[_antReviewId].issuer,
+        fulfillments[_antReviewId][_fulfillmentId].fulfiller,
+        _fulfillmentId, antreviews[_antReviewId].amount
+      );
   }
 
   /** @dev cancelAntReview(): cancels the antReview and send the funds back to the issuer
