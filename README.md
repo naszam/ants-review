@@ -18,7 +18,6 @@ The Project is intended to be used as a template for developing the idea present
 - an ERC20 token, name Ant, symbol ANT.
 - zkANT, allowing private ANT transactions on Ethereum using ZK-SNARKs.
 - Storing on IPFS via PoE (Proof of Existence).
-- Access Management for Editor, to validate the AntReview.
 - ENS, allowing human-readable Ethereum addresses
 - Upgradability, to allow the logic to be extended and improved.
 - ...
