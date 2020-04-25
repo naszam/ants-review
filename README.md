@@ -10,9 +10,14 @@
 
 The Project implements a basic Bounty-like contract called AntsReview to allow anyone to issue an antReview in ETH, a bounty for peer-review in scientific publication, linked to requirements stored in ipfs which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment.
 
-The Project is intended to be used as a template for developing the idea presented in the white paper, extending his functionality with extra features like storing on IPFS, anonymous transactions via AZTEC Protocol, ENS, upgradability, ...
+The Project is intended to be used as a template for developing the idea presented in the white paper, extending his functionality via the following steps:
 
-
+- an ERC20 token, symbol ANT.
+- zkANT, allowing private ANT transactions on Ethereum using ZK-SNARKs.
+- Storing on IPFS.
+- ENS, allowing human-readable Ethereum addresses
+- Upgradability, to allow to code to be extended and improved.
+- ...
 
 Project Setup
 ============
@@ -96,6 +101,7 @@ Clone this GitHub repository.
 - [IPFS](https://ipfs.io/)
 - [ZKPs](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Zero%20Knowledge/Noninteractive_Zero-Knowkedge.pdf)
 - [AZTEC Protocol](https://www.aztecprotocol.com/)
+- [Ethereum 9 3/4](https://ethresear.ch/t/ethereum-9-send-erc20-privately-using-mimblewimble-and-zk-snarks/6217)
 
 ## About
 Project created by [Nazzareno Massari](http://nazzarenomassari.com) and [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
