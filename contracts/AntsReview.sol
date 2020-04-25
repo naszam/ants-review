@@ -14,7 +14,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 contract AntsReview is AccessControl {
 
   using SafeMath for uint256;
-  using Address for address;
+  using Address for address payable;
 
   // Create a new role identifier for the issuer role
   bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
@@ -51,7 +51,7 @@ contract AntsReview is AccessControl {
 
   event AntReviewIssued(uint256 antReview_id, address issuer, uint256 amount, string data);
   event AntReviewFulfilled(uint256 antReview_id, address fulfiller, uint256 fulfillment_id, string data);
-  event FulfillmentAccepted(address issuer, address fulfiller, uint256 indexed fulfillment_id, uint256 amount);
+  event FulfillmentAccepted(uint256 _antReviewId, address issuer, address fulfiller, uint256 indexed fulfillment_id, uint256 amount);
   event AntReviewCancelled(uint256 indexed antReview_id, address indexed issuer, uint256 amount);
 
   constructor() public {}
@@ -158,9 +158,9 @@ contract AntsReview is AccessControl {
   {
       fulfillments[_antReviewId][_fulfillmentId].accepted = true;
       antreviews[_antReviewId].status = AntReviewStatus.ACCEPTED;
-      (bool success, ) = fulfillments[_antReviewId][_fulfillmentId].fulfiller.call{value:(antreviews[_antReviewId].amount)}("");
-      require(success, "Transfer failed.");
+      fulfillments[_antReviewId][_fulfillmentId].fulfiller.sendValue(antreviews[_antReviewId].amount);
       emit FulfillmentAccepted(
+        _antReviewId,
         antreviews[_antReviewId].issuer,
         fulfillments[_antReviewId][_fulfillmentId].fulfiller,
         _fulfillmentId, antreviews[_antReviewId].amount
@@ -177,8 +177,7 @@ contract AntsReview is AccessControl {
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
   {
       antreviews[_antReviewId].status = AntReviewStatus.CANCELLED;
-      (bool success, ) = antreviews[_antReviewId].issuer.call{value:(antreviews[_antReviewId].amount)}("");
-      require(success, "Transfer failed.");
+      antreviews[_antReviewId].issuer.sendValue(antreviews[_antReviewId].amount);
       emit AntReviewCancelled(_antReviewId, msg.sender, antreviews[_antReviewId].amount);
   }
 
