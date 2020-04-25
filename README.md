@@ -20,7 +20,7 @@ The Project is intended to be used as a template for developing the idea present
 - Quadratic Funding Gitcoin-like for AntsReview.
 - ERC20 token, name Ant, symbol ANT.
 - zkANT, allowing private ANT transactions on Ethereum using ZK-SNARKs.
-- Timestamped into Ethereum via PoE (Proof of Existence).
+- Timestamped on Ethereum via PoE (Proof of Existence).
 - Storing on IPFS.
 - ENS, allowing human-readable Ethereum addresses
 - Upgradability, to allow the logic to be extended and improved.
