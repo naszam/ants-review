@@ -26,6 +26,8 @@ The Project is intended to be used as a template for developing the idea present
 - Upgradability, to allow the logic to be extended and improved.
 - ...
 
+[Demo](https://youtu.be/9FMsM5otQVM)
+
 Project Setup
 ============
 
