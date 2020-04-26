@@ -57,7 +57,16 @@ contract AntsReview is Ownable, AccessControl, Pausable {
 
   constructor() public {}
 
+  // Fallback
 
+  fallback() external payable {
+    revert();
+  }
+
+  receive() external payable {
+    revert();
+  }
+  
   // Modifiers
 
   modifier hasValue() {
