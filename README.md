@@ -100,6 +100,31 @@ Clone this GitHub repository.
     
     The Project's smart contract have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
    The ABIs are available to test the project on Rinkeby's Network.
+   
+   ## Using the DApp
+  - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
+  - Change Ganache GUI port to 8545.
+  - Import Ganache GUI mnemonic into MetaMask.
+  - Connect MetaMask to Ganache GUI, adding a custom RPC specifing the Ganache GUI's RPC server URL.
+  - Deploy the smart contracts to Ganache GUI:
+    ```
+    $ truffle migrate
+    ```
+  - Move to client directory on the project:
+    ```
+    $ cd client
+    ```
+  - Install dependencies:
+    ```
+    $ npm install
+    ```
+  - Start the Local Web Server:
+    ```sh
+    $ npm run start
+    ```
+  - Interacting with the User Interface (Proof of Concept):
+    - Anyone can add an AntReview specifying IPFS Has of requirements, Deadline Timestamp, Ether value of the AntReview;
+    
     
 ## Inspiration & References
 - [oscoin](http://oscoin.io/oscoin.pdf)
