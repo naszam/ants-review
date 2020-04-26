@@ -25,9 +25,10 @@ The Project is intended to be used as a template for developing the idea present
 - ENS, allowing human-readable Ethereum addresses
 - Upgradability, to allow the logic to be extended and improved.
 - ...
-
+  
+[White Paper](https://docs.google.com/document/d/1cwUHgXDQ1UZn4G2wP0Eq1f3HN8xVjcqr43TzSF0Skb0/edit?usp=sharing)  
 [Demo](https://youtu.be/9FMsM5otQVM)  
-[White Paper](https://docs.google.com/document/d/1cwUHgXDQ1UZn4G2wP0Eq1f3HN8xVjcqr43TzSF0Skb0/edit?usp=sharing)
+
 
 Project Setup
 ============
