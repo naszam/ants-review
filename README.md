@@ -123,7 +123,7 @@ Clone this GitHub repository.
     $ npm run start
     ```
   - Interacting with the User Interface (Proof of Concept):
-    - Anyone can add an AntReview specifying IPFS Has of requirements, Deadline Timestamp, Ether value of the AntReview;
+    - Anyone can add an AntReview specifying IPFS Has of requirements, Deadline Timestamp, Ether value of the AntReview reward.
     
     
 ## Inspiration & References
