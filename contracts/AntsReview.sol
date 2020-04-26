@@ -5,6 +5,7 @@ pragma solidity ^0.6.0;
  * @author Nazzareno Massari, Bianca Trovò
  * @dev Simple smart contract which allows any user to issue an antReview in ETH linked to requirements stored in ipfs
  * which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment
+ * @dev OpenZeppelin library is used for secure contract development
  */
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -66,7 +67,7 @@ contract AntsReview is Ownable, AccessControl, Pausable {
   receive() external payable {
     revert();
   }
-  
+
   // Modifiers
 
   modifier hasValue() {
