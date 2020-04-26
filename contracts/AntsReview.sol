@@ -6,12 +6,13 @@ pragma solidity ^0.6.0;
  * @dev Simple smart contract which allows any user to issue an antReview in ETH linked to requirements stored in ipfs
  * which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment
  */
-
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
-contract AntsReview is AccessControl {
+contract AntsReview is Ownable, AccessControl, Pausable {
 
   using SafeMath for uint256;
   using Address for address payable;
@@ -117,6 +118,7 @@ contract AntsReview is AccessControl {
       payable
       hasValue()
       validateDeadline(_deadline)
+      whenNotPaused()
       returns (uint256)
   {
       if (!hasRole(ISSUER_ROLE, msg.sender)) {
@@ -138,6 +140,7 @@ contract AntsReview is AccessControl {
     notIssuer(_antReviewId)
     hasStatus(_antReviewId, AntReviewStatus.CREATED)
     isBeforeDeadline(_antReviewId)
+    whenNotPaused()
   {
     fulfillments[_antReviewId].push(Fulfillment(false, msg.sender, _data));
     emit AntReviewFulfilled(_antReviewId, msg.sender, (fulfillments[_antReviewId].length.sub(1)),_data);
@@ -155,6 +158,7 @@ contract AntsReview is AccessControl {
       onlyIssuer(_antReviewId)
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
       fulfillmentNotYetAccepted(_antReviewId, _fulfillmentId)
+      whenNotPaused()
   {
       fulfillments[_antReviewId][_fulfillmentId].accepted = true;
       antreviews[_antReviewId].status = AntReviewStatus.ACCEPTED;
@@ -175,6 +179,7 @@ contract AntsReview is AccessControl {
       antReviewExists(_antReviewId)
       onlyIssuer(_antReviewId)
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
+      whenNotPaused()
   {
       antreviews[_antReviewId].status = AntReviewStatus.CANCELLED;
       antreviews[_antReviewId].issuer.sendValue(antreviews[_antReviewId].amount);
