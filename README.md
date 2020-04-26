@@ -2,7 +2,8 @@
 [![#npm 12.16.2](https://img.shields.io/badge/npm-v12.16.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc ^0.6.0](https://img.shields.io/badge/solc-^0.6.0-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/^0.6.0)
-[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)]()
+[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)]
+(https://rinkeby.etherscan.io/address/0xcabaf40ad43ebf7d8105dea90d7dc92b18142b07)
 
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethturin.com)
 
@@ -98,6 +99,8 @@ Clone this GitHub repository.
     $ truffle migrate --network rinkeby
     ```
     
+    The Project's smart contract have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0xcabaf40ad43ebf7d8105dea90d7dc92b18142b07).  
+   The ABIs are available to test the project on Rinkeby's Network.
     
 ## Inspiration & References
 - [oscoin](http://oscoin.io/oscoin.pdf)
