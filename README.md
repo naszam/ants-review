@@ -114,5 +114,5 @@ Clone this GitHub repository.
 
 ## About
 Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
-Design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
-Code by [Nazzareno Massari](http://nazzarenomassari.com)
+Conception & design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
+Implementation & code development by [Nazzareno Massari](http://nazzarenomassari.com)
