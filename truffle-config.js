@@ -18,12 +18,12 @@
  *
  */
 
- //const HDWalletProvider = require('@truffle/hdwallet-provider');
- //const infuraKey = "fj4jll3k.....";
- //const infuraURL = "https://rinkeby.infura.io/...";
+ const HDWalletProvider = require('@truffle/hdwallet-provider');
+ const infuraKey = "fj4jll3k.....";
+ const infuraURL = "https://rinkeby.infura.io/v3/...";
 
- //const fs = require('fs');
- //const mnemonic = fs.readFileSync(".secret").toString().trim();
+ const fs = require('fs');
+ const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
 
