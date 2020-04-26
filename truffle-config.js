@@ -18,14 +18,18 @@
  *
  */
 
- const HDWalletProvider = require('@truffle/hdwallet-provider');
- const infuraKey = "fj4jll3k.....";
- const infuraURL = "https://rinkeby.infura.io/v3/...";
+ const path = require("path");
 
- const fs = require('fs');
- const mnemonic = fs.readFileSync(".secret").toString().trim();
+// const HDWalletProvider = require('@truffle/hdwallet-provider');
+// const infuraKey = "fj4jll3k.....";
+// const infuraURL = "https://rinkeby.infura.io/v3/...";
+
+// const fs = require('fs');
+// const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
+
+  contracts_build_directory: path.join(__dirname, "client/src/contracts"),
 
   plugins: ["truffle-security"],
 
