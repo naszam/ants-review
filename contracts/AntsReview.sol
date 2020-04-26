@@ -111,7 +111,7 @@ contract AntsReview is Ownable, AccessControl, Pausable {
   * @param _data the requirements of the antReview
   */
   function issueAntReview(
-      string memory _data,
+      string calldata _data,
       uint64 _deadline
   )
       external
