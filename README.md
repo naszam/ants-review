@@ -44,7 +44,7 @@ Clone this GitHub repository.
     ```sh
     $ npm install -g ganache-cli
     ```
-    - OpenZeppelin Contracts v3.0:
+    - OpenZeppelin Library v3.0:
     ```sh
     $ npm install -g @openzeppelin/contracts@3.0.0
     ```
