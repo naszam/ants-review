@@ -91,13 +91,13 @@ contract AntsReview is Ownable, AccessControl, Pausable {
     _;
   }
 
-  modifier onlyIssuer(uint256 _antReviewId) {
+  modifier onlyIssuer() {
       require(hasRole(ISSUER_ROLE, msg.sender), "Caller is not an issuer");
       _;
   }
 
-  modifier notIssuer(uint256 _antReviewId) {
-      require(msg.sender != antreviews[_antReviewId].issuer);
+  modifier notIssuer() {
+      require(!hasRole(ISSUER_ROLE, msg.sender), "Caller is an issuer");
       _;
   }
 
@@ -148,7 +148,7 @@ contract AntsReview is Ownable, AccessControl, Pausable {
   function fulfillAntReview(uint256 _antReviewId, string memory _data)
     public
     antReviewExists(_antReviewId)
-    notIssuer(_antReviewId)
+    notIssuer
     hasStatus(_antReviewId, AntReviewStatus.CREATED)
     isBeforeDeadline(_antReviewId)
     whenNotPaused()
@@ -166,7 +166,7 @@ contract AntsReview is Ownable, AccessControl, Pausable {
       public
       antReviewExists(_antReviewId)
       fulfillmentExists(_antReviewId,_fulfillmentId)
-      onlyIssuer(_antReviewId)
+      onlyIssuer
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
       fulfillmentNotYetAccepted(_antReviewId, _fulfillmentId)
       whenNotPaused()
@@ -188,7 +188,7 @@ contract AntsReview is Ownable, AccessControl, Pausable {
   function cancelAntReview(uint256 _antReviewId)
       public
       antReviewExists(_antReviewId)
-      onlyIssuer(_antReviewId)
+      onlyIssuer
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
       whenNotPaused()
   {
