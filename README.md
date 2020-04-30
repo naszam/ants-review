@@ -47,7 +47,7 @@ Clone this GitHub repository.
     ```
     - OpenZeppelin Library v3.0:
     ```sh
-    $ npm install -g @openzeppelin/contracts@3.0.0
+    $ npm install -g @openzeppelin/contracts
     ```
     - MythX for Truffle (optional):
     ```sh
