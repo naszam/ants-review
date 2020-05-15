@@ -26,7 +26,7 @@ The Project is intended to be used as a template for developing the idea present
 - Upgradability, to allow the logic to be extended and improved.
 - ...
   
-[White Paper](https://github.com/biancasama/ants-review-whitepaper/blob/master/ETHTurin2020_team2_Ants-Review_whitepaper.pdf)  
+[White Paper](https://docs.google.com/document/d/1cwUHgXDQ1UZn4G2wP0Eq1f3HN8xVjcqr43TzSF0Skb0/edit#)  
 [Demo](https://youtu.be/9FMsM5otQVM)  
 
 Project Setup
