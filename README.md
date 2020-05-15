@@ -27,8 +27,8 @@ The Project is intended to be used as a template for developing the idea present
 - Upgradability, to allow the logic to be extended and improved.
 - ...
   
-[White Paper](https://docs.google.com/document/d/1cwUHgXDQ1UZn4G2wP0Eq1f3HN8xVjcqr43TzSF0Skb0/edit#)
-[Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)
+[White Paper](https://docs.google.com/document/d/1cwUHgXDQ1UZn4G2wP0Eq1f3HN8xVjcqr43TzSF0Skb0/edit#)  
+[Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
 [Demo](https://youtu.be/9FMsM5otQVM)  
 
 Project Setup
