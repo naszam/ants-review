@@ -5,6 +5,7 @@
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)
 
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethturin.com)
+[![DOI](https://zenodo.org/badge/258342275.svg)](https://zenodo.org/badge/latestdoi/258342275)
 
 
 # Ants-Review
@@ -26,7 +27,8 @@ The Project is intended to be used as a template for developing the idea present
 - Upgradability, to allow the logic to be extended and improved.
 - ...
   
-[White Paper](https://docs.google.com/document/d/1cwUHgXDQ1UZn4G2wP0Eq1f3HN8xVjcqr43TzSF0Skb0/edit#)  
+[White Paper](https://zenodo.org/record/3828087#.Xr8XVXVKg5k)  
+[Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
 [Demo](https://youtu.be/9FMsM5otQVM)  
 
 Project Setup
