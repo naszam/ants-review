@@ -4,7 +4,7 @@ import getWeb3 from "./getWeb3";
 
 import "./App.css";
 
-import { Button, Card, Box, Flex, Form, Input, Heading, Field, Table } from 'rimble-ui';
+import { Button, Card, Box, Flex, Form, Input, Heading, Field } from 'rimble-ui';
 
 import NetworkIndicator from "@rimble/network-indicator";
 
@@ -103,6 +103,7 @@ handleChange(event)
             break;
         case "addAntReviewValue":
             this.setState({ antReviewValue: event.target.value})
+            break;
         default:
             break;
       }
