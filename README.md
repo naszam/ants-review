@@ -130,7 +130,7 @@ Clone this GitHub repository.
   - Interacting with the User Interface (Proof of Concept):
     - Anyone can add an AntReview specifying IPFS Has of requirements, Deadline Timestamp, Ether value of the AntReview reward.
     
- The DApp has been deployed on IPFS via [Fleek](https://fleek.co/): https://antsreview.on.fleek.co
+ The DApp (PoC) has been deployed on IPFS via [Fleek](https://fleek.co/): https://antsreview.on.fleek.co
     
     
 ## Inspiration & References
