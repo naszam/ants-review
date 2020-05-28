@@ -38,19 +38,16 @@ Clone this GitHub repository.
 
 # Steps to compile and deploy
 
-  - Global dependencies
-    - Truffle:
+  - Local dependencies:
+    - Truffle
+    - Ganache CLI
+    - OpenZeppelin Library v3.0
+    - Truffle HD Wallet Provider
+    - Truffle Flattener
     ```sh
-    $ npm install -g truffle
+    $ npm i
     ```
-    - Ganache:
-    ```sh
-    $ npm install -g ganache-cli
-    ```
-    - OpenZeppelin Library v3.0:
-    ```sh
-    $ npm install -g @openzeppelin/contracts
-    ```
+  - Global dependencies:
     - MythX for Truffle (optional):
     ```sh
     $ npm install -g truffle-security
