@@ -1,41 +1,32 @@
 /// SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.6.8;
 
-/**
- * @title AntsReview
- * @author Nazzareno Massari, Bianca Trovò
- * @dev Simple smart contract which allows any user to issue an antReview in ETH linked to requirements stored in ipfs
- * which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment
- * @dev OpenZeppelin library is used for secure contract development
- */
+///@title AntsReview
+///@author Nazzareno Massari
+///@notice AntsReview to allows issuer to issue an antReview which peer-reviewers can fulfill
+///@dev All function calls are currently implemented without side effecs through TDD approach
+///@dev OpenZeppelin library is used for secure contract development
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
+import "./AntsReviewRoles.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
-contract AntsReview is Ownable, AccessControl, Pausable {
+contract AntsReview is AntsReviewRoles {
 
   using SafeMath for uint256;
   using Address for address payable;
 
-  // Create a new role identifier for the issuer role
-  bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
 
 
-  // Enums
-
+  /// Enums
   enum AntReviewStatus { CREATED, ACCEPTED, CANCELLED }
 
-  // Storage
-
+  /// Storage
   AntReview[] public antreviews ;
 
   mapping(uint256 => Fulfillment[]) fulfillments;
 
-  // Structs
-
+  /// Structs
   struct AntReview {
       address payable issuer;
       uint256 deadline;
@@ -92,16 +83,6 @@ contract AntsReview is Ownable, AccessControl, Pausable {
     _;
   }
 
-  modifier onlyIssuer(uint256 _antReviewId) {
-      require(hasRole(ISSUER_ROLE, msg.sender), "Caller is not an issuer");
-      _;
-  }
-
-  modifier notIssuer(uint256 _antReviewId) {
-      require(msg.sender!= antreviews[_antReviewId].issuer);
-      _;
-  }
-
   modifier fulfillmentNotYetAccepted(uint256 _antReviewId, uint256 _fulfillmentId) {
     require(fulfillments[_antReviewId][_fulfillmentId].accepted == false);
     _;
@@ -130,12 +111,10 @@ contract AntsReview is Ownable, AccessControl, Pausable {
       payable
       hasValue()
       validateDeadline(_deadline)
+      onlyIssuer()
       whenNotPaused()
       returns (uint256)
   {
-      if (!hasRole(ISSUER_ROLE, msg.sender)) {
-          _setupRole(ISSUER_ROLE, msg.sender);
-      }
       antreviews.push(AntReview(msg.sender, _deadline, _data, AntReviewStatus.CREATED, msg.value));
       emit AntReviewIssued(antreviews.length.sub(1),msg.sender, msg.value, _data);
       return (antreviews.length.sub(1));
@@ -149,7 +128,7 @@ contract AntsReview is Ownable, AccessControl, Pausable {
   function fulfillAntReview(uint256 _antReviewId, string memory _data)
     public
     antReviewExists(_antReviewId)
-    notIssuer(_antReviewId)
+    onlyPeerReviewer()
     hasStatus(_antReviewId, AntReviewStatus.CREATED)
     isBeforeDeadline(_antReviewId)
     whenNotPaused()
@@ -167,7 +146,7 @@ contract AntsReview is Ownable, AccessControl, Pausable {
       public
       antReviewExists(_antReviewId)
       fulfillmentExists(_antReviewId,_fulfillmentId)
-      onlyIssuer(_antReviewId)
+      onlyIssuer()
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
       fulfillmentNotYetAccepted(_antReviewId, _fulfillmentId)
       whenNotPaused()
@@ -189,7 +168,7 @@ contract AntsReview is Ownable, AccessControl, Pausable {
   function cancelAntReview(uint256 _antReviewId)
       public
       antReviewExists(_antReviewId)
-      onlyIssuer(_antReviewId)
+      onlyIssuer()
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
       whenNotPaused()
   {
