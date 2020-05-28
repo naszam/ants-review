@@ -11,15 +11,21 @@ import "./AntsReviewRoles.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
+interface AntToken {
+  function transfer(address reciptient, uint amount) external returns (bool);
+  function balanceOf(address account) external view returns (uint);
+}
+
 contract AntsReview is AntsReviewRoles {
 
   using SafeMath for uint256;
   using Address for address payable;
 
-
-
   /// Enums
   enum AntReviewStatus { CREATED, ACCEPTED, CANCELLED }
+
+  /// Token
+  AntToken internal ant;
 
   /// Storage
   AntReview[] public antreviews ;
@@ -49,7 +55,9 @@ contract AntsReview is AntsReviewRoles {
   event FulfillmentAccepted(uint256 _antReviewId, address issuer, address fulfiller, uint256 indexed fulfillment_id, uint256 amount);
   event AntReviewCancelled(uint256 indexed antReview_id, address indexed issuer, uint256 amount);
 
-  constructor() public {}
+  constructor(address ant_) public {
+    ant = AntToken(ant_);
+  }
 
   // Fallback
 
