@@ -7,7 +7,7 @@
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethturin.com)
 [![DOI](https://zenodo.org/badge/258342275.svg)](https://zenodo.org/badge/latestdoi/258342275)  
 
-<img src="Ants-Review_isometricpixelart_Fire-Ant-35px_x100.png" width="40%">.
+<img src="Ants-Review_isometricpixelart_Fire-Ant-35px_x100.png" width="30%">.
 
 # Ants-Review
 > Bounty-like system for Open Anonymous Scientific Peer-Reviews  
