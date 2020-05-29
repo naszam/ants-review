@@ -52,7 +52,7 @@ contract AntsReview is AntsReviewRoles {
 
   event AntReviewIssued(uint256 antReviewId, address issuer, uint256 amount, string ipfsHash);
   event AntReviewFulfilled(uint256 antReviewId, address peer_reviewer, uint256 peerReviewId, string ipfsHash);
-  event PeerReviewAccepted(uint256 antReviewId, address issuer, address peer_reviewer, uint256 indexed peerReviewId, uint256 amount);
+  event AntReviewAccepted(uint256 antReviewId, address issuer, address peer_reviewer, uint256 indexed peerReviewId, uint256 amount);
   event AntReviewCancelled(uint256 indexed antReviewId, address indexed issuer, uint256 amount);
 
   constructor(address ant_) public {
@@ -150,7 +150,7 @@ contract AntsReview is AntsReviewRoles {
   * @param _antReviewId the index of the antReview
   * @param _peerReviewId the index of the fulfillment being accepted
   */
-  function acceptPeerReview(uint256 _antReviewId, uint256 _peerReviewId)
+  function acceptAntReview(uint256 _antReviewId, uint256 _peerReviewId)
       public
       antReviewExists(_antReviewId)
       peerReviewExists(_antReviewId,_peerReviewId)
@@ -162,7 +162,7 @@ contract AntsReview is AntsReviewRoles {
       peer_reviews[_antReviewId][_peerReviewId].accepted = true;
       antreviews[_antReviewId].status = AntReviewStatus.ACCEPTED;
       peer_reviews[_antReviewId][_peerReviewId].peer_reviewer.sendValue(antreviews[_antReviewId].amount);
-      emit PeerReviewAccepted(
+      emit AntReviewAccepted(
         _antReviewId,
         antreviews[_antReviewId].issuer,
         peer_reviews[_antReviewId][_peerReviewId].peer_reviewer,
