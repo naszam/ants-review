@@ -55,12 +55,26 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
     }
 
     function addIssuer(address account) public onlyAdmin returns (bool) {
+      require(!isIssuer(account), "Account is already an issuer");
       grantRole(ISSUER_ROLE, account);
       return true;
     }
 
     function addPeerReviewer(address account) public onlyAdmin returns (bool) {
+      require(!isPeerReviewer(account), "Account is already a peer-reviewer");
       grantRole(PEER_REVIEWER_ROLE, account);
+      return true;
+    }
+
+    function removeIssuer(address account) public onlyAdmin returns (bool) {
+      require(isIssuer(account), "Account is not an issuer");
+      revokeRole(ISSUER_ROLE, account);
+      return true;
+    }
+
+    function removePeerReviewer(address account) public onlyAdmin returns (bool) {
+      require(isPeerReviewer(account), "Account is not a peer-reviewer");
+      revokeRole(PEER_REVIEWER_ROLE, account);
       return true;
     }
 
