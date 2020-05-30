@@ -116,6 +116,7 @@ contract AntsReview is AntsReviewRoles {
   ///@dev Access restricted to Issuer
   ///@param _deadline The unix timestamp after which fulfillments will no longer be accepted
   ///@param _ipfsHash The IPFS Hash of the Scientific Paper
+  ///@return True If the antReview is successfully issued
   function issueAntReview(
       string calldata _ipfsHash,
       uint64 _deadline
@@ -139,6 +140,7 @@ contract AntsReview is AntsReviewRoles {
   ///@dev Access restricted to Peer-Reviewer
   ///@param _antReviewId The index of the antReview to be fufilled
   ///@param _ipfsHash The IPFS Hash which contains evidence of the fufillment
+  ///@return True If the AntReview is successfully fulfilled
   function fulfillAntReview(uint256 _antReviewId, string memory _ipfsHash)
     public
     antReviewExists(_antReviewId)
@@ -146,9 +148,11 @@ contract AntsReview is AntsReviewRoles {
     hasStatus(_antReviewId, AntReviewStatus.CREATED)
     isBeforeDeadline(_antReviewId)
     whenNotPaused()
+    returns (bool)
   {
     peer_reviews[_antReviewId].push(Peer_Review(false, msg.sender, _ipfsHash));
     emit AntReviewFulfilled(_antReviewId, msg.sender, (peer_reviews[_antReviewId].length.sub(1)),_ipfsHash);
+    return true;
   }
 
 
@@ -156,6 +160,7 @@ contract AntsReview is AntsReviewRoles {
   ///@dev Access restricted to Issuer
   ///@param _antReviewId the index of the antReview
   ///@param _peerReviewId the index of the fulfillment being accepted
+  ///@return True If the AntReview is successfully being accepted
   function acceptAntReview(uint256 _antReviewId, uint256 _peerReviewId)
       public
       antReviewExists(_antReviewId)
@@ -164,6 +169,7 @@ contract AntsReview is AntsReviewRoles {
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
       peerReviewNotYetAccepted(_antReviewId, _peerReviewId)
       whenNotPaused()
+      returns (bool)
   {
       peer_reviews[_antReviewId][_peerReviewId].accepted = true;
       antreviews[_antReviewId].status = AntReviewStatus.ACCEPTED;
@@ -174,22 +180,26 @@ contract AntsReview is AntsReviewRoles {
         peer_reviews[_antReviewId][_peerReviewId].peer_reviewer,
         _peerReviewId, antreviews[_antReviewId].amount
       );
+      return true;
   }
 
 
   ///@notice Cancels the antReview and send the funds back to the issuer
   ///@dev Access restricted to Issuer
   ///@param _antReviewId the index of the antReview
+  ///@return True If the AntReview is successfully cancelled
   function cancelAntReview(uint256 _antReviewId)
       public
       antReviewExists(_antReviewId)
       onlyIssuer()
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
       whenNotPaused()
+      returns (bool)
   {
       antreviews[_antReviewId].status = AntReviewStatus.CANCELLED;
       antreviews[_antReviewId].issuer.sendValue(antreviews[_antReviewId].amount);
       emit AntReviewCancelled(_antReviewId, msg.sender, antreviews[_antReviewId].amount);
+      return true;
   }
 
 }
