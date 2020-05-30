@@ -10,6 +10,7 @@ pragma solidity 0.6.8;
 import "./AntsReviewRoles.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 interface AntToken {
   function transfer(address reciptient, uint amount) external returns (bool);
@@ -20,12 +21,16 @@ contract AntsReview is AntsReviewRoles {
 
   using SafeMath for uint256;
   using Address for address payable;
+  using Counters for Counters.Counter;
 
   /// Enums
   enum AntReviewStatus { CREATED, ACCEPTED, CANCELLED }
 
   /// Token
   AntToken internal ant;
+
+  /// Counter
+  Counters.Counter private _antReviewIdTracker;
 
   /// Storage
   AntReview[] public antreviews;
@@ -50,7 +55,7 @@ contract AntsReview is AntsReviewRoles {
 
   // Events
 
-  event AntReviewIssued(uint256 antReviewId, address issuer, uint256 amount, string ipfsHash);
+  event AntReviewIssued(address issuer, uint256 amount, string ipfsHash);
   event AntReviewFulfilled(uint256 antReviewId, address peer_reviewer, uint256 peerReviewId, string ipfsHash);
   event AntReviewAccepted(uint256 antReviewId, address issuer, address peer_reviewer, uint256 indexed peerReviewId, uint256 amount);
   event AntReviewCancelled(uint256 indexed antReviewId, address indexed issuer, uint256 amount);
@@ -121,11 +126,12 @@ contract AntsReview is AntsReviewRoles {
       validateDeadline(_deadline)
       onlyIssuer()
       whenNotPaused()
-      returns (uint256)
+      returns (bool)
   {
+      _antReviewIdTracker.increment();
       antreviews.push(AntReview(msg.sender, _deadline, _ipfsHash, AntReviewStatus.CREATED, msg.value));
-      emit AntReviewIssued(antreviews.length.sub(1),msg.sender, msg.value, _ipfsHash);
-      return (antreviews.length.sub(1));
+      emit AntReviewIssued(msg.sender, msg.value, _ipfsHash);
+      return true;
   }
 
   /**
