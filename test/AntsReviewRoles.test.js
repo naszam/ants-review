@@ -86,6 +86,53 @@ contract('AntsReviewRoles', function(accounts) {
       })
     })
 
+    // Check removeIssuer() for success when an admin is removing a new issuer
+    // Check removeIssuer() for sucessfully emit event when the issuer is removed
+    // Check removeIssuer() for failure when a random address try to remove an issuer
+    describe("removeIssuer()", async () => {
+
+      beforeEach(async () => {
+        await instance.addIssuer(issuer, {from:owner})
+      })
+      it("admin should be able to remove a new issuer", async () => {
+        await instance.removeIssuer(issuer, {from:owner})
+        const issuerRemoved = await instance.isIssuer(issuer, {from:random})
+        assert.isFalse(issuerRemoved, "only admins can remove a new issuer")
+      })
+
+      it("should emit the appropriate event when an issuer is removed", async () => {
+        const result = await instance.removeIssuer(issuer, {from:owner})
+        assert.equal(result.logs[0].event, "RoleRevoked", "RoleRevoked event not emitted, check removeIssuer method")
+      })
+
+      it("random address should not be able to remove an new issuer", async () => {
+        await catchRevert(instance.removeIssuer(issuer, {from:random}))
+      })
+    })
+
+    // Check removePeerReviewer() for success when an admin is removing a peer_reviewer
+    // Check removePeerReviewer() for sucessfully emit event when the peer_reviewer is removed
+    // Check removePeerReviewer() for failure when a random address try to remove a peer_reviewer
+    describe("removePeerReviewer()", async () => {
+
+      beforeEach(async () => {
+        await instance.addPeerReviewer(peer_reviewer, {from:owner})
+      })
+      it("admin should be able to remove a new peer_reviewer", async () => {
+        await instance.removePeerReviewer(peer_reviewer, {from:owner})
+        const peerReviewerRemoved = await instance.isPeerReviewer(peer_reviewer, {from:random})
+        assert.isFalse(peerReviewerRemoved, "only admins can remove a peer_reviewer")
+      })
+
+      it("should emit the appropriate event when a peer_reviewer is removed", async () => {
+        const result = await instance.removePeerReviewer(peer_reviewer, {from:owner})
+        assert.equal(result.logs[0].event, "RoleRevoked", "RoleRevoked event not emitted, check removePeerReviewer method")
+      })
+
+      it("random address should not be able to remove a peer_reviewer", async () => {
+        await catchRevert(instance.removePeerReviewer(peer_reviewer, {from:random}))
+      })
+    })
 
     // Check pause() for success when a pauser is pausing all the functions
     // Check pause() for sucessfully emit event when the functions are paused
