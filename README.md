@@ -144,4 +144,4 @@ Clone this GitHub repository.
 ## About
 Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
 Research and Design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
-Smart Contract and Architecture by [Nazzareno Massari](http://nazzarenomassari.com)
+Smart Contracts and Architecture by [Nazzareno Massari](http://nazzarenomassari.com)
