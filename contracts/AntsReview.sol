@@ -53,7 +53,7 @@ contract AntsReview is AntsReviewRoles {
   }
 
 
-  // Events
+  /// Events
 
   event AntReviewIssued(address issuer, uint256 amount, string ipfsHash);
   event AntReviewFulfilled(uint256 antReviewId, address peer_reviewer, uint256 peerReviewId, string ipfsHash);
@@ -64,7 +64,7 @@ contract AntsReview is AntsReviewRoles {
     ant = AntToken(ant_);
   }
 
-  // Fallback
+  /// Fallback
 
   fallback() external payable {
     revert();
@@ -74,7 +74,7 @@ contract AntsReview is AntsReviewRoles {
     revert();
   }
 
-  // Modifiers
+  /// Modifiers
 
   modifier hasValue() {
       require(msg.value > 0);
@@ -111,11 +111,11 @@ contract AntsReview is AntsReviewRoles {
     _;
   }
 
-  /**
-  * @dev issueAntReview(): instantiates a new bounty
-  * @param _deadline the unix timestamp after which fulfillments will no longer be accepted
-  * @param _ipfsHash the requirements of the antReview
-  */
+
+  ///@notice Instantiates a new AntReview
+  ///@dev Access restricted to Issuer
+  ///@param _deadline The unix timestamp after which fulfillments will no longer be accepted
+  ///@param _ipfsHash The IPFS Hash of the Scientific Paper
   function issueAntReview(
       string calldata _ipfsHash,
       uint64 _deadline
@@ -134,11 +134,11 @@ contract AntsReview is AntsReviewRoles {
       return true;
   }
 
-  /**
-  * @dev fulfillAntReview(): submit a fulfillment for the given antReview
-  * @param _antReviewId the index of the antReview to be fufilled
-  * @param _ipfsHash the ipfs hash which contains evidence of the fufillment
-  */
+
+  ///@notice Submit a fulfillment for the given antReview
+  ///@dev Access restricted to Peer-Reviewer
+  ///@param _antReviewId The index of the antReview to be fufilled
+  ///@param _ipfsHash The IPFS Hash which contains evidence of the fufillment
   function fulfillAntReview(uint256 _antReviewId, string memory _ipfsHash)
     public
     antReviewExists(_antReviewId)
@@ -151,11 +151,11 @@ contract AntsReview is AntsReviewRoles {
     emit AntReviewFulfilled(_antReviewId, msg.sender, (peer_reviews[_antReviewId].length.sub(1)),_ipfsHash);
   }
 
-  /**
-  * @dev acceptPeerReview(): accept a given Peer-Review
-  * @param _antReviewId the index of the antReview
-  * @param _peerReviewId the index of the fulfillment being accepted
-  */
+
+  ///@notice Accept a given Peer-Review
+  ///@dev Access restricted to Issuer
+  ///@param _antReviewId the index of the antReview
+  ///@param _peerReviewId the index of the fulfillment being accepted
   function acceptAntReview(uint256 _antReviewId, uint256 _peerReviewId)
       public
       antReviewExists(_antReviewId)
@@ -176,9 +176,10 @@ contract AntsReview is AntsReviewRoles {
       );
   }
 
-  /** @dev cancelAntReview(): cancels the antReview and send the funds back to the issuer
-  * @param _antReviewId the index of the antReview
-  */
+
+  ///@notice Cancels the antReview and send the funds back to the issuer
+  ///@dev Access restricted to Issuer
+  ///@param _antReviewId the index of the antReview
   function cancelAntReview(uint256 _antReviewId)
       public
       antReviewExists(_antReviewId)
