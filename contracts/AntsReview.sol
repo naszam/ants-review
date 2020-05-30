@@ -28,7 +28,7 @@ contract AntsReview is AntsReviewRoles {
   AntToken internal ant;
 
   /// Storage
-  AntReview[] public antreviews ;
+  AntReview[] public antreviews;
 
   mapping(uint256 => Peer_Review[]) peer_reviews;
 
