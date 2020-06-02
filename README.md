@@ -129,17 +129,8 @@ Clone this GitHub repository.
     
     
 ## Inspiration & References
-- [oscoin](http://oscoin.io/oscoin.pdf)
-- [Towards Open Science: The Case for a Decentralized Autonomous Academic Endorsement System](https://zenodo.org/record/60054#.XqMYqnVKg5k)
-- [ERC20](https://eips.ethereum.org/EIPS/eip-20)
-- [Bounties-Network](https://bounties.network/)
-- [Gitcion](https://gitcoin.co)
-- [Gitcoin Quadratic Funding](https://vitalik.ca/general/2020/01/28/round4.html)
-- [Quadratic Payments](https://vitalik.ca/general/2019/12/07/quadratic.html)
-- [IPFS](https://ipfs.io/)
-- [ZKPs](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Zero%20Knowledge/Noninteractive_Zero-Knowkedge.pdf)
-- [AZTEC Protocol](https://www.aztecprotocol.com/)
-- [Ethereum 9 3/4](https://ethresear.ch/t/ethereum-9-send-erc20-privately-using-mimblewimble-and-zk-snarks/6217)
+
+[Awesome AntsReview](https://github.com/naszam/awesome-antsreview/blob/master/README.md)
 
 ## About
 Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
