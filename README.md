@@ -130,7 +130,7 @@ Clone this GitHub repository.
     
 ## Inspiration & References
 
-[Awesome AntsReview](https://github.com/naszam/awesome-antsreview/blob/master/README.md#references)
+[![Awesome AntsReview](https://img.shields.io/badge/Awesome-AntsReview-orange)](https://github.com/naszam/awesome-antsreview/blob/master/README.md#references)
 
 
 ## About
