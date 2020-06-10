@@ -141,8 +141,8 @@ contract AntsReview is AntsReviewRoles {
   ///@param _antReviewId The index of the antReview to be fufilled
   ///@param _ipfsHash The IPFS Hash which contains evidence of the fufillment
   ///@return True If the AntReview is successfully fulfilled
-  function fulfillAntReview(uint256 _antReviewId, string memory _ipfsHash)
-    public
+  function fulfillAntReview(uint256 _antReviewId, string calldata _ipfsHash)
+    external
     antReviewExists(_antReviewId)
     onlyPeerReviewer()
     hasStatus(_antReviewId, AntReviewStatus.CREATED)
@@ -162,7 +162,7 @@ contract AntsReview is AntsReviewRoles {
   ///@param _peerReviewId the index of the fulfillment being accepted
   ///@return True If the AntReview is successfully being accepted
   function acceptAntReview(uint256 _antReviewId, uint256 _peerReviewId)
-      public
+      external
       antReviewExists(_antReviewId)
       peerReviewExists(_antReviewId,_peerReviewId)
       onlyIssuer()
@@ -189,7 +189,7 @@ contract AntsReview is AntsReviewRoles {
   ///@param _antReviewId the index of the antReview
   ///@return True If the AntReview is successfully cancelled
   function cancelAntReview(uint256 _antReviewId)
-      public
+      external
       antReviewExists(_antReviewId)
       onlyIssuer()
       hasStatus(_antReviewId, AntReviewStatus.CREATED)
