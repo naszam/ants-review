@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.8;
+pragma solidity 0.6.9;
 
 ///@title AntsReview
 ///@author Nazzareno Massari
@@ -23,21 +23,21 @@ contract AntsReview is AntsReviewRoles {
   using Address for address payable;
   using Counters for Counters.Counter;
 
-  /// Enums
+  /// @dev Enums
   enum AntReviewStatus { CREATED, ACCEPTED, CANCELLED }
 
-  /// Token
+  /// @dev Token
   AntToken internal ant;
 
-  /// Counter
+  /// @dev Counter
   Counters.Counter private _antReviewIdTracker;
 
-  /// Storage
+  /// @dev Storage
   AntReview[] public antreviews;
 
   mapping(uint256 => Peer_Review[]) peer_reviews;
 
-  /// Structs
+  /// @dev Structs
   struct AntReview {
       address payable issuer;
       uint256 deadline;
@@ -53,7 +53,7 @@ contract AntsReview is AntsReviewRoles {
   }
 
 
-  /// Events
+  /// @dev Events
 
   event AntReviewIssued(address issuer, uint256 amount, string ipfsHash);
   event AntReviewFulfilled(uint256 antReviewId, address peer_reviewer, uint256 peerReviewId, string ipfsHash);
@@ -64,7 +64,7 @@ contract AntsReview is AntsReviewRoles {
     ant = AntToken(ant_);
   }
 
-  /// Fallback
+  /// @dev Fallback
 
   fallback() external payable {
     revert();
@@ -74,7 +74,7 @@ contract AntsReview is AntsReviewRoles {
     revert();
   }
 
-  /// Modifiers
+  /// @dev Modifiers
 
   modifier hasValue() {
       require(msg.value > 0);

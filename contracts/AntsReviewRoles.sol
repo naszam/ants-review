@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.8;
+pragma solidity 0.6.9;
 
 ///@title AntsReview
 ///@author Nazzareno Massari
@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
 
 contract AntsReviewRoles is Ownable, AccessControl, Pausable {
 
-  /// Roles
+  /// @dev Roles
   bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
   bytes32 public constant PEER_REVIEWER_ROLE = keccak256("PEER_REVIEWER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -24,7 +24,7 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
           _setupRole(PAUSER_ROLE, owner());
   }
 
-    /// Modifiers
+    /// @dev Modifiers
     modifier onlyAdmin() {
         require(isAdmin(msg.sender), "Caller is not an admin");
         _;
@@ -40,7 +40,7 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
         _;
     }
 
-    /// Functions
+    /// @dev Functions
 
     function isAdmin(address account) public view returns (bool) {
       return hasRole(DEFAULT_ADMIN_ROLE, account);
@@ -54,25 +54,25 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
       return hasRole(PEER_REVIEWER_ROLE, account);
     }
 
-    function addIssuer(address account) public onlyAdmin returns (bool) {
+    function addIssuer(address account) external onlyAdmin returns (bool) {
       require(!isIssuer(account), "Account is already an issuer");
       grantRole(ISSUER_ROLE, account);
       return true;
     }
 
-    function addPeerReviewer(address account) public onlyAdmin returns (bool) {
+    function addPeerReviewer(address account) external onlyAdmin returns (bool) {
       require(!isPeerReviewer(account), "Account is already a peer-reviewer");
       grantRole(PEER_REVIEWER_ROLE, account);
       return true;
     }
 
-    function removeIssuer(address account) public onlyAdmin returns (bool) {
+    function removeIssuer(address account) external onlyAdmin returns (bool) {
       require(isIssuer(account), "Account is not an issuer");
       revokeRole(ISSUER_ROLE, account);
       return true;
     }
 
-    function removePeerReviewer(address account) public onlyAdmin returns (bool) {
+    function removePeerReviewer(address account) external onlyAdmin returns (bool) {
       require(isPeerReviewer(account), "Account is not a peer-reviewer");
       revokeRole(PEER_REVIEWER_ROLE, account);
       return true;
@@ -80,14 +80,14 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
 
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
-    function pause() public {
+    function pause() external {
       require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to pause");
       _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
-    function unpause() public {
+    function unpause() external {
           require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to unpause");
           _unpause();
     }
