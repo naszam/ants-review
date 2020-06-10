@@ -42,36 +42,64 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
 
     /// @dev Functions
 
+    /// @notice Check if account is an Admin
+    /// @dev Used in onlyAdmin() modifier
+    /// @param account Address to check
+    /// @return True If the account is an Admin
     function isAdmin(address account) public view returns (bool) {
       return hasRole(DEFAULT_ADMIN_ROLE, account);
     }
 
-    function isIssuer(address account ) public view returns (bool) {
+    /// @notice Check if account is an Issuer
+    /// @dev Used in onlyIssuer() modifier
+    /// @param account Address to check
+    /// @return True If the account is an Issuer
+    function isIssuer(address account) public view returns (bool) {
       return hasRole(ISSUER_ROLE, account);
     }
 
-    function isPeerReviewer(address account ) public view returns (bool) {
+    /// @notice Check if account is a Peer-Reviewer
+    /// @dev Used in onlyPeerReviewer() modifier
+    /// @param account Address to check
+    /// @return True If the account is a Peer-Reviewer
+    function isPeerReviewer(address account) public view returns (bool) {
       return hasRole(PEER_REVIEWER_ROLE, account);
     }
 
+    /// @notice Add a new Issuer
+    /// @dev Access restricted only for Admins
+    /// @param account Address of the new Issuer
+    /// @return True if the account address is added as Issuer
     function addIssuer(address account) external onlyAdmin returns (bool) {
       require(!isIssuer(account), "Account is already an issuer");
       grantRole(ISSUER_ROLE, account);
       return true;
     }
 
+    /// @notice Add a new Peer-Reviewer
+    /// @dev Access restricted only for Admins
+    /// @param account Address of the new Peer-Reviewer
+    /// @return True if the account address is added as Peer-Reviewer
     function addPeerReviewer(address account) external onlyAdmin returns (bool) {
       require(!isPeerReviewer(account), "Account is already a peer-reviewer");
       grantRole(PEER_REVIEWER_ROLE, account);
       return true;
     }
 
+    /// @notice Remove an Issuer
+    /// @dev Access restricted only for Admins
+    /// @param account Address of the Issuer
+    /// @return True if the account address is removed as Issuer
     function removeIssuer(address account) external onlyAdmin returns (bool) {
       require(isIssuer(account), "Account is not an issuer");
       revokeRole(ISSUER_ROLE, account);
       return true;
     }
 
+    /// @notice Remove a Peer-Reviewer
+    /// @dev Access restricted only for Admins
+    /// @param account Address of the Peer-Reviewer
+    /// @return True if the account address is removed as Peer-Reviewer
     function removePeerReviewer(address account) external onlyAdmin returns (bool) {
       require(isPeerReviewer(account), "Account is not a peer-reviewer");
       revokeRole(PEER_REVIEWER_ROLE, account);
