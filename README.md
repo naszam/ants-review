@@ -10,7 +10,7 @@
 <img src="ants_review_logo.png" width="30%">
 
 # Ants-Review
-> Bounty-like system for Open Anonymous Scientific Peer-Reviews  
+> A Protocol for Open Anonymous Scientific Peer-Reviews  
 > :1st_place_medal: 1st Place at [ETHTurin Hackathon](https://ethturin.com/hacks) (open with MetaMask disabled)
 
 The Project implements a basic Bounty-like contract called AntsReview to allow anyone to issue an antReview in ETH, a bounty for peer-review in scientific publication, linked to requirements stored on ipfs which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment.  
