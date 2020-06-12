@@ -4,7 +4,7 @@ pragma solidity 0.6.9;
 ///@title Ants-Review
 ///@author Nazzareno Massari
 ///@notice AntsReview to allows issuer to issue an antReview which peer-reviewers can fulfill
-///@dev All function calls are currently implemented without side effecs through TDD approach
+///@dev All function calls are currently implemented without side effects through TDD approach
 ///@dev OpenZeppelin library is used for secure contract development
 
 import "./AntsReviewRoles.sol";
