@@ -1,7 +1,7 @@
 /// SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.6.9;
 
-///@title AntsReview
+///@title Ants-Review
 ///@author Nazzareno Massari
 ///@notice AntsReview to allows issuer to issue an antReview which peer-reviewers can fulfill
 ///@dev All function calls are currently implemented without side effecs through TDD approach
