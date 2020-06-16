@@ -17,10 +17,10 @@
   },
   "homepage": "https://github.com/naszam/ants-review#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^3.0.1",
+    "@openzeppelin/contracts": "^3.0.2",
     "@truffle/hdwallet-provider": "^1.0.35",
     "ganache-cli": "^6.9.1",
-    "truffle": "^5.1.27",
+    "truffle": "^5.1.30",
     "truffle-flattener": "^1.4.4"
   }
 }
