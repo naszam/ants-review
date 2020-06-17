@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
 interface AntToken {
-  function transfer(address reciptient, uint amount) external returns (bool);
+  function transfer(address recipient, uint amount) external returns (bool);
   function balanceOf(address account) external view returns (uint);
 }
 
