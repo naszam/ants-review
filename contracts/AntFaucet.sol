@@ -9,7 +9,7 @@ pragma solidity 0.6.10;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/access/Pausable.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 
 interface AntToken {
   function transfer(address reciptient, uint amount) external returns (bool);
@@ -61,11 +61,12 @@ contract AntFaucet is Ownable, AccessControl, Pausable {
   /// @notice Give 1 Ant to anyone who asks
   /// @dev Checks if balance is more or equal to 1 Ant
   /// @return True If 1 Ant is successfully withdrawn
-  function withdraw() external {
+  function withdraw() external returns (bool) {
       require(ant.balanceOf(address(this)) >= 1 ether, "Insufficient balance in faucet for withdrawal 1 Ant");
 
       ant.transfer(msg.sender, 1 ether);
       emit Withdrawal(msg.sender);
+      return true;
   }
 
   /// @notice Pause all the functions
