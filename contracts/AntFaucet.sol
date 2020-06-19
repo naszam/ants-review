@@ -36,26 +36,11 @@ contract AntFaucet is Ownable, AccessControl, Pausable {
     ant = AntToken(ant_);
   }
 
-  /// @dev Modifier
-  modifier onlyAdmin() {
-      require(isAdmin(msg.sender), "Caller is not an admin");
-      _;
-    }
-
   /// @dev Functions
 
   /// @notice Accept any incoming amount
   receive() external payable {
     emit Deposit (msg.sender, msg.value);
-  }
-
-
-  /// @notice Check if account is an Admin
-  /// @dev Used in onlyAdmin() modifier
-  /// @param account Address to check
-  /// @return True If the account is an Admin
-  function isAdmin(address account) public view returns (bool) {
-    return hasRole(DEFAULT_ADMIN_ROLE, account);
   }
 
   /// @notice Give 1 Ant to anyone who asks
@@ -72,8 +57,8 @@ contract AntFaucet is Ownable, AccessControl, Pausable {
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() external {
-    ant.transfer(owner(), ant.balanceOf(address(this)));
     require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to pause");
+    ant.transfer(owner(), ant.balanceOf(address(this)));
     _pause();
   }
 
