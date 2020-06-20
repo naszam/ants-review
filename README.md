@@ -121,6 +121,7 @@ Clone this GitHub repository.
   - Install dependencies:
     ```
     $ npm install
+    $ yarn install
     ```
   - Start the Local Web Server:
     ```sh
