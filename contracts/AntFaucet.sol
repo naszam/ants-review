@@ -22,7 +22,7 @@ contract AntFaucet is Ownable, AccessControl, Pausable {
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
   /// @dev Token
-  AntToken internal ant;
+  AntToken internal immutable ant;
 
   /// @dev Events
   event Withdrawal(address indexed to);

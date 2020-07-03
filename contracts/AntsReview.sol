@@ -27,7 +27,7 @@ contract AntsReview is AntsReviewRoles {
   enum AntReviewStatus { CREATED, ACCEPTED, CANCELLED }
 
   /// @dev Token
-  AntToken internal ant;
+  AntToken internal immutable ant;
 
   /// @dev Counter
   Counters.Counter private _antReviewIdTracker;
