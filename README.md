@@ -1,7 +1,7 @@
 [![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
 [![#npm 12.16.2](https://img.shields.io/badge/npm-v12.16.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
-[![#solc v0.6.6](https://img.shields.io/badge/solc-v0.6.6-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.6)
+[![#solc v0.6.10](https://img.shields.io/badge/solc-v0.6.10-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.10)
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)
 
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethturin.com)
@@ -10,7 +10,7 @@
 <img src="ants_review_logo.png" width="30%">
 
 # Ants-Review
-> A Protocol for Open Anonymous Scientific Peer-Reviews  
+> A Protocol for Open Anonymous Scientific Peer-Reviews on Ethereum  
 > :1st_place_medal: 1st Place at [ETHTurin Hackathon](https://ethturin.com/hacks) (open with MetaMask disabled)
 
 The Project implements a basic Bounty-like contract called AntsReview to allow anyone to issue an AntReview in ETH, a bounty for peer-review in scientific publication, linked to requirements stored on ipfs which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment.  
@@ -27,10 +27,12 @@ The Project is intended to be used as a template for developing the idea present
 - ENS, allowing human-readable Ethereum addresses
 - Upgradability, to allow the logic to be extended and improved.
 - ...
-  
+
 [White Paper](https://zenodo.org/record/3828087#.Xr8XVXVKg5k)  
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
 [Demo](https://youtu.be/9FMsM5otQVM)  
+
+![Smart Contracts Flow-Chart](AntsReview.png)
 
 Project Setup
 ============
@@ -39,19 +41,16 @@ Clone this GitHub repository.
 
 # Steps to compile and deploy
 
-  - Global dependencies
-    - Truffle:
+  - Local dependencies:
+    - Truffle
+    - Ganache CLI
+    - OpenZeppelin Library v3.0
+    - Truffle HD Wallet Provider
+    - Truffle Flattener
     ```sh
-    $ npm install -g truffle
+    $ npm i
     ```
-    - Ganache:
-    ```sh
-    $ npm install -g ganache-cli
-    ```
-    - OpenZeppelin Library v3.0:
-    ```sh
-    $ npm install -g @openzeppelin/contracts
-    ```
+  - Global dependencies:
     - MythX for Truffle (optional):
     ```sh
     $ npm install -g truffle-security
@@ -103,10 +102,10 @@ Clone this GitHub repository.
     ```sh
     $ truffle migrate --network rinkeby
     ```
-    
+
     The Project's smart contract have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
    The ABIs are available to test the project on Rinkeby's Network.
-   
+
    ## Using the DApp
   - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
   - Change Ganache GUI port to 8545.
@@ -123,6 +122,7 @@ Clone this GitHub repository.
   - Install dependencies:
     ```
     $ npm install
+    $ yarn install
     ```
   - Start the Local Web Server:
     ```sh
@@ -130,25 +130,16 @@ Clone this GitHub repository.
     ```
   - Interacting with the User Interface (Proof of Concept):
     - Anyone can add an AntReview specifying IPFS Has of requirements, Deadline Timestamp, Ether value of the AntReview reward.
-    
+
  The DApp (PoC) has been deployed on IPFS via [Fleek](https://fleek.co/): https://antsreview.on.fleek.co
-    
-    
+
+
 ## Inspiration & References
-- [oscoin](http://oscoin.io/oscoin.pdf)
-- [Towards Open Science: The Case for a Decentralized Autonomous Academic Endorsement System](https://zenodo.org/record/60054#.XqMYqnVKg5k)
-- [ERC20](https://eips.ethereum.org/EIPS/eip-20)
-- [Bounties-Network](https://bounties.network/)
-- [Gitcion](https://gitcoin.co)
-- [Gitcoin Quadratic Funding](https://vitalik.ca/general/2020/01/28/round4.html)
-- [Quadratic Payments](https://vitalik.ca/general/2019/12/07/quadratic.html)
-- [IPFS](https://ipfs.io/)
-- [ZKPs](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Zero%20Knowledge/Noninteractive_Zero-Knowkedge.pdf)
-- [AZTEC Protocol](https://www.aztecprotocol.com/)
-- [Ethereum 9 3/4](https://ethresear.ch/t/ethereum-9-send-erc20-privately-using-mimblewimble-and-zk-snarks/6217)
+
+[![Awesome AntsReview](https://img.shields.io/badge/Awesome-AntsReview-orange)](https://github.com/naszam/awesome-antsreview/blob/master/README.md#references)
+
 
 ## About
 Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
-Conception & design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
-Implementation & code development by [Nazzareno Massari](http://nazzarenomassari.com)  
-Pixel Art by [Marcelo Colmenero](https://www.instagram.com/isometricpixelart/?hl=en) 
+Research and Design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
+Smart Contracts and Architecture by [Nazzareno Massari](http://nazzarenomassari.com)

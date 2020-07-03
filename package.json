@@ -1,0 +1,26 @@
+{
+  "name": "ants-review",
+  "version": "0.1.0-alpha",
+  "description": "Bounty-like system for Open Anonymous Scientific Peer-Reviews",
+  "main": "truffle-config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naszam/ants-review.git"
+  },
+  "author": "Nazzareno Massari",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/naszam/ants-review/issues"
+  },
+  "homepage": "https://github.com/naszam/ants-review#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.0.2",
+    "@truffle/hdwallet-provider": "^1.0.35",
+    "ganache-cli": "^6.9.1",
+    "truffle": "^5.1.30",
+    "truffle-flattener": "^1.4.4"
+  }
+}
