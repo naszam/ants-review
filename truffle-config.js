@@ -31,8 +31,6 @@ module.exports = {
 
   contracts_build_directory: path.join(__dirname, "client/src/contracts"),
 
-  plugins: ["truffle-security"],
-
   /**
    * Networks define how you connect to your ethereum client and let you set the
    * defaults web3 uses to send transactions. If you don't specify one truffle
@@ -55,13 +53,12 @@ module.exports = {
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
      },
-	
+     
      rinkeby: {
-        provider: () => new HDWalletProvider(mnemonic, infuraURL),
-        network_id: 4, // Rinkeby's network id
-        gas: 5500000,
+      provider: () => new HDWalletProvider(mnemonic, infuraURL),
+      network_id: 4, // Rinkeby's network id
+      gas: 5500000,
      },
-
 
     // Another network with more advanced options...
     // advanced: {
