@@ -1,13 +1,13 @@
-var Ants = artifacts.require("Ants");
+var ANTS = artifacts.require("ANTS");
 var AntsReview = artifacts.require("AntsReview");
-var AntFaucet = artifacts.require("AntFaucet");
+var AntsFaucet = artifacts.require("AntsFaucet");
 
 module.exports = function(deployer) {
 
- 		deployer.deploy(Ants).then(function() {
-			return deployer.deploy(AntsReview, Ants.address);
+ 		deployer.deploy(ANTS).then(function() {
+			return deployer.deploy(AntsReview, ANTS.address);
 		}).then(function() {
-			return deployer.deploy(AntFaucet, Ants.address);
+			return deployer.deploy(AntsFaucet, ANTS.address);
 		});
 
 };
