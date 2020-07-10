@@ -78,10 +78,13 @@ Clone this GitHub repository.
    - Test the smart contracts using Truffle & Ganache with the following command:
      ```sh
      $ truffle test
-     ```
-   - Analyze the smart contracts using MythX for Truffle with the following command (optional):
+   - Analyze the smart contracts using Slither with the following command (optional):
+      ```
+      $ slither .
+      ```
+   - Analyze the smart contracts using MythX CLI with the following command (optional):
      ```sh
-     $ truffle run verify
+     $ mythx analyze
      ```
 ## Deploying on Rinkeby's Testnet
   - Get an Ethereum Account on Metamask.
