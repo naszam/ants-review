@@ -11,29 +11,29 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
-interface AntToken {
+interface AntsToken {
   function transfer(address recipient, uint amount) external returns (bool);
   function balanceOf(address account) external view returns (uint);
 }
 
-contract AntFaucet is Ownable, AccessControl, Pausable {
+contract AntsFaucet is Ownable, AccessControl, Pausable {
 
   /// @dev Pauser Role
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
   /// @dev Token
-  AntToken internal immutable ant;
+  AntsToken internal immutable ants;
 
   /// @dev Events
   event Withdrawal(address indexed to);
   event Deposit(address indexed from, uint amount);
 
 
-  constructor(address ant_) public {
+  constructor(address ants_) public {
     _setupRole(DEFAULT_ADMIN_ROLE, owner());
     _setupRole(PAUSER_ROLE, owner());
 
-    ant = AntToken(ant_);
+    ants = AntsToken(ants_);
   }
 
   /// @dev Functions
@@ -47,9 +47,9 @@ contract AntFaucet is Ownable, AccessControl, Pausable {
   /// @dev Checks if balance is more or equal to 1 Ant
   /// @return True If 1 Ant is successfully withdrawn
   function withdraw() external returns (bool) {
-      require(ant.balanceOf(address(this)) >= 1 ether, "Insufficient balance in faucet for withdrawal 1 Ant");
+      require(ants.balanceOf(address(this)) >= 1 ether, "Insufficient balance in faucet for withdrawal 1 Ant");
 
-      ant.transfer(msg.sender, 1 ether);
+      ants.transfer(msg.sender, 1 ether);
       emit Withdrawal(msg.sender);
       return true;
   }
@@ -58,7 +58,7 @@ contract AntFaucet is Ownable, AccessControl, Pausable {
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() external {
     require(hasRole(PAUSER_ROLE, msg.sender), "AntFaucet: must have pauser role to pause");
-    ant.transfer(owner(), ant.balanceOf(address(this)));
+    ants.transfer(owner(), ants.balanceOf(address(this)));
     _pause();
   }
 

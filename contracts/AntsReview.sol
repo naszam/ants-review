@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-interface AntToken {
+interface AntsToken {
   function transfer(address reciptient, uint amount) external returns (bool);
   function balanceOf(address account) external view returns (uint);
 }
@@ -27,7 +27,7 @@ contract AntsReview is AntsReviewRoles {
   enum AntReviewStatus { CREATED, ACCEPTED, CANCELLED }
 
   /// @dev Token
-  AntToken internal immutable ant;
+  AntsToken internal immutable ants;
 
   /// @dev Counter
   Counters.Counter private _antReviewIdTracker;
@@ -60,8 +60,8 @@ contract AntsReview is AntsReviewRoles {
   event AntReviewAccepted(uint256 antReviewId, address issuer, address peer_reviewer, uint256 indexed peerReviewId, uint256 amount);
   event AntReviewCancelled(uint256 indexed antReviewId, address indexed issuer, uint256 amount);
 
-  constructor(address ant_) public {
-    ant = AntToken(ant_);
+  constructor(address ants_) public {
+    ants = AntsToken(ants_);
   }
 
   /// @dev Fallback
