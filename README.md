@@ -129,7 +129,7 @@ Clone this GitHub repository.
     $ npm run start
     ```
   - Interacting with the User Interface (Proof of Concept):
-    - Anyone can add an AntReview specifying IPFS Has of requirements, Deadline Timestamp, Ether value of the AntReview reward.
+    - Anyone can add an AntReview specifying IPFS Hash of requirements, Deadline Timestamp, Ether value of the AntReview reward.
 
  The DApp (PoC) has been deployed on IPFS via [Fleek](https://fleek.co/): https://antsreview.on.fleek.co
 
