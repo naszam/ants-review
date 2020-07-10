@@ -50,11 +50,17 @@ Clone this GitHub repository.
     ```sh
     $ npm i
     ```
-  - Global dependencies:
-    - MythX for Truffle (optional):
-    ```sh
-    $ npm install -g truffle-security
+ - Global dependencies:
+    - Slither (optional): 
     ```
+    pip3 install slither-analyzer
+    ```
+    - MythX CLI (optional): 
+    
+    ```sh
+     $ git clone git://github.com/dmuhs/mythx-cli
+     $ sudo python setup.py install
+     ```
 ## Running the project with local test network (ganache-cli)
 
    - Start ganache-cli with the following command:
