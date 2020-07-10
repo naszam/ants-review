@@ -1,13 +1,13 @@
-var Ant = artifacts.require("Ant");
+var Ants = artifacts.require("Ants");
 var AntsReview = artifacts.require("AntsReview");
 var AntFaucet = artifacts.require("AntFaucet");
 
 module.exports = function(deployer) {
 
- 		deployer.deploy(Ant).then(function() {
-			return deployer.deploy(AntsReview, Ant.address);
+ 		deployer.deploy(Ants).then(function() {
+			return deployer.deploy(AntsReview, Ants.address);
 		}).then(function() {
-			return deployer.deploy(AntFaucet, Ant.address);
+			return deployer.deploy(AntFaucet, Ants.address);
 		});
 
 };

@@ -10,10 +10,10 @@ pragma solidity 0.6.10;
 import "@openzeppelin/contracts/presets/ERC20PresetMinterPauser.sol";
 
 
-contract Ant is ERC20PresetMinterPauser {
+contract Ants is ERC20PresetMinterPauser {
 
   constructor()
-  ERC20PresetMinterPauser("Ant", "ANT")
+  ERC20PresetMinterPauser("Ants", "ANTS")
   public {
 
   }
