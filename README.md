@@ -20,8 +20,8 @@ To incentivise ethical behaviour the system will implement a quadratic funding o
 The Project is intended to be used as a template for developing the idea presented in the white paper, extending its functionality via the following steps:
 
 - Quadratic Funding Gitcoin-like for AntsReview.
-- ERC20 token, name Ants, symbol ANTS.
-- zkAnts, allowing private Ants transactions on Ethereum using ZK-SNARKs via AZTEC Protocol.
+- ERC20 token, name Ants-Review, symbol ANTS.
+- zkANTS, allowing private Ants transactions on Ethereum using ZK-SNARKs via AZTEC Protocol.
 - Timestamped on Ethereum via PoE (Proof of Existence).
 - Storing on IPFS.
 - ENS, allowing human-readable Ethereum addresses
