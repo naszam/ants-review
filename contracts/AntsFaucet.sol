@@ -3,7 +3,7 @@ pragma solidity 0.6.10;
 
 ///@title Ants-Review
 ///@author Nazzareno Massari @naszam
-///@notice Ant Faucet
+///@notice ANTS Faucet
 ///@dev All function calls are currently implemented without side effects through TDD approach
 ///@dev OpenZeppelin library is used for secure contract development
 
