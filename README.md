@@ -4,7 +4,7 @@
 [![#solc v0.6.10](https://img.shields.io/badge/solc-v0.6.10-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.10)
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)
 
-[![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethturin.com)
+[![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethlocal.co/ethturin)
 [![DOI](https://zenodo.org/badge/258342275.svg)](https://zenodo.org/badge/latestdoi/258342275)  
 
 <img src="ants_review_logo.png" width="30%">
