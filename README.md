@@ -47,7 +47,7 @@ Setup
 
 Clone this GitHub repository.
 
-# Steps to compile and deploy
+## Steps to compile and deploy
 
   - Local dependencies:
     - Truffle
