@@ -32,14 +32,13 @@ The Project is intended to be used as a template for developing the idea present
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
 [Demo](https://youtu.be/9FMsM5otQVM)  
 
+![Smart Contracts Flow-Chart](AntsReview.png)
+
 ## Sections
 * [Setup](#setup)
 * [Deploy](#deploy)
 * [Using the DApp](#using-the-dapp)
 * [About](#about)
-
-
-![Smart Contracts Flow-Chart](AntsReview.png)
 
 Setup
 =====
