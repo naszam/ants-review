@@ -36,7 +36,6 @@ The Project is intended to be used as a template for developing the idea present
 * [Setup](#setup)
 * [Deploy](#deploy)
 * [Using the DApp](#using-the-dapp)
-* [Back-end](#back-end)
 * [About](#about)
 
 
