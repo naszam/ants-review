@@ -32,10 +32,18 @@ The Project is intended to be used as a template for developing the idea present
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
 [Demo](https://youtu.be/9FMsM5otQVM)  
 
+## Sections
+* [Setup](#setup)
+* [Deploy](#deploy)
+* [Using the DApp](#using-the-dapp)
+* [Back-end](#back-end)
+* [About](#about)
+
+
 ![Smart Contracts Flow-Chart](AntsReview.png)
 
-Project Setup
-============
+Setup
+=====
 
 Clone this GitHub repository.
 
@@ -84,8 +92,10 @@ Clone this GitHub repository.
       ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
      ```sh
-     $ mythx analyze
+     $ mythx analyze    
      ```
+Deploy
+======
 ## Deploying on Rinkeby's Testnet
   - Get an Ethereum Account on Metamask.
   - On the landing page, click “Get Chrome Extension.”
@@ -112,10 +122,11 @@ Clone this GitHub repository.
     $ truffle migrate --network rinkeby
     ```
 
-    The Project's smart contract have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
-   The ABIs are available to test the project on Rinkeby's Network.
+ The Project's smart contract have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
+ The ABIs are available to test the project on Rinkeby's Network.
 
-   ## Using the DApp
+ Using the DApp
+ ==============
   - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
   - Change Ganache GUI port to 8545.
   - Import Ganache GUI mnemonic into MetaMask.
@@ -141,13 +152,14 @@ Clone this GitHub repository.
 
  The DApp (PoC) has been deployed on IPFS via [Fleek](https://fleek.co/): https://antsreview.on.fleek.co
 
-
+About
+=====
 ## Inspiration & References
 
 [![Awesome AntsReview](https://img.shields.io/badge/Awesome-AntsReview-orange)](https://github.com/naszam/awesome-antsreview/blob/master/README.md#references)
 
 
-## About
+## Authors
 Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
 Research and Design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
 Smart Contracts and Architecture by [Nazzareno Massari](http://nazzarenomassari.com)  
