@@ -7,6 +7,17 @@ pragma solidity 0.6.11;
 ///@dev All function calls are currently implemented without side effects through TDD approach
 ///@dev OpenZeppelin library is used for secure contract development
 
+/**
+
+ █████  ███    ██ ████████ ███████       ██████  ███████ ██    ██ ██ ███████ ██     ██ 
+██   ██ ████   ██    ██    ██            ██   ██ ██      ██    ██ ██ ██      ██     ██ 
+███████ ██ ██  ██    ██    ███████ █████ ██████  █████   ██    ██ ██ █████   ██  █  ██ 
+██   ██ ██  ██ ██    ██         ██       ██   ██ ██       ██  ██  ██ ██      ██ ███ ██ 
+██   ██ ██   ████    ██    ███████       ██   ██ ███████   ████   ██ ███████  ███ ███  
+
+**/
+
+
 import "./AntsReviewRoles.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
@@ -24,41 +35,48 @@ contract AntsReview is AntsReviewRoles {
   using Counters for Counters.Counter;
 
   /// @dev Enums
-  enum AntReviewStatus { CREATED, ACCEPTED, CANCELLED }
+  enum AntReviewStatus { CREATED, ACCEPTED, PAID }
 
   /// @dev Token
   AntsToken internal immutable ants;
 
-  /// @dev Counter
-  Counters.Counter private _antReviewIdTracker;
+  /// @dev AntReview Counter
+  Counters.Counter public antReviewIdTracker;
 
   /// @dev Storage
   AntReview[] public antreviews;
 
-  mapping(uint256 => Peer_Review[]) peer_reviews;
 
   /// @dev Structs
   struct AntReview {
-      address payable issuer;
+      address payable[] issuers;
+      address[] approvers;
       uint256 deadline;
-      string ipfs_hash;
+      uint balance;
+      string paperHash;
       AntReviewStatus status;
-      uint256 amount; //in wei
+      Peer_Review[] peer_reviews;
+      Contribution[] contributions;
   }
 
   struct Peer_Review {
       bool accepted;
       address payable peer_reviewer;
-      string ipfs_hash;
+      string peer_review_hash;
+  }
+
+  struct Contribution {
+    address payable contributor;
+    uint amount;
+    bool refunded;
   }
 
 
   /// @dev Events
 
-  event AntReviewIssued(address issuer, uint256 amount, string ipfsHash);
-  event AntReviewFulfilled(uint256 antReviewId, address peer_reviewer, uint256 peerReviewId, string ipfsHash);
-  event AntReviewAccepted(uint256 antReviewId, address issuer, address peer_reviewer, uint256 indexed peerReviewId, uint256 amount);
-  event AntReviewCancelled(uint256 indexed antReviewId, address indexed issuer, uint256 amount);
+  event AntReviewIssued(uint antId, address payable[] issuers, address[] approvers, string paperHash, uint64 deadline);
+  event AntReviewFulfilled();
+  event AntReviewAccepted();
 
   constructor(address ants_) public {
     ants = AntsToken(ants_);
@@ -66,28 +84,20 @@ contract AntsReview is AntsReviewRoles {
 
   /// @dev Fallback
 
-  fallback() external payable {
+  fallback() external {
     revert();
   }
 
-  receive() external payable {
-    revert();
-  }
 
   /// @dev Modifiers
 
-  modifier hasValue() {
-      require(msg.value > 0);
-      _;
-  }
-
-  modifier antReviewExists(uint256 _antReviewId){
-    require(_antReviewId < antreviews.length);
+  modifier antReviewExists(uint256 _antId){
+    require(_antId <= antReviewIdTracker.current());
     _;
   }
 
-  modifier peerReviewExists(uint256 _antReviewId, uint256 _peerReviewId){
-    require(_peerReviewId < peer_reviews[_antReviewId].length);
+  modifier peerReviewExists(uint256 _antId, uint256 _reviewId){
+    require(_reviewId < antreviews[_antId].peer_reviews.length);
     _;
   }
 
@@ -96,8 +106,8 @@ contract AntsReview is AntsReviewRoles {
     _;
   }
 
-  modifier peerReviewNotYetAccepted(uint256 _antReviewId, uint256 _peerReviewId) {
-    require(peer_reviews[_antReviewId][_peerReviewId].accepted == false);
+  modifier peerReviewNotYetAccepted(uint256 _antId, uint256 _reviewId) {
+    require(antreviews[_antId].peer_reviews[_reviewId].accepted == false);
     _;
   }
 
@@ -106,99 +116,84 @@ contract AntsReview is AntsReviewRoles {
       _;
   }
 
-  modifier isBeforeDeadline(uint256 _antReviewId) {
-    require(now < antreviews[_antReviewId].deadline);
+  modifier isBeforeDeadline(uint256 _antId) {
+    require(now < antreviews[_antId].deadline);
     _;
   }
 
 
-  ///@notice Instantiates a new AntReview
+  ///@notice Create a new AntReview
   ///@dev Access restricted to Issuer
+  ///@param _issuers The array of addresses who will be the issuers of the AntReview
+  ///@param _approvers The array of addresses who will be the approvers of the AntReview
+  ///@param _paperHash The IPFS Hash of the Scientific Paper
   ///@param _deadline The unix timestamp after which fulfillments will no longer be accepted
-  ///@param _ipfsHash The IPFS Hash of the Scientific Paper
-  ///@return True If the antReview is successfully issued
+  ///@return antId If the AntReview is successfully issued
   function issueAntReview(
-      string calldata _ipfsHash,
+      address payable[] calldata _issuers,
+      address [] calldata _approvers,
+      string calldata _paperHash,
       uint64 _deadline
   )
       external
-      payable
-      hasValue()
       validateDeadline(_deadline)
       onlyIssuer()
       whenNotPaused()
-      returns (bool)
+      returns (uint)
   {
-      _antReviewIdTracker.increment();
-      antreviews.push(AntReview(msg.sender, _deadline, _ipfsHash, AntReviewStatus.CREATED, msg.value));
-      emit AntReviewIssued(msg.sender, msg.value, _ipfsHash);
-      return true;
+      require(_issuers.length > 0 || _approvers.length > 0);
+
+      uint antId = antReviewIdTracker.current();
+
+      AntReview memory newAntReview = antreviews[antId];
+      newAntReview.issuers = _issuers;
+      newAntReview.approvers = _approvers;
+      newAntReview.paperHash = _paperHash;
+      newAntReview.deadline = _deadline;
+      newAntReview.status = AntReviewStatus.CREATED;
+
+      antReviewIdTracker.increment();
+
+      emit AntReviewIssued(antId, _issuers, _approvers, _paperHash, _deadline);
+
+      return (antId);
   }
 
 
   ///@notice Submit a fulfillment for the given antReview
   ///@dev Access restricted to Peer-Reviewer
-  ///@param _antReviewId The index of the antReview to be fufilled
-  ///@param _ipfsHash The IPFS Hash which contains evidence of the fufillment
+  ///@param _antId The index of the antReview to be fufilled
   ///@return True If the AntReview is successfully fulfilled
-  function fulfillAntReview(uint256 _antReviewId, string calldata _ipfsHash)
+  function fulfillAntReview(uint256 _antId)
     external
-    antReviewExists(_antReviewId)
+    antReviewExists(_antId)
     onlyPeerReviewer()
-    hasStatus(_antReviewId, AntReviewStatus.CREATED)
-    isBeforeDeadline(_antReviewId)
+    hasStatus(_antId, AntReviewStatus.CREATED)
+    isBeforeDeadline(_antId)
     whenNotPaused()
     returns (bool)
   {
-    peer_reviews[_antReviewId].push(Peer_Review(false, msg.sender, _ipfsHash));
-    emit AntReviewFulfilled(_antReviewId, msg.sender, (peer_reviews[_antReviewId].length.sub(1)),_ipfsHash);
+    emit AntReviewFulfilled();
     return true;
   }
 
 
   ///@notice Accept a given Peer-Review
   ///@dev Access restricted to Issuer
-  ///@param _antReviewId the index of the antReview
-  ///@param _peerReviewId the index of the fulfillment being accepted
+  ///@param _antId the index of the antReview
+  ///@param _reviewId the index of the fulfillment being accepted
   ///@return True If the AntReview is successfully being accepted
-  function acceptAntReview(uint256 _antReviewId, uint256 _peerReviewId)
+  function acceptAntReview(uint256 _antId, uint256 _reviewId)
       external
-      antReviewExists(_antReviewId)
-      peerReviewExists(_antReviewId,_peerReviewId)
+      antReviewExists(_antId)
+      peerReviewExists(_antId,_reviewId)
       onlyIssuer()
-      hasStatus(_antReviewId, AntReviewStatus.CREATED)
-      peerReviewNotYetAccepted(_antReviewId, _peerReviewId)
+      hasStatus(_antId, AntReviewStatus.CREATED)
+      peerReviewNotYetAccepted(_antId, _reviewId)
       whenNotPaused()
       returns (bool)
   {
-      peer_reviews[_antReviewId][_peerReviewId].accepted = true;
-      antreviews[_antReviewId].status = AntReviewStatus.ACCEPTED;
-      peer_reviews[_antReviewId][_peerReviewId].peer_reviewer.sendValue(antreviews[_antReviewId].amount);
-      emit AntReviewAccepted(
-        _antReviewId,
-        antreviews[_antReviewId].issuer,
-        peer_reviews[_antReviewId][_peerReviewId].peer_reviewer,
-        _peerReviewId, antreviews[_antReviewId].amount
-      );
-      return true;
-  }
-
-
-  ///@notice Cancels the antReview and send the funds back to the issuer
-  ///@dev Access restricted to Issuer
-  ///@param _antReviewId the index of the antReview
-  ///@return True If the AntReview is successfully cancelled
-  function cancelAntReview(uint256 _antReviewId)
-      external
-      antReviewExists(_antReviewId)
-      onlyIssuer()
-      hasStatus(_antReviewId, AntReviewStatus.CREATED)
-      whenNotPaused()
-      returns (bool)
-  {
-      antreviews[_antReviewId].status = AntReviewStatus.CANCELLED;
-      antreviews[_antReviewId].issuer.sendValue(antreviews[_antReviewId].amount);
-      emit AntReviewCancelled(_antReviewId, msg.sender, antreviews[_antReviewId].amount);
+      emit AntReviewAccepted();
       return true;
   }
 
