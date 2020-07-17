@@ -146,8 +146,18 @@ Deploy
     $ npm run start
     ```
   - Interacting with the User Interface (Proof of Concept):
-    - Anyone can add an AntReview specifying IPFS Hash of requirements, Deadline Timestamp, Ether value of the AntReview reward.
 
+    - The User (Author) can issue a new AntReview, specifying IPFS Hash of requirements, timestamp of the deadline, ether value of the AntReview reward.
+    - Switch Account on MetaMask (Peer-Reviewer).
+    - Fulfill the AntReview by specifying the AntReview Id and the IPFS Hash of the peer-review.
+    - Switch Account on MetaMask to the Issuer (Author).
+    - Accept the Fulfillment (Peer-Review) by specifying the AntReview Id and Peer-Review Id.
+    - The Peer-Reviewer Account will get the reward for the AntReview.
+    - Switch Account on MetaMask to the Issuer (Author).
+    - Cancel AntReview by specifying the AntReview Id (to be used after the deadline, if the AntReview has not received any fulfillments)
+    - The Issuer will get back the reward of the AntReview Id specified.
+    - Done.  
+    
  The DApp (PoC) has been deployed on IPFS via [Fleek](https://fleek.co/): https://antsreview.on.fleek.co
 
 About
