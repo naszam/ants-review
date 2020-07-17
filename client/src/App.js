@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import Logo from "./logo.svg";
 import AntsReview from "./contracts/AntsReview.json";
 import getWeb3 from "./getWeb3";
 
 import "./App.css";
 
-import { Button, Card, Box, Flex, Form, Input, Heading, Field } from 'rimble-ui';
+import { Text, Button, Card, Box, Flex, Form, Input, Heading, Field } from 'rimble-ui';
 
 import NetworkIndicator from "@rimble/network-indicator";
 
@@ -156,7 +157,11 @@ handleChange(event)
         />
       </Card>
       <Heading as={"h4"}> Current Ethereum Address: {this.state.accounts} </Heading>
+      <Box>
+      <img src={Logo} width="100" height="100"/>
       <Heading as={"h1"}> Ants-Review </Heading>
+      <Text> A Protocol for Open Anonymous Scientific Peer-Reviews on Ethereum </Text>
+      </Box>
       <Flex>
       <Box p={3} width={1 / 2}>
       <Heading> Issue AntReview </Heading>
