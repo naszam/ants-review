@@ -25,10 +25,13 @@ class App extends Component {
       deadlineToAdd: undefined,
       antReviewValue: undefined,
       antId: undefined,
-      peerHash: undefined
+      peerHash: undefined,
+      antId2: undefined,
+      peerId: undefined
     };
     this.handleIssueAntReview = this.handleIssueAntReview.bind(this)
     this.handleFulfillAntReview = this.handleFulfillAntReview.bind(this)
+    this.handleAcceptAntReview = this.handleAcceptAntReview.bind(this)
     this.handleChange = this.handleChange.bind(this)
 
 
@@ -108,6 +111,17 @@ class App extends Component {
   }
 }
 
+  handleAcceptAntReview = async (event) => {
+  if (typeof this.state.antsReviewInstance !== 'undefined') {
+      event.preventDefault()
+  // Get the value from the contract to prove it worked.
+  let result = await this.state.antsReviewInstance.methods.acceptFulfillment(this.state.antId2, this.state.peerId).send({from: this.state.accounts});
+
+  // Update state with the result.
+  this.setLastTransactionDetails(result)
+  }
+}
+
 handleChange(event)
   {
     switch(event.target.name) {
@@ -125,6 +139,12 @@ handleChange(event)
             break;
         case "addPeerHash":
             this.setState({ peerHash: event.target.value})
+            break;
+        case "addAntId":
+            this.setState({ antId2: event.target.value})
+            break;
+        case "addPeerId":
+            this.setState({ peerId: event.target.value})
             break;
         default:
             break;
@@ -227,6 +247,36 @@ handleChange(event)
         </Box>
       <Box>
       <Button value="Submit" onClick={this.handleFulfillAntReview} >Fulfill AntReview</Button>
+      </Box>
+      </Form>
+      </Box>
+      </Flex>
+      <Flex>
+      <Box p={3} width={1 / 2}>
+      <Heading> Accept Fulfillment </Heading>
+      <Form>
+        <Box>
+          <Field label="AntReview Id">
+            <Input
+              type="text"
+              placeholder="e.g. 0"
+              required="true"
+              name="addAntId"
+              value={this.state.antId}
+              onChange={this.handleChange} />
+          </Field>
+          <Field label="Peer-Review Id">
+            <Input
+            type="text"
+            placeholder="e.g. 0"
+            required="true"
+            name="addPeerId"
+            value={this.state.peerId}
+            onChange={this.handleChange} />
+            </Field>
+        </Box>
+      <Box>
+      <Button value="Submit" onClick={this.handleAcceptAntReview} >Accept Fulfillment</Button>
       </Box>
       </Form>
       </Box>
