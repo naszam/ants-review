@@ -27,11 +27,13 @@ class App extends Component {
       antId: undefined,
       peerHash: undefined,
       antId2: undefined,
-      peerId: undefined
+      peerId: undefined,
+      antId3: undefined
     };
     this.handleIssueAntReview = this.handleIssueAntReview.bind(this)
     this.handleFulfillAntReview = this.handleFulfillAntReview.bind(this)
     this.handleAcceptAntReview = this.handleAcceptAntReview.bind(this)
+    this.handleCancelAntReview = this.handleCancelAntReview.bind(this)
     this.handleChange = this.handleChange.bind(this)
 
 
@@ -122,6 +124,17 @@ class App extends Component {
   }
 }
 
+  handleCancelAntReview = async (event) => {
+  if (typeof this.state.antsReviewInstance !== 'undefined') {
+     event.preventDefault()
+  // Get the value from the contract to prove it worked.
+  let result = await this.state.antsReviewInstance.methods.cancelAntReview(this.state.antId3).send({from: this.state.accounts});
+
+  // Update state with the result.
+  this.setLastTransactionDetails(result)
+  }
+}
+
 handleChange(event)
   {
     switch(event.target.name) {
@@ -140,11 +153,14 @@ handleChange(event)
         case "addPeerHash":
             this.setState({ peerHash: event.target.value})
             break;
-        case "addAntId":
+        case "addId2":
             this.setState({ antId2: event.target.value})
             break;
         case "addPeerId":
             this.setState({ peerId: event.target.value})
+            break;
+        case "addId3":
+            this.setState({ antId3: event.target.value})
             break;
         default:
             break;
@@ -261,8 +277,8 @@ handleChange(event)
               type="text"
               placeholder="e.g. 0"
               required="true"
-              name="addAntId"
-              value={this.state.antId}
+              name="addId2"
+              value={this.state.antId2}
               onChange={this.handleChange} />
           </Field>
           <Field label="Peer-Review Id">
@@ -276,7 +292,28 @@ handleChange(event)
             </Field>
         </Box>
       <Box>
-      <Button value="Submit" onClick={this.handleAcceptAntReview} >Accept Fulfillment</Button>
+      <Button value="Submit" onClick={this.handleAcceptAntReview} > Accept Fulfillment </Button>
+      </Box>
+      </Form>
+      </Box>
+      </Flex>
+      <Flex>
+      <Box p={3} width={1 / 2}>
+      <Heading> Cancel AntsReview </Heading>
+      <Form>
+        <Box>
+          <Field label="AntReview Id">
+            <Input
+              type="text"
+              placeholder="e.g. 0"
+              required="true"
+              name="addId3"
+              value={this.state.antId3}
+              onChange={this.handleChange} />
+          </Field>
+        </Box>
+      <Box>
+      <Button value="Submit" onClick={this.handleCancelAntReview} > Cancel AntsReview </Button>
       </Box>
       </Form>
       </Box>
