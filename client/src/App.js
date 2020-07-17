@@ -158,7 +158,7 @@ handleChange(event)
       </Card>
       <Heading as={"h4"}> Current Ethereum Address: {this.state.accounts} </Heading>
       <Box>
-      <img src={Logo} width="100" height="100"/>
+      <img src={Logo} width="100" height="100" alt="Ants-Review Logo"/>
       <Heading as={"h1"}> Ants-Review </Heading>
       <Text> A Protocol for Open Anonymous Scientific Peer-Reviews on Ethereum </Text>
       </Box>
