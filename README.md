@@ -38,6 +38,7 @@ The Project is intended to be used as a template for developing the idea present
 * [Setup](#setup)
 * [Deploy](#deploy)
 * [Using the DApp](#using-the-dapp)
+* [Interacting with the PoC](#interacting-with-the-poc)
 * [About](#about)
 
 Setup
@@ -144,22 +145,23 @@ Deploy
   - Start the Local Web Server:
     ```sh
     $ npm run start
-    ```
-  - Interacting with the User Interface (Proof of Concept):
-
-    - The User (Author) can issue a new AntReview, specifying IPFS Hash of requirements, timestamp of the deadline, ether value of the AntReview reward.
-    - Switch Account on MetaMask (Peer-Reviewer).
-    - Fulfill the AntReview by specifying the AntReview Id and the IPFS Hash of the peer-review.
-    - Switch Account on MetaMask to the Issuer (Author).
-    - Accept the Fulfillment (Peer-Review) by specifying the AntReview Id and Peer-Review Id.
-    - The Peer-Reviewer Account will get the reward for the AntReview.
-    - Switch Account on MetaMask to the Issuer (Author).
-    - Cancel AntReview by specifying the AntReview Id (to be used after the deadline, if the AntReview has not received any fulfillments)
-    - The Issuer will get back the reward of the AntReview Id specified.
-    - Done.  
-    
+    ```  
  The DApp (PoC) has been deployed on IPFS via [Fleek](https://fleek.co/): https://antsreview.on.fleek.co
 
+Interacting with the PoC:
+=========================
+    
+  - The User (Author) can issue a new AntReview, specifying IPFS Hash of requirements, timestamp of the deadline, ether value of the AntReview reward.
+  - Switch Account on MetaMask (Peer-Reviewer).
+  - Fulfill the AntReview by specifying the AntReview Id and the IPFS Hash of the peer-review.
+  - Switch Account on MetaMask to the Issuer (Author).
+  - Accept the Fulfillment (Peer-Review) by specifying the AntReview Id and Peer-Review Id.
+  - The Peer-Reviewer Account will get the reward for the AntReview.
+  - Switch Account on MetaMask to the Issuer (Author).
+  - Cancel AntReview by specifying the AntReview Id (to be used after the deadline, if the AntReview has not received any fulfillments)
+  - The Issuer will get back the reward of the AntReview Id specified.
+  - Done.  
+  
 About
 =====
 ## Inspiration & References
