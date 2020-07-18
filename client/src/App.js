@@ -5,7 +5,14 @@ import getWeb3 from "./getWeb3";
 
 import "./App.css";
 
-import { Text, Button, Card, Box, Flex, Form, Input, Heading, Field } from 'rimble-ui';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+
+
+import { Text, Button, Card, Box, Flex, Form, Input, Heading, Field} from 'rimble-ui';
+
+import BootstrapTable from 'react-bootstrap-table/lib/BootstrapTable';
+import TableHeaderColumn from 'react-bootstrap-table/lib/TableHeaderColumn';
+
 
 import NetworkIndicator from "@rimble/network-indicator";
 
@@ -20,7 +27,7 @@ class App extends Component {
       web3: null,
       accounts: null,
       antsReviewInstance: null,
-      antsReview: [],
+      antreviews: [],
       dataToAdd: undefined,
       deadlineToAdd: undefined,
       antReviewValue: undefined,
@@ -28,7 +35,7 @@ class App extends Component {
       peerHash: undefined,
       antId2: undefined,
       peerId: undefined,
-      antId3: undefined
+      antId3: undefined,
     };
     this.handleIssueAntReview = this.handleIssueAntReview.bind(this)
     this.handleFulfillAntReview = this.handleFulfillAntReview.bind(this)
@@ -58,7 +65,7 @@ class App extends Component {
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
       this.setState({ networkId: networkId, web3: web3, accounts: accounts[0], antsReviewInstance: instance });
-  //    this.listenAntReviewIssuedEvent()
+      this.listenAntReviewIssuedEvent(this)
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -68,35 +75,26 @@ class App extends Component {
       console.error(error);
     }
   };
-/*
-  listenAntReviewIssuedEvent=() => {
+
+  listenAntReviewIssuedEvent=(component) => {
 
       this.state.antsReviewInstance.events.AntReviewIssued({fromBlock: 0})
       .on('data', async (event) => {
-        this.setState(prevState => {
-        var newAntsReviewArray = prevState.antReview_id;
-        console.log(JSON.stringify(newAntsReviewArray), event.returnValues.antReview_id)
 
-        if (!newAntsReviewArray.includes(event.returnValues.antReview_id)){
-        newAntsReviewArray.push(event.returnValues.antReview_id)
-        }
-        return {
-          ...prevState,
-          antsReview: newAntsReviewArray
-        }
+        var newAntReviewArray = component.state.antreviews.slice()
+        newAntReviewArray.push(event.returnValues)
+        component.setState({ antreviews: newAntReviewArray })
 
       })
-    })
       .on('error', console.error);
-    }
-*/
+  }
+
   handleIssueAntReview = async (event) => {
   if (typeof this.state.antsReviewInstance !== 'undefined') {
     event.preventDefault()
   // Get the value from the contract to prove it worked.
   let result = await this.state.antsReviewInstance.methods.issueAntReview(this.state.dataToAdd, this.state.deadlineToAdd).send({from: this.state.accounts, value: this.state.web3.utils.toWei(this.state.antReviewValue, 'ether')});
   //const response = await this.state.storesInstance.methods.isAdmin(this.state.adminAddressToAdd).call();
-
   // Update state with the result.
   this.setLastTransactionDetails(result)
   }
@@ -129,7 +127,7 @@ class App extends Component {
      event.preventDefault()
   // Get the value from the contract to prove it worked.
   let result = await this.state.antsReviewInstance.methods.cancelAntReview(this.state.antId3).send({from: this.state.accounts});
-
+  console.log(result)
   // Update state with the result.
   this.setLastTransactionDetails(result)
   }
@@ -234,6 +232,17 @@ handleChange(event)
       <Box>
       <Button value="Submit" onClick={this.handleIssueAntReview} >Issue AntReview</Button>
       </Box>
+      </Form>
+      </Box>
+      <Box p={3} width={1 / 2}>
+      <Heading> Issued AntReviews </Heading>
+      <Form>
+       <BootstrapTable data={this.state.antreviews} striped hover>
+      <TableHeaderColumn isKey dataField='antReview_id'>ID</TableHeaderColumn>
+      <TableHeaderColumn dataField='issuer'>Issuer</TableHeaderColumn>
+      <TableHeaderColumn dataField='amount'>Amount (Wei)</TableHeaderColumn>
+      <TableHeaderColumn dataField='data'>IPFS Hash</TableHeaderColumn>
+       </BootstrapTable>
       </Form>
       </Box>
       </Flex>
