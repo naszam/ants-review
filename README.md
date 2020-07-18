@@ -155,12 +155,12 @@ Interacting with the PoC:
     - IPFS Hash of requirements (e.g. QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4);
     - Timestamp of the deadline ([timestamp generator](https://www.unixtimestamp.com/));
     - Ether value of the AntReview reward (e.g. 1 ETH);
-  - Switch Account on MetaMask (Peer-Reviewer).
+  - Switch Account on MetaMask (Peer-Reviewer) and Refresh the DApp.
   - Fulfill the AntReview by specifying the AntReview Id and the IPFS Hash of the peer-review.
-  - Switch Account on MetaMask to the Issuer (Author).
+  - Switch Account on MetaMask to the Issuer (Author) and Refresh the DApp.
   - Accept the Fulfillment (Peer-Review) by specifying the AntReview Id and Peer-Review Id.
   - The Peer-Reviewer Account will get the reward for the AntReview.
-  - Switch Account on MetaMask to the Issuer (Author).
+  - Switch Account on MetaMask to the Issuer (Author) and Refresh the DApp.
   - Cancel AntReview by specifying the AntReview Id (to be used after the deadline, if the AntReview has not received any fulfillments)
   - The Issuer will get back the reward of the AntReview Id specified.
   - Done.  
