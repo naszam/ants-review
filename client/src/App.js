@@ -235,19 +235,6 @@ handleChange(event)
       </Form>
       </Box>
       <Box p={3} width={1 / 2}>
-      <Heading> Issued AntReviews </Heading>
-      <Form>
-       <BootstrapTable data={this.state.antreviews} striped hover>
-      <TableHeaderColumn isKey dataField='antReview_id'>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField='issuer'>Issuer</TableHeaderColumn>
-      <TableHeaderColumn dataField='amount'>Amount (Wei)</TableHeaderColumn>
-      <TableHeaderColumn dataField='data'>IPFS Hash</TableHeaderColumn>
-       </BootstrapTable>
-      </Form>
-      </Box>
-      </Flex>
-      <Flex>
-      <Box p={3} width={1 / 2}>
       <Heading> Fulfill AntReview </Heading>
       <Form>
         <Box>
@@ -278,6 +265,25 @@ handleChange(event)
       </Flex>
       <Flex>
       <Box p={3} width={1 / 2}>
+      <Heading> Cancel AntsReview </Heading>
+      <Form>
+        <Box>
+          <Field label="AntReview Id">
+            <Input
+              type="text"
+              placeholder="e.g. 0"
+              required="true"
+              name="addId3"
+              value={this.state.antId3}
+              onChange={this.handleChange} />
+          </Field>
+        </Box>
+      <Box>
+      <Button value="Submit" onClick={this.handleCancelAntReview} > Cancel AntsReview </Button>
+      </Box>
+      </Form>
+      </Box>
+      <Box p={3} width={1 / 2}>
       <Heading> Accept Fulfillment </Heading>
       <Form>
         <Box>
@@ -307,23 +313,15 @@ handleChange(event)
       </Box>
       </Flex>
       <Flex>
-      <Box p={3} width={1 / 2}>
-      <Heading> Cancel AntsReview </Heading>
+      <Box width={1}>
+      <Heading> Issued AntReviews </Heading>
       <Form>
-        <Box>
-          <Field label="AntReview Id">
-            <Input
-              type="text"
-              placeholder="e.g. 0"
-              required="true"
-              name="addId3"
-              value={this.state.antId3}
-              onChange={this.handleChange} />
-          </Field>
-        </Box>
-      <Box>
-      <Button value="Submit" onClick={this.handleCancelAntReview} > Cancel AntsReview </Button>
-      </Box>
+       <BootstrapTable data={this.state.antreviews} striped hover>
+      <TableHeaderColumn isKey dataField='antReview_id'>ID</TableHeaderColumn>
+      <TableHeaderColumn dataField='issuer'>Issuer</TableHeaderColumn>
+      <TableHeaderColumn dataField='amount'>Amount (Wei)</TableHeaderColumn>
+      <TableHeaderColumn dataField='data'>IPFS Hash</TableHeaderColumn>
+       </BootstrapTable>
       </Form>
       </Box>
       </Flex>
