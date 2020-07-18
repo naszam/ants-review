@@ -6,6 +6,7 @@
     "@babel/runtime": "^7.9.6",
     "@rimble/network-indicator": "^1.2.3",
     "react": "16.11.0",
+    "react-bootstrap-table": "^4.3.1",
     "react-dom": "16.11.0",
     "react-scripts": "^3.4.1",
     "rimble-ui": "^0.14.0",
