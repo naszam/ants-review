@@ -153,7 +153,7 @@ Interacting with the PoC:
     
   - The User (Author) can issue a new AntReview, specifying:
     - IPFS Hash of requirements (e.g. QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4);
-    - Timestamp of the deadline ([timestamp generator](https://www.unixtimestamp.com/);
+    - Timestamp of the deadline ([timestamp generator](https://www.unixtimestamp.com/));
     - Ether value of the AntReview reward (e.g. 1 ETH);
   - Switch Account on MetaMask (Peer-Reviewer).
   - Fulfill the AntReview by specifying the AntReview Id and the IPFS Hash of the peer-review.
