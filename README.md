@@ -30,7 +30,7 @@ The Project is intended to be used as a template for developing the idea present
 
 [White Paper](https://zenodo.org/record/3828087#.Xr8XVXVKg5k)  
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
-[Demo](https://youtu.be/9FMsM5otQVM)  
+[Demo](https://youtu.be/uMqksNytsMY)  
 
 ![Smart Contracts Flow-Chart](AntsReview.png)
 
