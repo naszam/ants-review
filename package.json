@@ -1,6 +1,6 @@
 {
   "name": "ants-review",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0",
   "description": "Bounty-like system for Open Anonymous Scientific Peer-Reviews",
   "main": "truffle-config.js",
   "scripts": {
