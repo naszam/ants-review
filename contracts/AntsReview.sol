@@ -123,6 +123,28 @@ contract AntsReview is AntsReviewRoles {
     _;
   }
 
+  modifier validAmount(uint256 _amount) {
+    require(_amount > 0, "Insufficient amount");
+    _;
+  }
+
+  modifier onlyContributor(uint _antId, uint _contributionId) {
+    require(msg.sender == antreviews[_antId].contributions[_contributionId].contributor, "Caller is not a Contributor");
+    _;
+  }
+
+  modifier hasNotPaid(uint _antId)
+  {
+    require(antreviews[_antId].status != AntReviewStatus.PAID);
+    _;
+  }
+
+  modifier hasNotRefunded(uint _antId, uint _contributionId)
+  {
+    require(!antreviews[_antId].contributions[_contributionId].refunded);
+    _;
+  }
+
 
   ///@notice Create a new AntReview
   ///@dev Access restricted to Issuer
@@ -164,20 +186,42 @@ contract AntsReview is AntsReviewRoles {
       return true;
   }
 
-  function contribute(address payable _sender, uint _antId, uint _amount)
+  function contribute(uint _antId, uint _amount)
     payable
     external
     antReviewExists(_antId)
+    validAmount(_amount)
     whenNotPaused()
     returns (bool)
   {
-    antreviews[_antId].contributions.push(Contribution(_sender, _amount, false));
+    antreviews[_antId].contributions.push(Contribution(msg.sender, _amount, false));
     antreviews[_antId].balance = antreviews[_antId].balance.add(_amount);
 
     require(msg.value == 0);
-    require(ants.transferFrom(_sender, address(this), _amount));
+    require(ants.transferFrom(msg.sender, address(this), _amount));
 
-    emit ContributionAdded(_antId, antreviews[_antId].contributions.length.sub(1), _sender, _amount);
+    emit ContributionAdded(_antId, antreviews[_antId].contributions.length.sub(1), msg.sender, _amount);
+
+    return true;
+  }
+
+  function refund(uint _antId, uint _contributionId)
+    external
+    antReviewExists(_antId)
+    onlyContributor(_antId, _contributionId)
+    hasNotPaid(_antId)
+    hasNotRefunded(_antId, _contributionId)
+    whenNotPaused()
+    returns (bool)
+  {
+    require(now > antreviews[_antId].deadline);
+
+    Contribution storage contribution = antreviews[_antId].contributions[_contributionId];
+
+    contribution.refunded = true;
+    antreviews[_antId].balance = antreviews[_antId].balance.sub(contribution.amount);
+
+    require(ants.transferFrom(address(this), contribution.contributor, contribution.amount));
 
     return true;
   }
