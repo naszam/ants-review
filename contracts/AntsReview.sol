@@ -24,7 +24,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 interface AntsToken {
-  function transfer(address reciptient, uint amount) external returns (bool);
+  function transferFrom(address sender, address recipient, uint amount) external returns (bool);
   function balanceOf(address account) external view returns (uint);
 }
 
@@ -54,6 +54,7 @@ contract AntsReview is AntsReviewRoles {
       uint256 deadline;
       uint balance;
       string paperHash;
+      string requirementsHash;
       AntReviewStatus status;
       Peer_Review[] peer_reviews;
       Contribution[] contributions;
@@ -74,7 +75,8 @@ contract AntsReview is AntsReviewRoles {
 
   /// @dev Events
 
-  event AntReviewIssued(uint antId, address payable[] issuers, address[] approvers, string paperHash, uint64 deadline);
+  event AntReviewIssued(uint antId, address payable[] issuers, address[] approvers, string paperHash, string requirementsHash, uint64 deadline);
+  event ContributionAdded(uint antId, uint contributionId, address sender, uint amount);
   event AntReviewFulfilled();
   event AntReviewAccepted();
 
@@ -127,19 +129,21 @@ contract AntsReview is AntsReviewRoles {
   ///@param _issuers The array of addresses who will be the issuers of the AntReview
   ///@param _approvers The array of addresses who will be the approvers of the AntReview
   ///@param _paperHash The IPFS Hash of the Scientific Paper
+  ///@param _requirementsHash The IPFS Hash of the Peer-Review Requirements
   ///@param _deadline The unix timestamp after which fulfillments will no longer be accepted
   ///@return antId If the AntReview is successfully issued
   function issueAntReview(
       address payable[] calldata _issuers,
       address [] calldata _approvers,
       string calldata _paperHash,
+      string calldata _requirementsHash,
       uint64 _deadline
   )
       external
       validateDeadline(_deadline)
       onlyIssuer()
       whenNotPaused()
-      returns (uint)
+      returns (bool)
   {
       require(_issuers.length > 0 || _approvers.length > 0);
 
@@ -149,14 +153,33 @@ contract AntsReview is AntsReviewRoles {
       newAntReview.issuers = _issuers;
       newAntReview.approvers = _approvers;
       newAntReview.paperHash = _paperHash;
+      newAntReview.requirementsHash = _requirementsHash;
       newAntReview.deadline = _deadline;
       newAntReview.status = AntReviewStatus.CREATED;
 
       antReviewIdTracker.increment();
 
-      emit AntReviewIssued(antId, _issuers, _approvers, _paperHash, _deadline);
+      emit AntReviewIssued(antId, _issuers, _approvers, _paperHash, _requirementsHash, _deadline);
 
-      return (antId);
+      return true;
+  }
+
+  function contribute(address payable _sender, uint _antId, uint _amount)
+    payable
+    external
+    antReviewExists(_antId)
+    whenNotPaused()
+    returns (bool)
+  {
+    antreviews[_antId].contributions.push(Contribution(_sender, _amount, false));
+    antreviews[_antId].balance = antreviews[_antId].balance.add(_amount);
+
+    require(msg.value == 0);
+    require(ants.transferFrom(_sender, address(this), _amount));
+
+    emit ContributionAdded(_antId, antreviews[_antId].contributions.length.sub(1), _sender, _amount);
+
+    return true;
   }
 
 
