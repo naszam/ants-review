@@ -276,16 +276,22 @@ contract AntsReview is AntsReviewRoles {
   ///@param _antId the index of the antReview
   ///@param _reviewId the index of the fulfillment being accepted
   ///@return True If the AntReview is successfully being accepted
-  function acceptAntReview(uint256 _antId, uint256 _reviewId)
+  function acceptAntReview(uint _antId, uint _reviewId, uint _amount)
       external
+      onlyApprover()
       antReviewExists(_antId)
       reviewExists(_antId, _reviewId)
-      onlyIssuer()
       hasStatus(_antId, AntReviewStatus.CREATED)
       peerReviewNotYetAccepted(_antId, _reviewId)
       whenNotPaused()
       returns (bool)
   {
+      antreviews[_antId].status = AntReviewStatus.PAID;
+      antreviews[_antId].balance = antreviews[_antId].balance.sub(_amount);
+
+      require(ants.transferFrom(address(this), antreviews[_antId].peer_reviews[_reviewId].peer_reviewer, _amount));
+
+
       emit AntReviewAccepted();
       return true;
   }
