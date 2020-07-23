@@ -63,7 +63,7 @@ contract AntsReview is AntsReviewRoles {
   struct Peer_Review {
       bool accepted;
       address payable peer_reviewer;
-      string peer_review_hash;
+      string reviewHash;
   }
 
   struct Contribution {
@@ -76,8 +76,8 @@ contract AntsReview is AntsReviewRoles {
   /// @dev Events
 
   event AntReviewIssued(uint antId, address payable[] issuers, address[] approvers, string paperHash, string requirementsHash, uint64 deadline);
-  event ContributionAdded(uint antId, uint contributionId, address sender, uint amount);
-  event AntReviewFulfilled();
+  event ContributionAdded(uint antId, uint contributionId, address contributor, uint amount);
+  event AntReviewFulfilled(uint antId, uint reviewId, address peer_reviewer, string reviewHash);
   event AntReviewAccepted();
 
   constructor(address ants_) public {
@@ -231,7 +231,7 @@ contract AntsReview is AntsReviewRoles {
   ///@dev Access restricted to Peer-Reviewer
   ///@param _antId The index of the antReview to be fufilled
   ///@return True If the AntReview is successfully fulfilled
-  function fulfillAntReview(uint256 _antId)
+  function fulfillAntReview(uint256 _antId, string calldata _reviewHash)
     external
     antReviewExists(_antId)
     onlyPeerReviewer()
@@ -240,7 +240,9 @@ contract AntsReview is AntsReviewRoles {
     whenNotPaused()
     returns (bool)
   {
-    emit AntReviewFulfilled();
+    antreviews[_antId].peer_reviews.push(Peer_Review(false, msg.sender, _reviewHash));
+
+    emit AntReviewFulfilled(_antId, antreviews[_antId].peer_reviews.length.sub(1), msg.sender, _reviewHash);
     return true;
   }
 
