@@ -78,6 +78,7 @@ contract AntsReview is AntsReviewRoles {
   event AntReviewIssued(uint antId, address payable[] issuers, address[] approvers, string paperHash, string requirementsHash, uint64 deadline);
   event ContributionAdded(uint antId, uint contributionId, address contributor, uint amount);
   event AntReviewFulfilled(uint antId, uint reviewId, address peer_reviewer, string reviewHash);
+  event ReviewUpdated(uint _antId, uint _reviewId, string _reviewHash);
   event AntReviewAccepted();
 
   constructor(address ants_) public {
@@ -98,7 +99,7 @@ contract AntsReview is AntsReviewRoles {
     _;
   }
 
-  modifier peerReviewExists(uint256 _antId, uint256 _reviewId){
+  modifier reviewExists(uint256 _antId, uint256 _reviewId){
     require(_reviewId < antreviews[_antId].peer_reviews.length);
     _;
   }
@@ -142,6 +143,12 @@ contract AntsReview is AntsReviewRoles {
   modifier hasNotRefunded(uint _antId, uint _contributionId)
   {
     require(!antreviews[_antId].contributions[_contributionId].refunded);
+    _;
+  }
+
+  modifier onlySubmitter(uint _antId, uint _reviewId)
+  {
+    require(msg.sender == antreviews[_antId].peer_reviews[_reviewId].peer_reviewer);
     _;
   }
 
@@ -230,11 +237,12 @@ contract AntsReview is AntsReviewRoles {
   ///@notice Submit a fulfillment for the given antReview
   ///@dev Access restricted to Peer-Reviewer
   ///@param _antId The index of the antReview to be fufilled
+  ///@param _reviewHash The IPFS Hash of the peer-review
   ///@return True If the AntReview is successfully fulfilled
   function fulfillAntReview(uint256 _antId, string calldata _reviewHash)
     external
-    antReviewExists(_antId)
     onlyPeerReviewer()
+    antReviewExists(_antId)
     hasStatus(_antId, AntReviewStatus.CREATED)
     isBeforeDeadline(_antId)
     whenNotPaused()
@@ -243,6 +251,22 @@ contract AntsReview is AntsReviewRoles {
     antreviews[_antId].peer_reviews.push(Peer_Review(false, msg.sender, _reviewHash));
 
     emit AntReviewFulfilled(_antId, antreviews[_antId].peer_reviews.length.sub(1), msg.sender, _reviewHash);
+    return true;
+  }
+
+  function updateReview(uint _antId, uint _reviewId, string calldata _reviewHash)
+    external
+    onlySubmitter(_antId, _reviewId)
+    antReviewExists(_antId)
+    reviewExists(_antId, _reviewId)
+    hasStatus(_antId, AntReviewStatus.CREATED)
+    isBeforeDeadline(_antId)
+    whenNotPaused()
+    returns (bool)
+  {
+    antreviews[_antId].peer_reviews[_reviewId].reviewHash = _reviewHash;
+
+    emit ReviewUpdated(_antId, _reviewId, _reviewHash);
     return true;
   }
 
@@ -255,7 +279,7 @@ contract AntsReview is AntsReviewRoles {
   function acceptAntReview(uint256 _antId, uint256 _reviewId)
       external
       antReviewExists(_antId)
-      peerReviewExists(_antId,_reviewId)
+      reviewExists(_antId, _reviewId)
       onlyIssuer()
       hasStatus(_antId, AntReviewStatus.CREATED)
       peerReviewNotYetAccepted(_antId, _reviewId)
