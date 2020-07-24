@@ -15,7 +15,6 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
 
   /// @dev Roles
   bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
-  bytes32 public constant APPROVER_ROLE = keccak256("APPROVER_ROLE");
   bytes32 public constant PEER_REVIEWER_ROLE = keccak256("PEER_REVIEWER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
@@ -33,11 +32,6 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
 
     modifier onlyIssuer() {
         require(isIssuer(msg.sender), "Caller is not an issuer");
-        _;
-    }
-
-    modifier onlyApprover() {
-        require(isApprover(msg.sender), "Caller is not an approver");
         _;
     }
 
@@ -64,14 +58,6 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
       return hasRole(ISSUER_ROLE, account);
     }
 
-    /// @notice Check if account is an Approver
-    /// @dev Used in onlyApprover() modifier
-    /// @param account Address to check
-    /// @return True If the account is an Approver
-    function isApprover(address account) public view returns (bool) {
-      return hasRole(APPROVER_ROLE, account);
-    }
-
     /// @notice Check if account is a Peer-Reviewer
     /// @dev Used in onlyPeerReviewer() modifier
     /// @param account Address to check
@@ -87,16 +73,6 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
     function addIssuer(address account) external onlyAdmin returns (bool) {
       require(!isIssuer(account), "Account is already an issuer");
       grantRole(ISSUER_ROLE, account);
-      return true;
-    }
-
-    /// @notice Add a new Approver
-    /// @dev Access restricted only for Admins
-    /// @param account Address of the new Approver
-    /// @return True if the account address is added as Approver
-    function addApprover(address account) external onlyAdmin returns (bool) {
-      require(!isApprover(account), "Account is already an approver");
-      grantRole(APPROVER_ROLE, account);
       return true;
     }
 
@@ -117,16 +93,6 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
     function removeIssuer(address account) external onlyAdmin returns (bool) {
       require(isIssuer(account), "Account is not an issuer");
       revokeRole(ISSUER_ROLE, account);
-      return true;
-    }
-
-    /// @notice Remove an Approver
-    /// @dev Access restricted only for Admins
-    /// @param account Address of the Approver
-    /// @return True if the account address is removed as Approver
-    function removeApprover(address account) external onlyAdmin returns (bool) {
-      require(isApprover(account), "Account is not an approver");
-      revokeRole(APPROVER_ROLE, account);
       return true;
     }
 
