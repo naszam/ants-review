@@ -153,6 +153,12 @@ contract AntsReview is AntsReviewRoles {
     _;
   }
 
+  modifier isApprover(uint _antId, uint _approverId)
+  {
+    require(msg.sender == antreviews[_antId].approver[_approverId]);
+    _;
+  }
+
 
   ///@notice Create a new AntReview
   ///@dev Access restricted to Issuer
@@ -277,9 +283,9 @@ contract AntsReview is AntsReviewRoles {
   ///@param _antId the index of the antReview
   ///@param _reviewId the index of the fulfillment being accepted
   ///@return True If the AntReview is successfully being accepted
-  function acceptAntReview(uint _antId, uint _reviewId, uint _amount)
+  function acceptAntReview(uint _antId, uint _reviewId, uint _approverId, uint _amount)
       external
-      onlyApprover()
+      isApprover(_antId)
       antReviewExists(_antId)
       reviewExists(_antId, _reviewId)
       hasStatus(_antId, AntReviewStatus.CREATED)
