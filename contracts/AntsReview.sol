@@ -158,7 +158,7 @@ contract AntsReview is AntsReviewRoles {
     _;
   }
 
-  modifier isApprover(uint _antId)
+  modifier onlyApprover(uint _antId)
   {
     require(approvers[_antId].contains(msg.sender));
     _;
@@ -289,7 +289,7 @@ contract AntsReview is AntsReviewRoles {
   ///@return True If the AntReview is successfully being accepted
   function acceptAntReview(uint _antId, uint _reviewId, uint _amount)
       external
-      isApprover(_antId)
+      onlyApprover(_antId)
       antReviewExists(_antId)
       reviewExists(_antId, _reviewId)
       hasStatus(_antId, AntReviewStatus.CREATED)
