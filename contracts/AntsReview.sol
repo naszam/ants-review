@@ -80,6 +80,7 @@ contract AntsReview is AntsReviewRoles {
   event AntReviewFulfilled(uint antId, uint reviewId, address peer_reviewer, string reviewHash);
   event ReviewUpdated(uint antId, uint reviewId, string reviewHash);
   event AntReviewAccepted(uint antId, uint reviewId, address approver, uint amount);
+  event AntReviewChanged(uint antId, address issuer, address payable[] issuers, address[] approvers, string paperHash, string requirementsHash, uint64 deadline);
 
   constructor(address ants_) public {
     ants = AntsToken(ants_);
@@ -294,6 +295,29 @@ contract AntsReview is AntsReviewRoles {
 
       emit AntReviewAccepted(_antId, _reviewId, msg.sender, _amount);
       return true;
+  }
+
+  function changeAntReview(
+      uint _antId,
+      address payable[] calldata _issuers,
+      address [] calldata _approvers,
+      string calldata _paperHash,
+      string calldata _requirementsHash,
+      uint64 _deadline)
+      external
+      onlyIssuer()
+      antReviewExists(_antId)
+      whenNotPaused()
+      returns (bool)
+  {
+    antreviews[_antId].issuers = _issuers;
+    antreviews[_antId].approvers = _approvers;
+    antreviews[_antId].paperHash = _paperHash;
+    antreviews[_antId].requirementsHash = _requirementsHash;
+    antreviews[_antId].deadline = _deadline;
+
+    emit AntReviewChanged(_antId, msg.sender, _issuers, _approvers, _paperHash, _requirementsHash, _deadline);
+    return true;
   }
 
 }
