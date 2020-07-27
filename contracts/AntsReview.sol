@@ -179,6 +179,7 @@ contract AntsReview is AntsReviewRoles {
   ///@return antId If the AntReview is successfully issued
   function issueAntReview(
       address payable[] calldata _issuers,
+      address approver,
       string calldata _paperHash,
       string calldata _requirementsHash,
       uint64 _deadline)
@@ -196,6 +197,8 @@ contract AntsReview is AntsReviewRoles {
       newAntReview.requirementsHash = _requirementsHash;
       newAntReview.deadline = _deadline;
       newAntReview.status = AntReviewStatus.CREATED;
+
+      require(_addApprover(antId, approver));
 
       antReviewIdTracker.increment();
 
@@ -329,6 +332,10 @@ contract AntsReview is AntsReviewRoles {
     return true;
   }
 
+  function _addApprover(uint _antId, address account) private whenNotPaused returns (bool) {
+    return approvers[_antId].add(account);
+  }
+
   function addApprover(uint _antId, uint _issuerId, address account)
       external
       antReviewExists(_antId)
@@ -337,7 +344,7 @@ contract AntsReview is AntsReviewRoles {
       returns (bool)
   {
     require(!approvers[_antId].contains(account), "Account is already an approver");
-    require(approvers[_antId].add(msg.sender));
+    require(approvers[_antId].add(account));
     return true;
   }
 
@@ -349,7 +356,7 @@ contract AntsReview is AntsReviewRoles {
       returns (bool)
   {
     require(approvers[_antId].contains(account), "Account is not an approver");
-    require(approvers[_antId].remove(msg.sender));
+    require(approvers[_antId].remove(account));
     return true;
   }
 
