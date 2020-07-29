@@ -1,180 +1,149 @@
-let catchRevert = require("./exceptionsHelpers.js").catchRevert
-var AntsReviewRoles = artifacts.require('./AntsReviewRoles')
+// test/AntsReviewRoles.test.js
 
-contract('AntsReviewRoles', function(accounts) {
+const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-  const owner = accounts[0]
-  const issuer = accounts[1]
-  const peer_reviewer = accounts[3]
-  const random = accounts[4]
+const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 
-  const DEFAULT_ADMIN_ROLE = "0x00"
+const { expect } = require('chai');
 
+const AntsReviewRoles = contract.fromArtifact('AntsReviewRoles');
 
-  let instance
+let roles;
 
-  // Before Each
-  beforeEach(async () => {
-    instance = await AntsReviewRoles.new()
-  })
+describe('AntsReviewRoles', function () {
+const [ owner, issuer, peer_reviewer, other ] = accounts;
 
-  // Check that the owner is set as the deploying address
-  // Check that the owner is set as admin when the contract is deployed
-  // Check that the owner is set as templater when the contract is deployed
-  // Check that the owner is the only admin when the contract is deployed
-  describe("Setup", async() => {
+const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
+const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
+const ISSUER_ROLE = web3.utils.soliditySha3('ISSUER_ROLE');
+const PEER_REVIEWER_ROLE = web3.utils.soliditySha3('PEER_REVIEWER_ROLE');
 
-      it("OWNER should be set to the deploying address", async() => {
-          const ownerAddress = await instance.owner()
-          assert.equal(ownerAddress, owner, "the deploying address should be the owner")
-      })
+  beforeEach(async function () {
+    roles = await AntsReviewRoles.new({ from: owner })
+  });
 
-      it("OWNER should be set as the default admin when the contract is created", async() => {
-          const admin = await instance.isAdmin(owner, {from:random})
-          assert.isTrue(admin, "the owner should be set as the default admin")
-      })
+  it('the deployer is the owner', async function () {
+    expect(await roles.owner()).to.equal(owner);
+  });
 
-      it("Owner should be the only admin when the contract is created", async() => {
-          const admins = await instance.getRoleMemberCount(DEFAULT_ADMIN_ROLE)
-          assert.equal(admins, "1", "the owner should be the only admin")
-      })
+  it('owner has the default admin role', async function () {
+    expect(await roles.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
+    expect(await roles.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
+  });
 
+  it('owner has the pauser role', async function () {
+    expect(await roles.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
+    expect(await roles.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+  });
 
-  })
-
-  describe("Functions", () => {
-
-    // Check addIssuer() for success when an admin is adding a new issuer
-    // Check addIssuer() for sucessfully emit event when the issuer is added
-    // Check addIssuer() for failure when a random address try to add an issuer
-    describe("addIssuer()", async () => {
+  // Check addIssuer() for success when an admin is adding a new issuer
+  // Check addIssuer() for sucessfully emit event when the issuer is added
+  // Check addIssuer() for failure when a random address try to add an issuer
+  describe("addIssuer()", async () => {
 
       it("admin should be able to add a new issuer", async () => {
-        await instance.addIssuer(issuer, {from:owner})
-        const issuerAdded = await instance.isIssuer(issuer, {from:random})
-        assert.isTrue(issuerAdded, "only admins can add a new issuer")
+        await roles.addIssuer(issuer, {from:owner})
+        expect(await roles.getRoleMember(ISSUER_ROLE, 0)).to.equal(issuer)
       })
 
       it("should emit the appropriate event when a new issuer is added", async () => {
-        const result = await instance.addIssuer(issuer, {from:owner})
-        assert.equal(result.logs[0].event, "RoleGranted", "RoleGranted event not emitted, check addIssuer method")
+        const receipt = await roles.addIssuer(issuer, {from:owner})
+        expectEvent(receipt, "RoleGranted", { account: issuer })
       })
 
-      it("random address should not be able to add a new issuer", async () => {
-        await catchRevert(instance.addIssuer(issuer, {from:random}))
+      it("other address should not be able to add a new issuer", async () => {
+        await expectRevert(roles.addIssuer(issuer, {from:other}), 'Caller is not an admin')
       })
-    })
+  })
 
-    // Check addPeerReviewer() for success when an admin is adding a new peer reviewer
-    // Check addPeerReviewer() for sucessfully emit event when the peer_reviewer is added
-    // Check addPeerReviewer() for failure when a random address try to add a peer_reviewer
-    describe("addPeerReviewer()", async () => {
+  // Check addPeerReviewer() for success when an admin is adding a new peer reviewer
+  // Check addPeerReviewer() for sucessfully emit event when the peer_reviewer is added
+  // Check addPeerReviewer() for failure when a random address try to add a peer_reviewer
+  describe("addPeerReviewer()", async () => {
 
       it("admin should be able to add a new peer_reviewer", async () => {
-        await instance.addPeerReviewer(peer_reviewer, {from:owner})
-        const peerReviewerAdded = await instance.isPeerReviewer(peer_reviewer, {from:random})
-        assert.isTrue(peerReviewerAdded, "only admins can add a new peer_reviewer")
+        await roles.addPeerReviewer(peer_reviewer, {from:owner})
+        expect(await roles.getRoleMember(PEER_REVIEWER_ROLE, 0)).to.equal(peer_reviewer)
       })
 
       it("should emit the appropriate event when a new peer_reviewer is added", async () => {
-        const result = await instance.addPeerReviewer(peer_reviewer, {from:owner})
-        assert.equal(result.logs[0].event, "RoleGranted", "RoleGranted event not emitted, check addPeerReviewer method")
+        const receipt = await roles.addPeerReviewer(peer_reviewer, {from:owner})
+        expectEvent(receipt, "RoleGranted", { account: peer_reviewer })
       })
 
-      it("random address should not be able to add a new peer_reviewer", async () => {
-        await catchRevert(instance.addPeerReviewer(peer_reviewer, {from:random}))
+      it("other address should not be able to add a new peer_reviewer", async () => {
+        await expectRevert(roles.addPeerReviewer(peer_reviewer, {from:other}), 'Caller is not an admin')
       })
-    })
+  })
 
-    // Check removeIssuer() for success when an admin is removing a new issuer
-    // Check removeIssuer() for sucessfully emit event when the issuer is removed
-    // Check removeIssuer() for failure when a random address try to remove an issuer
-    describe("removeIssuer()", async () => {
+  // Check removeIssuer() for success when an admin is removing a new issuer
+  // Check removeIssuer() for sucessfully emit event when the issuer is removed
+  // Check removeIssuer() for failure when a random address try to remove an issuer
+  describe("removeIssuer()", async () => {
 
       beforeEach(async () => {
-        await instance.addIssuer(issuer, {from:owner})
+        await roles.addIssuer(issuer, {from: owner})
       })
-      it("admin should be able to remove a new issuer", async () => {
-        await instance.removeIssuer(issuer, {from:owner})
-        const issuerRemoved = await instance.isIssuer(issuer, {from:random})
-        assert.isFalse(issuerRemoved, "only admins can remove a new issuer")
+
+      it("admin should be able to remove an issuer", async () => {
+        await roles.removeIssuer(issuer, {from:owner})
+        expect(await roles.hasRole(ISSUER_ROLE, issuer)).to.equal(false)
       })
 
       it("should emit the appropriate event when an issuer is removed", async () => {
-        const result = await instance.removeIssuer(issuer, {from:owner})
-        assert.equal(result.logs[0].event, "RoleRevoked", "RoleRevoked event not emitted, check removeIssuer method")
+        const receipt = await roles.removeIssuer(issuer, {from:owner})
+        expectEvent(receipt, "RoleRevoked", { account: issuer })
       })
 
-      it("random address should not be able to remove an new issuer", async () => {
-        await catchRevert(instance.removeIssuer(issuer, {from:random}))
+      it("other address should not be able to remove an issuer", async () => {
+        await expectRevert(roles.removeIssuer(issuer, {from:other}), 'Caller is not an admin')
       })
-    })
+  })
 
-    // Check removePeerReviewer() for success when an admin is removing a peer_reviewer
-    // Check removePeerReviewer() for sucessfully emit event when the peer_reviewer is removed
-    // Check removePeerReviewer() for failure when a random address try to remove a peer_reviewer
-    describe("removePeerReviewer()", async () => {
+  // Check removePeerReviewer() for success when an admin is removing a peer_reviewer
+  // Check removePeerReviewer() for sucessfully emit event when the peer_reviewer is removed
+  // Check removePeerReviewer() for failure when a random address try to remove a peer_reviewer
+  describe("removePeerReviewer()", async () => {
 
       beforeEach(async () => {
-        await instance.addPeerReviewer(peer_reviewer, {from:owner})
+        await roles.addPeerReviewer(peer_reviewer, {from: owner})
       })
-      it("admin should be able to remove a new peer_reviewer", async () => {
-        await instance.removePeerReviewer(peer_reviewer, {from:owner})
-        const peerReviewerRemoved = await instance.isPeerReviewer(peer_reviewer, {from:random})
-        assert.isFalse(peerReviewerRemoved, "only admins can remove a peer_reviewer")
+
+      it("admin should be able to remove a peer_reviewer", async () => {
+        await roles.removePeerReviewer(peer_reviewer, {from:owner})
+        expect(await roles.hasRole(PEER_REVIEWER_ROLE, peer_reviewer)).to.equal(false)
       })
 
       it("should emit the appropriate event when a peer_reviewer is removed", async () => {
-        const result = await instance.removePeerReviewer(peer_reviewer, {from:owner})
-        assert.equal(result.logs[0].event, "RoleRevoked", "RoleRevoked event not emitted, check removePeerReviewer method")
+        const receipt = await roles.removePeerReviewer(peer_reviewer, {from:owner})
+        expectEvent(receipt, "RoleRevoked", { account: peer_reviewer })
       })
 
-      it("random address should not be able to remove a peer_reviewer", async () => {
-        await catchRevert(instance.removePeerReviewer(peer_reviewer, {from:random}))
+      it("other address should not be able to remove a peer_reviewer", async () => {
+        await expectRevert(roles.removePeerReviewer(peer_reviewer, {from:other}), 'Caller is not an admin')
       })
-    })
-
-    // Check pause() for success when a pauser is pausing all the functions
-    // Check pause() for sucessfully emit event when the functions are paused
-    // Check pause() for failure when a random address try to pause all the functions
-    describe("pause()", async () => {
-
-      it("pauser should be able to pause all the functions", async () => {
-        await instance.pause({from:owner})
-        await catchRevert(instance.pause({from:owner}))
-      })
-
-      it("should emit the appropriate event when the functions are paused", async () => {
-        const result = await instance.pause({from:owner})
-        assert.equal(result.logs[0].event, "Paused", "Paused event not emitted, check pause method")
-      })
-
-      it("random address should not be able to pause all functions", async () => {
-        await catchRevert(instance.pause({from:random}))
-      })
-    })
-
-    // Check unpause() for success when an amdin is unpausing all the functions
-    // Check unpause() for sucessfully emit event when the functions are unpaused
-    // Check unpause() for failure when a random address try to unpause all the functions
-    describe("unpause()", async () => {
-
-      it("admins should be able to unpause all the functions", async () => {
-        await instance.pause({from:owner})
-        await instance.unpause({from:owner})
-        await catchRevert(instance.unpause({from:owner}))
-      })
-
-      it("should emit the appropriate event when all functions are unpaused", async () => {
-        await instance.pause({from:owner})
-        const result = await instance.unpause({from:owner})
-        assert.equal(result.logs[0].event, "Unpaused", "Unpaused event not emitted, check pause method")
-      })
-
-      it("random address should not be able to unpause all the functions", async () => {
-        await instance.pause({from:owner})
-        await catchRevert(instance.unpause({from:random}))
-      })
-    })
   })
+
+  describe('pausing', function () {
+      it('owner can pause', async function () {
+        const receipt = await roles.pause({ from: owner });
+        expectEvent(receipt, 'Paused', { account: owner });
+
+        expect(await roles.paused()).to.equal(true);
+      });
+
+      it('owner can unpause', async function () {
+        await roles.pause({ from: owner });
+
+        const receipt = await roles.unpause({ from: owner });
+        expectEvent(receipt, 'Unpaused', { account: owner });
+
+        expect(await roles.paused()).to.equal(false);
+      });
+
+      it('other accounts cannot pause', async function () {
+        await expectRevert(roles.pause({ from: other }), 'AntsReview: must have pauser role to pause');
+      });
+  });
+
 })
