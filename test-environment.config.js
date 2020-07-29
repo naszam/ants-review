@@ -12,7 +12,7 @@ module.exports = {
 
     // Options available since v0.1.2
     defaultGasPrice: 20e9, // Gas price for contract calls (when unspecified)
-    artifactsDir: 'app/src/contracts', // Directory where contract artifacts are stored
+    artifactsDir: 'client/src/contracts', // Directory where contract artifacts are stored
   },
 
   node: { // Options passed directly to Ganache client
