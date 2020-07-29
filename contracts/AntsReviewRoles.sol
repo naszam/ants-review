@@ -116,7 +116,7 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
     /// @notice Unpause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function unpause() external {
-          require(hasRole(PAUSER_ROLE, msg.sender), "AntsReview: must have pauser role to pause");
+          require(hasRole(PAUSER_ROLE, msg.sender), "AntsReview: must have pauser role to unpause");
           _unpause();
     }
 }
