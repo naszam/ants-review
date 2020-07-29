@@ -71,10 +71,10 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
     });
 
     it('other accounts cannot mint tokens', async function () {
-      await expectRevert(ants.mint(other, amount, { from: other }),'ERC20PresetMinterPauser: must have minter role to mint');
+      await expectRevert(ants.mint(other, amount, { from: other }),'Caller is not a minter');
     });
   });
-/*
+
   describe("addMinter()", async () => {
 
       it("admin should be able to add a new minter", async () => {
@@ -112,7 +112,6 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         await expectRevert(ants.removeMinter(minter, {from:other}), 'Caller is not an admin')
       })
   })
-*/
 
   describe('pausing', function () {
       it('owner can pause', async function () {
@@ -161,7 +160,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       });
 
       it('other accounts cannot pause', async function () {
-        await expectRevert(ants.pause({ from: other }), 'ERC20PresetMinterPauser: must have pauser role to pause');
+        await expectRevert(ants.pause({ from: other }), 'ANTS: must have pauser role to pause');
       });
   });
 
