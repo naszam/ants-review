@@ -25,7 +25,7 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   AntsToken internal immutable ants;
 
   /// @dev Events
-  event Withdrawal(address indexed to);
+  event Withdrawal(address account);
   event Deposit(address indexed from, uint amount);
 
 
@@ -47,9 +47,10 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   /// @dev Checks if balance is more or equal to 1 Ant
   /// @return True If 1 Ant is successfully withdrawn
   function withdraw() external returns (bool) {
-      require(ants.balanceOf(address(this)) >= 1 ether, "Insufficient balance in faucet for withdrawal 1 Ant");
+      require(ants.balanceOf(address(this)) >= 1, "Insufficient balance of ANTS in the faucet");
 
       ants.transfer(msg.sender, 1 ether);
+
       emit Withdrawal(msg.sender);
       return true;
   }
