@@ -57,7 +57,7 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() external {
-    require(hasRole(PAUSER_ROLE, msg.sender), "AntFaucet: must have pauser role to pause");
+    require(hasRole(PAUSER_ROLE, msg.sender), "AntsFaucet: must have pauser role to pause");
     ants.transfer(owner(), ants.balanceOf(address(this)));
     _pause();
   }
@@ -65,7 +65,7 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   /// @notice Unpause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function unpause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "AntFaucet: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "AntsFaucet: must have pauser role to unpause");
         _unpause();
   }
 
