@@ -16,7 +16,7 @@ let faucet;
 describe('AntsFaucet', function () {
 const [ owner, other ] = accounts;
 
-const amount = new BN('5000');
+
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
@@ -40,6 +40,28 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
     expect(await faucet.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
     expect(await faucet.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
   });
+
+  describe("withdraw()", async () => {
+
+      it("caller should be able to withdraw 1 ANTS", async () => {
+        const decimals = await ants.decimals({from: other});
+        const tokenbits = (new BN(10)).pow(decimals);
+        const amount = (new BN(100)).mul(tokenbits);
+        const balance = (new BN(99)).mul(tokenbits);
+
+        await ants.mint(faucet.address, amount, {from: owner});
+
+        const receipt = await faucet.withdraw({ from: other });
+        expectEvent(receipt, 'Withdrawal', { account: other });
+
+        expect(await ants.balanceOf(faucet.address)).to.be.bignumber.equal(balance);
+      })
+
+      it("other address should not be able to add a new issuer", async () => {
+        await expectRevert(faucet.withdraw({from:other}), 'Insufficient balance of ANTS in the faucet')
+      })
+
+  })
 
   describe('pausing', function () {
       it('owner can pause', async function () {
