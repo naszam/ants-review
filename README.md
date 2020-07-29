@@ -81,7 +81,7 @@ Clone this GitHub repository.
      ```sh
      $ truffle migrate
      ```
-   - Test the smart contracts using Jest & OpenZeppelin Test Environment with the following command:
+   - Test the smart contracts using Mocha & OpenZeppelin Test Environment with the following command:
      ```sh
      $ npm test
      ```
