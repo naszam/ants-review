@@ -58,7 +58,7 @@ Clone this GitHub repository.
     ```
  - Global dependencies:
     - Slither (optional): 
-    ```
+    ```sh
     pip3 install slither-analyzer
     ```
     - MythX CLI (optional): 
@@ -81,11 +81,12 @@ Clone this GitHub repository.
      ```sh
      $ truffle migrate
      ```
-   - Test the smart contracts using Truffle & Ganache with the following command:
+   - Test the smart contracts using Jest & OpenZeppelin Test Environment with the following command:
      ```sh
-     $ truffle test
+     $ npm test
+     ```
    - Analyze the smart contracts using Slither with the following command (optional):
-      ```
+      ```sh
       $ slither .
       ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
@@ -130,15 +131,15 @@ Deploy
   - Import Ganache GUI mnemonic into MetaMask.
   - Connect MetaMask to Ganache GUI, adding a custom RPC specifing the Ganache GUI's RPC server URL.
   - Deploy the smart contracts to Ganache GUI:
-    ```
+    ```sh
     $ truffle migrate
     ```
   - Move to client directory on the project:
-    ```
+    ```sh
     $ cd client
     ```
   - Install dependencies:
-    ```
+    ```sh
     $ yarn install
     ```
   - Start the Local Web Server:
