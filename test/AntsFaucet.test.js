@@ -41,5 +41,27 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
     expect(await faucet.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
   });
 
+  describe('pausing', function () {
+      it('owner can pause', async function () {
+        const receipt = await faucet.pause({ from: owner });
+        expectEvent(receipt, 'Paused', { account: owner });
+
+        expect(await faucet.paused()).to.equal(true);
+      });
+
+      it('owner can unpause', async function () {
+        await faucet.pause({ from: owner });
+
+        const receipt = await faucet.unpause({ from: owner });
+        expectEvent(receipt, 'Unpaused', { account: owner });
+
+        expect(await faucet.paused()).to.equal(false);
+      });
+
+      it('other accounts cannot pause', async function () {
+        await expectRevert(faucet.pause({ from: other }), 'AntsFaucet: must have pauser role to pause');
+      });
+  });
+
 
 });
