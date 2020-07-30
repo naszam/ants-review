@@ -6,6 +6,7 @@ const { BN, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 
 const { expect } = require('chai');
 
+
 const ANTS = contract.fromArtifact('ANTS');
 const AntsFaucet = contract.fromArtifact('AntsFaucet');
 const AntsReview = contract.fromArtifact('AntsReview');
@@ -28,6 +29,7 @@ const deadline = new BN(timestamp + 31556926); // 1 year in seconds (365.24 days
 //console.log(timestamp)
 const antId = "0";
 const reviewId = "0";
+const contributionId = "0";
 
 
   beforeEach(async function () {
@@ -77,28 +79,32 @@ const reviewId = "0";
       const decimals = await ants.decimals({from: other});
       const tokenbits = (new BN(10)).pow(decimals);
       const amount = (new BN(100)).mul(tokenbits);
+      const allowance = (new BN(10).mul(tokenbits))
+
+
       await ants.mint(faucet.address, amount, {from: owner});
       await faucet.withdraw({ from: anter });
+      await ants.increaseAllowance(antsreview.address, allowance, {from: anter})
+
     });
 
     it("Anters can contribute to an AntReview", async function () {
       const decimals = await ants.decimals({from: other});
       const tokenbits = (new BN(10)).pow(decimals);
       const amount = (new BN(1)).mul(tokenbits);
-      const allowance = (new BN(10).mul(tokenbits))
 
-      await ants.increaseAllowance(antsreview.address, allowance, {from: anter} )
       await antsreview.contribute(antId, amount, {from: anter});
       const receipt = await antsreview.antreviews(antId, {from: other});
       expect(receipt.balance).to.be.bignumber.equal(amount);
     })
 
-    it("", async function () {
+    it("should emit the appropriate event when an Contribution is Added", async function () {
+      const decimals = await ants.decimals({from: other});
+      const tokenbits = (new BN(10)).pow(decimals);
+      const amount = (new BN(1)).mul(tokenbits);
 
-    })
-
-    it("", async function () {
-
+      const receipt = await antsreview.contribute(antId, amount, {from: anter});
+      expectEvent(receipt, "ContributionAdded", { antId: antId, contributionId: contributionId, contributor: anter, amount: amount });
     })
   })
 
