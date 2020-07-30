@@ -167,20 +167,25 @@ const allowance = ether('10');
       await antsreview.addIssuer(issuer, {from: owner});
       await antsreview.addPeerReviewer(peer_reviewer, {from: owner});
       await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+      await ants.mint(faucet.address, amount, {from: owner});
+      await faucet.withdraw({ from: anter });
+      await ants.increaseAllowance(antsreview.address, allowance, {from: anter})
+      await antsreview.contribute(antId, tokens, {from: anter});
       await antsreview.fulfillAntReview(antId, reviewHash, {from: peer_reviewer});
     });
 
-    it("issuers should be able to accept an AntReview", async function () {
-
-
+    it("approver should be able to accept an AntReview", async function () {
+      await antsreview.acceptAntReview(antId, reviewId, tokens, {from: approver});
+      expect(await ants.balanceOf(peer_reviewer)).to.be.bignumber.equal(tokens);
     })
 
     it("should emit the appropriate event when an AntReview is accepted", async function () {
-
+      const receipt = await antsreview.acceptAntReview(antId, reviewId, tokens, {from: approver});
+      expectEvent(receipt, "AntReviewAccepted", { antId: antId, reviewId: reviewId, approver: approver, amount: tokens });
     })
 
     it("random address should not be able to accept an AntReview", async function () {
-
+      await expectRevert(antsreview.acceptAntReview(antId, reviewId, tokens, {from: other}), 'Caller is not the approver');
     })
   })
 
