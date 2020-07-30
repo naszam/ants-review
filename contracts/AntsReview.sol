@@ -50,7 +50,7 @@ contract AntsReview is AntsReviewRoles {
   Counters.Counter public antReviewIdTracker;
 
   /// @dev Storage
-  AntReview[] public antreviews;
+  mapping (uint256 => AntReview) public antreviews;
   mapping (uint256 => Peer_Review[]) public peer_reviews;
   mapping (uint256 => Contribution[]) public contributions;
 
@@ -201,7 +201,13 @@ contract AntsReview is AntsReviewRoles {
   {
       uint antId = antReviewIdTracker.current();
 
-      antreviews.push(AntReview(_issuers, _paperHash, _requirementsHash, _deadline, AntReviewStatus.CREATED, 0));
+      AntReview storage newAntReview = antreviews[antId];
+
+      newAntReview.issuers = _issuers;
+      newAntReview.paperHash = _paperHash;
+      newAntReview.requirementsHash = _requirementsHash;
+      newAntReview.deadline = _deadline;
+      newAntReview.status = AntReviewStatus.CREATED;
 
       require(_addApprover(antId, _approver));
 
@@ -321,7 +327,6 @@ contract AntsReview is AntsReviewRoles {
       string calldata _requirementsHash,
       uint64 _deadline)
       external
-      antReviewExists(_antId)
       hasIssuer(_antId, _issuerId)
       whenNotPaused()
       returns (bool)
