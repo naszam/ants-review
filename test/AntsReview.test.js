@@ -2,7 +2,7 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { BN, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
+const { BN, expectEvent, expectRevert, time, ether } = require('@openzeppelin/test-helpers');
 
 const { expect } = require('chai');
 
@@ -21,18 +21,24 @@ const DEFAULT_ADMIN_ROLE = '0x00000000000000000000000000000000000000000000000000
 
 const issuers = [issuer, issuer1, issuer2];
 const paperHash = "QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4";
-const requirementsHash = "QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ"
-const reviewHash = "Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u"
-var date = new Date();
-const timestamp = date.getTime();
-const deadline = new BN(timestamp + 31556926); // 1 year in seconds (365.24 days)
-//console.log(timestamp)
+const requirementsHash = "QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ";
+const reviewHash = "Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u";
 const antId = "0";
 const reviewId = "0";
 const contributionId = "0";
+const amount = ether('100');
+const tokens = ether('1')
+const allowance = ether('10');
 
+
+  before(async function () {
+    // Advance to the next block to correctly read time in the solidity "now" function interpreted by ganache
+    await time.advanceBlock();
+  });
 
   beforeEach(async function () {
+    deadline = (await time.latest()).add(time.duration.weeks(1));
+
     ants = await ANTS.new({from: owner});
     faucet = await AntsFaucet.new(ants.address, {from: owner});
     antsreview= await AntsReview.new(ants.address, { from: owner });
@@ -76,12 +82,6 @@ const contributionId = "0";
       await antsreview.addIssuer(issuer, {from: owner});
       await antsreview.addPeerReviewer(peer_reviewer, {from: owner});
       await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
-      const decimals = await ants.decimals({from: other});
-      const tokenbits = (new BN(10)).pow(decimals);
-      const amount = (new BN(100)).mul(tokenbits);
-      const allowance = (new BN(10).mul(tokenbits))
-
-
       await ants.mint(faucet.address, amount, {from: owner});
       await faucet.withdraw({ from: anter });
       await ants.increaseAllowance(antsreview.address, allowance, {from: anter})
@@ -93,18 +93,39 @@ const contributionId = "0";
       const tokenbits = (new BN(10)).pow(decimals);
       const amount = (new BN(1)).mul(tokenbits);
 
-      await antsreview.contribute(antId, amount, {from: anter});
+      await antsreview.contribute(antId, tokens, {from: anter});
       const receipt = await antsreview.antreviews(antId, {from: other});
-      expect(receipt.balance).to.be.bignumber.equal(amount);
+      expect(receipt.balance).to.be.bignumber.equal(tokens);
     })
 
     it("should emit the appropriate event when an Contribution is Added", async function () {
-      const decimals = await ants.decimals({from: other});
-      const tokenbits = (new BN(10)).pow(decimals);
-      const amount = (new BN(1)).mul(tokenbits);
+      const receipt = await antsreview.contribute(antId, tokens, {from: anter});
+      expectEvent(receipt, "ContributionAdded", { antId: antId, contributionId: contributionId, contributor: anter, amount: tokens });
+    })
+  })
 
-      const receipt = await antsreview.contribute(antId, amount, {from: anter});
-      expectEvent(receipt, "ContributionAdded", { antId: antId, contributionId: contributionId, contributor: anter, amount: amount });
+  describe("refund()", async function () {
+
+    beforeEach(async function () {
+      await antsreview.addIssuer(issuer, {from: owner});
+      await antsreview.addPeerReviewer(peer_reviewer, {from: owner});
+      await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+      await ants.mint(faucet.address, amount, {from: owner});
+      await faucet.withdraw({ from: anter });
+      await ants.increaseAllowance(antsreview.address, allowance, {from: anter})
+      await antsreview.contribute(antId, tokens, {from: anter});
+    });
+
+    it("Anters can get a refund for their contributions", async function () {
+      await time.increase(time.duration.weeks(2));
+      await antsreview.refund(antId, contributionId, {from: anter});
+      expect(await ants.balanceOf(antsreview.address)).to.be.bignumber.equal('0');
+    })
+
+    it("should emit the appropriate event when an Contribution is Added", async function () {
+      await time.increase(time.duration.weeks(2));
+      const receipt = await antsreview.refund(antId, contributionId, {from: anter});
+      expectEvent(receipt, "ContributionRefunded", { antId: antId, contributionId: contributionId, contributor: anter});
     })
   })
 
@@ -150,6 +171,7 @@ const contributionId = "0";
     });
 
     it("issuers should be able to accept an AntReview", async function () {
+
 
     })
 
