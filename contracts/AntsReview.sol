@@ -85,6 +85,7 @@ contract AntsReview is AntsReviewRoles {
 
   event AntReviewIssued(uint antId, address payable[] issuers, string paperHash, string requirementsHash, uint64 deadline);
   event ContributionAdded(uint antId, uint contributionId, address contributor, uint amount);
+  event ContributionRefunded(uint antId, uint contributionId, address contributor);
   event AntReviewFulfilled(uint antId, uint reviewId, address peer_reviewer, string reviewHash);
   event ReviewUpdated(uint antId, uint reviewId, string reviewHash);
   event AntReviewAccepted(uint antId, uint reviewId, address approver, uint amount);
@@ -245,7 +246,7 @@ contract AntsReview is AntsReviewRoles {
     whenNotPaused()
     returns (bool)
   {
-    require(now > antreviews[_antId].deadline);
+    require(now > antreviews[_antId].deadline, "Deadline has not elapsed");
 
     Contribution storage contribution = contributions[_antId][_contributionId];
 
@@ -253,6 +254,8 @@ contract AntsReview is AntsReviewRoles {
     antreviews[_antId].balance = antreviews[_antId].balance.sub(contribution.amount);
 
     require(ants.transfer(contribution.contributor, contribution.amount));
+
+    emit ContributionRefunded(_antId, _contributionId, msg.sender);
 
     return true;
   }
