@@ -2,11 +2,11 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
-///@title Ants-Review
-///@author Nazzareno Massari @naszam
-///@notice AntsReview to allows issuer to issue an antReview which peer-reviewers can fulfill
-///@dev All function calls are currently implemented without side effects through TDD approach
-///@dev OpenZeppelin library is used for secure contract development
+/// @title Ants-Review
+/// @author Nazzareno Massari @naszam
+/// @notice AntsReview to allows issuer to issue an antReview which peer-reviewers can fulfill
+/// @dev All function calls are currently implemented without side effects through TDD approach
+/// @dev OpenZeppelin library is used for secure contract development
 
 /**
 
@@ -37,6 +37,8 @@ contract AntsReview is AntsReviewRoles {
   using SafeMath for uint256;
   using Address for address payable;
   using Counters for Counters.Counter;
+  using EnumerableSet for EnumerableSet.AddressSet;
+
 
   /// @dev Enums
   enum AntReviewStatus { CREATED, PAID}
@@ -56,11 +58,11 @@ contract AntsReview is AntsReviewRoles {
   /// @dev Structs
   struct AntReview {
       address payable[] issuers;
-      uint balance;
       string paperHash;
       string requirementsHash;
       uint256 deadline;
       AntReviewStatus status;
+      uint256 balance;
       Peer_Review[] peer_reviews;
       Contribution[] contributions;
   }
@@ -171,12 +173,12 @@ contract AntsReview is AntsReviewRoles {
   }
 
 
-  ///@notice Create a new AntReview
-  ///@dev Access restricted to Issuer
-  ///@param _paperHash The IPFS Hash of the Scientific Paper
-  ///@param _requirementsHash The IPFS Hash of the Peer-Review Requirements
-  ///@param _deadline The unix timestamp after which fulfillments will no longer be accepted
-  ///@return antId If the AntReview is successfully issued
+  /// @notice Create a new AntReview
+  /// @dev Access restricted to Issuer
+  /// @param _paperHash The IPFS Hash of the Scientific Paper
+  /// @param _requirementsHash The IPFS Hash of the Peer-Review Requirements
+  /// @param _deadline The unix timestamp after which fulfillments will no longer be accepted
+  /// @return antId If the AntReview is successfully issued
   function issueAntReview(
       address payable[] calldata _issuers,
       address approver,
@@ -248,11 +250,11 @@ contract AntsReview is AntsReviewRoles {
   }
 
 
-  ///@notice Submit a fulfillment for the given antReview
-  ///@dev Access restricted to Peer-Reviewer
-  ///@param _antId The index of the antReview to be fufilled
-  ///@param _reviewHash The IPFS Hash of the peer-review
-  ///@return True If the AntReview is successfully fulfilled
+  /// @notice Submit a fulfillment for the given antReview
+  /// @dev Access restricted to Peer-Reviewer
+  /// @param _antId The index of the antReview to be fufilled
+  /// @param _reviewHash The IPFS Hash of the peer-review
+  /// @return True If the AntReview is successfully fulfilled
   function fulfillAntReview(uint256 _antId, string calldata _reviewHash)
     external
     onlyPeerReviewer()
@@ -285,11 +287,11 @@ contract AntsReview is AntsReviewRoles {
   }
 
 
-  ///@notice Accept a given Peer-Review
-  ///@dev Access restricted to Issuer
-  ///@param _antId the index of the antReview
-  ///@param _reviewId the index of the fulfillment being accepted
-  ///@return True If the AntReview is successfully being accepted
+  /// @notice Accept a given Peer-Review
+  /// @dev Access restricted to Issuer
+  /// @param _antId the index of the antReview
+  /// @param _reviewId the index of the fulfillment being accepted
+  /// @return True If the AntReview is successfully being accepted
   function acceptAntReview(uint _antId, uint _reviewId, uint _amount)
       external
       onlyApprover(_antId)
