@@ -46,10 +46,10 @@ const reviewId = "0";
       await antsreview.addIssuer(issuer, {from: owner});
       await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
       const receipt = await antsreview.antreviews(antId, {from: other});
-      expect(receipt[0]).to.equal(paperHash);
-      expect(receipt[1]).to.equal(requirementsHash);
+      expect(receipt.paperHash).to.equal(paperHash);
+      expect(receipt.requirementsHash).to.equal(requirementsHash);
+      expect(receipt.deadline).to.be.bignumber.equal(deadline);
       expect(await antsreview.getApprover(antId, {from: other})).to.equal(approver);
-
     })
 
     it("should emit the appropriate event when an AntReview is issued", async function () {
