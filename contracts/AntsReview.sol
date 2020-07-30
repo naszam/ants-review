@@ -51,6 +51,8 @@ contract AntsReview is AntsReviewRoles {
 
   /// @dev Storage
   AntReview[] public antreviews;
+  mapping (uint256 => Peer_Review[]) public peer_reviews;
+  mapping (uint256 => Contribution[]) public contributions;
 
   mapping (uint256 => EnumerableSet.AddressSet) private approvers;
 
@@ -63,8 +65,6 @@ contract AntsReview is AntsReviewRoles {
       uint256 deadline;
       AntReviewStatus status;
       uint256 balance;
-      Peer_Review[] peer_reviews;
-      Contribution[] contributions;
   }
 
   struct Peer_Review {
@@ -108,22 +108,22 @@ contract AntsReview is AntsReviewRoles {
   }
 
   modifier reviewExists(uint256 _antId, uint256 _reviewId){
-    require(_reviewId < antreviews[_antId].peer_reviews.length);
+    require(_reviewId < peer_reviews[_antId].length);
     _;
   }
 
-  modifier hasStatus(uint256 _antReviewId, AntReviewStatus _desiredStatus) {
-    require(antreviews[_antReviewId].status == _desiredStatus);
+  modifier hasStatus(uint256 _antId, AntReviewStatus _desiredStatus) {
+    require(antreviews[_antId].status == _desiredStatus);
     _;
   }
 
   modifier peerReviewNotYetAccepted(uint256 _antId, uint256 _reviewId) {
-    require(antreviews[_antId].peer_reviews[_reviewId].accepted == false);
+    require(peer_reviews[_antId][_reviewId].accepted == false);
     _;
   }
 
-  modifier validateDeadline(uint256 _newDeadline) {
-      require(_newDeadline > now);
+  modifier validateDeadline(uint256 _deadline) {
+      require(_deadline > now);
       _;
   }
 
@@ -138,7 +138,7 @@ contract AntsReview is AntsReviewRoles {
   }
 
   modifier onlyContributor(uint _antId, uint _contributionId) {
-    require(msg.sender == antreviews[_antId].contributions[_contributionId].contributor, "Caller is not a Contributor");
+    require(msg.sender == contributions[_antId][_contributionId].contributor, "Caller is not a Contributor");
     _;
   }
 
@@ -150,13 +150,13 @@ contract AntsReview is AntsReviewRoles {
 
   modifier hasNotRefunded(uint _antId, uint _contributionId)
   {
-    require(!antreviews[_antId].contributions[_contributionId].refunded);
+    require(!contributions[_antId][_contributionId].refunded);
     _;
   }
 
   modifier onlySubmitter(uint _antId, uint _reviewId)
   {
-    require(msg.sender == antreviews[_antId].peer_reviews[_reviewId].peer_reviewer);
+    require(msg.sender == peer_reviews[_antId][_reviewId].peer_reviewer);
     _;
   }
 
@@ -172,35 +172,38 @@ contract AntsReview is AntsReviewRoles {
     _;
   }
 
+  /// @dev Getters
+
+  function getApprover(uint _antId) external view whenNotPaused returns (address) {
+    return approvers[_antId].at(0);
+  }
+
 
   /// @notice Create a new AntReview
   /// @dev Access restricted to Issuer
+  /// @param _issuers The issuers of the AntReview
+  /// @param _approver The approver of the AntReview
   /// @param _paperHash The IPFS Hash of the Scientific Paper
   /// @param _requirementsHash The IPFS Hash of the Peer-Review Requirements
   /// @param _deadline The unix timestamp after which fulfillments will no longer be accepted
   /// @return antId If the AntReview is successfully issued
   function issueAntReview(
       address payable[] calldata _issuers,
-      address approver,
+      address _approver,
       string calldata _paperHash,
       string calldata _requirementsHash,
       uint64 _deadline)
       external
-      validateDeadline(_deadline)
       onlyIssuer()
+      validateDeadline(_deadline)
       whenNotPaused()
       returns (bool)
   {
       uint antId = antReviewIdTracker.current();
 
-      AntReview memory newAntReview = antreviews[antId];
-      newAntReview.issuers = _issuers;
-      newAntReview.paperHash = _paperHash;
-      newAntReview.requirementsHash = _requirementsHash;
-      newAntReview.deadline = _deadline;
-      newAntReview.status = AntReviewStatus.CREATED;
+      antreviews.push(AntReview(_issuers, _paperHash, _requirementsHash, _deadline, AntReviewStatus.CREATED, 0));
 
-      require(_addApprover(antId, approver));
+      require(_addApprover(antId, _approver));
 
       antReviewIdTracker.increment();
 
@@ -217,13 +220,13 @@ contract AntsReview is AntsReviewRoles {
     whenNotPaused()
     returns (bool)
   {
-    antreviews[_antId].contributions.push(Contribution(msg.sender, _amount, false));
+    contributions[_antId].push(Contribution(msg.sender, _amount, false));
     antreviews[_antId].balance = antreviews[_antId].balance.add(_amount);
 
     require(msg.value == 0);
     require(ants.transferFrom(msg.sender, address(this), _amount));
 
-    emit ContributionAdded(_antId, antreviews[_antId].contributions.length.sub(1), msg.sender, _amount);
+    emit ContributionAdded(_antId, contributions[_antId].length.sub(1), msg.sender, _amount);
 
     return true;
   }
@@ -239,7 +242,7 @@ contract AntsReview is AntsReviewRoles {
   {
     require(now > antreviews[_antId].deadline);
 
-    Contribution storage contribution = antreviews[_antId].contributions[_contributionId];
+    Contribution storage contribution = contributions[_antId][_contributionId];
 
     contribution.refunded = true;
     antreviews[_antId].balance = antreviews[_antId].balance.sub(contribution.amount);
@@ -264,23 +267,22 @@ contract AntsReview is AntsReviewRoles {
     whenNotPaused()
     returns (bool)
   {
-    antreviews[_antId].peer_reviews.push(Peer_Review(false, msg.sender, _reviewHash));
+    peer_reviews[_antId].push(Peer_Review(false, msg.sender, _reviewHash));
 
-    emit AntReviewFulfilled(_antId, antreviews[_antId].peer_reviews.length.sub(1), msg.sender, _reviewHash);
+    emit AntReviewFulfilled(_antId, peer_reviews[_antId].length.sub(1), msg.sender, _reviewHash);
     return true;
   }
 
   function updateReview(uint _antId, uint _reviewId, string calldata _reviewHash)
     external
     onlySubmitter(_antId, _reviewId)
-    antReviewExists(_antId)
     reviewExists(_antId, _reviewId)
     hasStatus(_antId, AntReviewStatus.CREATED)
     isBeforeDeadline(_antId)
     whenNotPaused()
     returns (bool)
   {
-    antreviews[_antId].peer_reviews[_reviewId].reviewHash = _reviewHash;
+    peer_reviews[_antId][_reviewId].reviewHash = _reviewHash;
 
     emit ReviewUpdated(_antId, _reviewId, _reviewHash);
     return true;
@@ -295,7 +297,6 @@ contract AntsReview is AntsReviewRoles {
   function acceptAntReview(uint _antId, uint _reviewId, uint _amount)
       external
       onlyApprover(_antId)
-      antReviewExists(_antId)
       reviewExists(_antId, _reviewId)
       hasStatus(_antId, AntReviewStatus.CREATED)
       peerReviewNotYetAccepted(_antId, _reviewId)
@@ -305,7 +306,7 @@ contract AntsReview is AntsReviewRoles {
       antreviews[_antId].status = AntReviewStatus.PAID;
       antreviews[_antId].balance = antreviews[_antId].balance.sub(_amount);
 
-      require(ants.transferFrom(address(this), antreviews[_antId].peer_reviews[_reviewId].peer_reviewer, _amount));
+      require(ants.transferFrom(address(this), peer_reviews[_antId][_reviewId].peer_reviewer, _amount));
 
 
       emit AntReviewAccepted(_antId, _reviewId, msg.sender, _amount);
