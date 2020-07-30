@@ -19,7 +19,8 @@ const DEFAULT_ADMIN_ROLE = '0x00000000000000000000000000000000000000000000000000
 
 const issuers = [issuer, issuer1, issuer2];
 const paperHash = "QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4";
-const requirementsHash = "QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ";
+const requirementsHash = "QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ"
+const reviewHash = "Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u"
 var date = new Date();
 const timestamp = date.getTime();
 const deadline = new BN(timestamp + 31556926); // 1 year in seconds (365.24 days)
@@ -40,7 +41,7 @@ const reviewId = "0";
   // Check issueAntReview() for success when an issuer is issuing a new AntReview
   // Check issueAntReview() for sucessfully emit event when the AntReview is Issued
   // Check issueAntReview() for failure when a random address try to issue an AntReview
-  describe("issueAntReview()", async () => {
+  describe("issueAntReview()", async function () {
 
     it("issuers should be able to issue a new AntReview", async function () {
       await antsreview.addIssuer(issuer, {from: owner});
@@ -49,6 +50,7 @@ const reviewId = "0";
       expect(receipt.paperHash).to.equal(paperHash);
       expect(receipt.requirementsHash).to.equal(requirementsHash);
       expect(receipt.deadline).to.be.bignumber.equal(deadline);
+      expect(receipt.balance).to.be.bignumber.equal('0');
       expect(await antsreview.getApprover(antId, {from: other})).to.equal(approver);
     })
 
@@ -62,6 +64,35 @@ const reviewId = "0";
       await expectRevert(antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer}), 'Caller is not an issuer')
     })
 
+  })
+
+  // Check fulfillAntReview() for success when a peer_reviewer is fulfilling an AntReview
+  // Check fulfillAntReview() for sucessfully emit event when the AntReview is Fulfilled
+  // Check fulfillAntReview() for failure when a random address try to fulfill an AntReview
+  describe("fulfillAntReview", async function () {
+
+    beforeEach(async function () {
+      await antsreview.addIssuer(issuer, {from: owner});
+      await antsreview.addPeerReviewer(peer_reviewer, {from: owner});
+      await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+    });
+
+    it("peer_reviewers should be able to fulfill an AntReview", async function () {
+      await antsreview.fulfillAntReview(antId, reviewHash, {from: peer_reviewer});
+      const receipt = await antsreview.peer_reviews(antId, 0, {from: other});
+      expect(receipt.accepted).to.equal(false);
+      expect(receipt.peer_reviewer).to.equal(peer_reviewer);
+      expect(receipt.reviewHash).to.equal(reviewHash);
+    })
+
+    it("should emit the appropriate event when the AntReview is fulfilled", async () => {
+      const receipt = await antsreview.fulfillAntReview(antId, reviewHash, {from: peer_reviewer});
+      expectEvent(receipt, "AntReviewFulfilled", { antId: antId, reviewId: '0', peer_reviewer: peer_reviewer, reviewHash: reviewHash });
+    })
+
+    it("random address should not be able to fulfill an AntReview", async () => {
+      await expectRevert(antsreview.fulfillAntReview(antId, reviewHash, {from: other}), 'Caller is not a peer-reviewer');
+    })
   })
 
 })
