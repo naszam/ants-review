@@ -164,7 +164,7 @@ contract AntsReview is AntsReviewRoles {
 
   modifier onlyApprover(uint _antId)
   {
-    require(approvers[_antId].contains(msg.sender));
+    require(approvers[_antId].contains(msg.sender), "Caller is not the approver");
     _;
   }
 
@@ -314,7 +314,7 @@ contract AntsReview is AntsReviewRoles {
       antreviews[_antId].status = AntReviewStatus.PAID;
       antreviews[_antId].balance = antreviews[_antId].balance.sub(_amount);
 
-      require(ants.transferFrom(address(this), peer_reviews[_antId][_reviewId].peer_reviewer, _amount));
+      require(ants.transfer(peer_reviews[_antId][_reviewId].peer_reviewer, _amount));
 
 
       emit AntReviewAccepted(_antId, _reviewId, msg.sender, _amount);
