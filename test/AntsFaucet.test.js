@@ -47,7 +47,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         const decimals = await ants.decimals({from: other});
         const tokenbits = (new BN(10)).pow(decimals);
         const amount = (new BN(100)).mul(tokenbits);
-        const balance = (new BN(99)).mul(tokenbits);
+        const balance = (new BN(90)).mul(tokenbits);
 
         await ants.mint(faucet.address, amount, {from: owner});
 
