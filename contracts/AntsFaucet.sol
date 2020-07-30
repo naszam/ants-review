@@ -47,9 +47,9 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   /// @dev Checks if balance is more or equal to 1 Ant
   /// @return True If 1 Ant is successfully withdrawn
   function withdraw() external returns (bool) {
-      require(ants.balanceOf(address(this)) >= 1, "Insufficient balance of ANTS in the faucet");
+      require(ants.balanceOf(address(this)) >= 10, "Insufficient balance of ANTS in the faucet");
 
-      ants.transfer(msg.sender, 1 ether);
+      ants.transfer(msg.sender, 10 ether);
 
       emit Withdrawal(msg.sender);
       return true;
