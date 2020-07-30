@@ -6,13 +6,14 @@ const { BN, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 
 const { expect } = require('chai');
 
-const ANTS = contract.fromArtifact('ANTS')
+const ANTS = contract.fromArtifact('ANTS');
+const AntsFaucet = contract.fromArtifact('AntsFaucet');
 const AntsReview = contract.fromArtifact('AntsReview');
 
 let antsreview;
 
 describe('AntsReview', function () {
-const [ owner, issuer, peer_reviewer, approver, other, issuer1, issuer2 ] = accounts;
+const [ owner, issuer, peer_reviewer, approver, other, issuer1, issuer2, anter ] = accounts;
 
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -30,7 +31,8 @@ const reviewId = "0";
 
 
   beforeEach(async function () {
-    ants = await ANTS.new();
+    ants = await ANTS.new({from: owner});
+    faucet = await AntsFaucet.new(ants.address, {from: owner});
     antsreview= await AntsReview.new(ants.address, { from: owner });
   });
 
@@ -66,6 +68,40 @@ const reviewId = "0";
 
   })
 
+  describe("contribute()", async function () {
+
+    beforeEach(async function () {
+      await antsreview.addIssuer(issuer, {from: owner});
+      await antsreview.addPeerReviewer(peer_reviewer, {from: owner});
+      await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+      const decimals = await ants.decimals({from: other});
+      const tokenbits = (new BN(10)).pow(decimals);
+      const amount = (new BN(100)).mul(tokenbits);
+      await ants.mint(faucet.address, amount, {from: owner});
+      await faucet.withdraw({ from: anter });
+    });
+
+    it("Anters can contribute to an AntReview", async function () {
+      const decimals = await ants.decimals({from: other});
+      const tokenbits = (new BN(10)).pow(decimals);
+      const amount = (new BN(1)).mul(tokenbits);
+      const allowance = (new BN(10).mul(tokenbits))
+
+      await ants.increaseAllowance(antsreview.address, allowance, {from: anter} )
+      await antsreview.contribute(antId, amount, {from: anter});
+      const receipt = await antsreview.antreviews(antId, {from: other});
+      expect(receipt.balance).to.be.bignumber.equal(amount);
+    })
+
+    it("", async function () {
+
+    })
+
+    it("", async function () {
+
+    })
+  })
+
   // Check fulfillAntReview() for success when a peer_reviewer is fulfilling an AntReview
   // Check fulfillAntReview() for sucessfully emit event when the AntReview is Fulfilled
   // Check fulfillAntReview() for failure when a random address try to fulfill an AntReview
@@ -92,6 +128,31 @@ const reviewId = "0";
 
     it("random address should not be able to fulfill an AntReview", async () => {
       await expectRevert(antsreview.fulfillAntReview(antId, reviewHash, {from: other}), 'Caller is not a peer-reviewer');
+    })
+  })
+
+  // Check acceptAntReview() for success when an issuer is accepting an AntReview
+  // Check acceptAntReview() for sucessfully emit event when the AntReview is accepted
+  // Check acceptAntReview() for failure when a random address try to accept an AntReview
+  describe("acceptAntReview()", async function () {
+
+    beforeEach(async function () {
+      await antsreview.addIssuer(issuer, {from: owner});
+      await antsreview.addPeerReviewer(peer_reviewer, {from: owner});
+      await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+      await antsreview.fulfillAntReview(antId, reviewHash, {from: peer_reviewer});
+    });
+
+    it("issuers should be able to accept an AntReview", async function () {
+
+    })
+
+    it("should emit the appropriate event when an AntReview is accepted", async function () {
+
+    })
+
+    it("random address should not be able to accept an AntReview", async function () {
+
     })
   })
 
