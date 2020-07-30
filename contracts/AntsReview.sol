@@ -28,6 +28,7 @@ import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 
 
 interface AntsToken {
+  function transfer(address recipient, uint amount) external returns (bool);
   function transferFrom(address sender, address recipient, uint amount) external returns (bool);
   function balanceOf(address account) external view returns (uint);
 }
@@ -219,7 +220,6 @@ contract AntsReview is AntsReviewRoles {
   }
 
   function contribute(uint _antId, uint _amount)
-    payable
     external
     antReviewExists(_antId)
     validAmount(_amount)
@@ -229,7 +229,6 @@ contract AntsReview is AntsReviewRoles {
     contributions[_antId].push(Contribution(msg.sender, _amount, false));
     antreviews[_antId].balance = antreviews[_antId].balance.add(_amount);
 
-    require(msg.value == 0);
     require(ants.transferFrom(msg.sender, address(this), _amount));
 
     emit ContributionAdded(_antId, contributions[_antId].length.sub(1), msg.sender, _amount);
@@ -253,7 +252,7 @@ contract AntsReview is AntsReviewRoles {
     contribution.refunded = true;
     antreviews[_antId].balance = antreviews[_antId].balance.sub(contribution.amount);
 
-    require(ants.transferFrom(address(this), contribution.contributor, contribution.amount));
+    require(ants.transfer(contribution.contributor, contribution.amount));
 
     return true;
   }
