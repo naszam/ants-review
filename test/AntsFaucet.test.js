@@ -2,7 +2,7 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { BN, constants, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
+const { constants, expectEvent, expectRevert, ether } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
 const { expect } = require('chai');
@@ -15,6 +15,8 @@ let faucet;
 
 describe('AntsFaucet', function () {
 const [ owner, other ] = accounts;
+const amount = ether('100');
+const balance = ether('90');
 
 
 
@@ -44,20 +46,18 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
   describe("withdraw()", async () => {
 
       it("caller should be able to withdraw 1 ANTS", async () => {
-        const decimals = await ants.decimals({from: other});
-        const tokenbits = (new BN(10)).pow(decimals);
-        const amount = (new BN(100)).mul(tokenbits);
-        const balance = (new BN(90)).mul(tokenbits);
-
         await ants.mint(faucet.address, amount, {from: owner});
-
-        const receipt = await faucet.withdraw({ from: other });
-        expectEvent(receipt, 'Withdrawal', { account: other });
-
+        await faucet.withdraw({ from: other });
         expect(await ants.balanceOf(faucet.address)).to.be.bignumber.equal(balance);
       })
 
-      it("other address should not be able to add a new issuer", async () => {
+      it("should emit the appropriate event when ANTS are withdrawn", async function () {
+        await ants.mint(faucet.address, amount, {from: owner});
+        const receipt = await faucet.withdraw({ from: other });
+        expectEvent(receipt, 'Withdrawal', { account: other });
+      })
+
+      it("should revert when insufficient balance of ANTS in the faucet", async () => {
         await expectRevert(faucet.withdraw({from:other}), 'Insufficient balance of ANTS in the faucet')
       })
 
