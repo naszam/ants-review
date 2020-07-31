@@ -158,7 +158,7 @@ contract AntsReview is AntsReviewRoles {
 
   modifier onlySubmitter(uint _antId, uint _reviewId)
   {
-    require(msg.sender == peer_reviews[_antId][_reviewId].peer_reviewer);
+    require(msg.sender == peer_reviews[_antId][_reviewId].peer_reviewer, "Caller is not the submitter");
     _;
   }
 
