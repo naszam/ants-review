@@ -297,4 +297,44 @@ const allowance = ether('10');
     })
   })
 
+  describe("withdrawAntReview()", async function () {
+
+    beforeEach(async function () {
+      await antsreview.addIssuer(issuer, {from: owner});
+      await antsreview.addPeerReviewer(peer_reviewer, {from: owner});
+      await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+      await ants.mint(faucet.address, amount, {from: owner});
+      await faucet.withdraw({ from: anter });
+      await ants.increaseAllowance(antsreview.address, allowance, {from: anter})
+      await antsreview.contribute(antId, tokens, {from: anter});
+    });
+
+    it("issuers should be able to withdraw amount after AntReview's deadline", async function () {
+      await time.increase(time.duration.weeks(2));
+      await antsreview.withdrawAntReview(antId, issuerId, tokens, {from: issuer1});
+      expect(await ants.balanceOf(antsreview.address)).to.be.bignumber.equal('0');
+    })
+
+    it("should emit the appropriate event when an AntReview is withdrawn", async function () {
+      await time.increase(time.duration.weeks(2));
+      const receipt = await antsreview.withdrawAntReview(antId, issuerId, tokens, {from: issuer1});
+      expectEvent(receipt, "AntReviewWithdrawn", { antId: antId, issuer: issuer1, amount: tokens, balance: '0'});
+    })
+
+    it("should revert when the deadline is not elapsed", async function () {
+      await time.increase(time.duration.weeks(2));
+      await expectRevert(antsreview.withdrawAntReview(antId, issuerId, amount, {from: issuer1}), 'Amount exceed AntReview balance');
+    })
+
+    it("random address should not be able to withdraw an AntReview", async function () {
+      await time.increase(time.duration.weeks(2));
+      await expectRevert(antsreview.withdrawAntReview(antId, issuerId, amount, {from: other}), 'Caller is not the issuer');
+    })
+
+    it("should revert when the deadline is not elapsed", async function () {
+      await expectRevert(antsreview.withdrawAntReview(antId, issuerId, tokens, {from: issuer1}), 'Deadline has not elapsed');
+    })
+
+  })
+
 })
