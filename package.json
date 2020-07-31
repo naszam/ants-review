@@ -20,7 +20,7 @@
     "@openzeppelin/contracts": "^3.1.0",
     "@truffle/hdwallet-provider": "^1.0.40",
     "ganache-cli": "^6.9.1",
-    "truffle": "^5.1.36",
+    "truffle": "^5.1.37",
     "truffle-flattener": "^1.4.4"
   },
   "devDependencies": {
@@ -28,6 +28,6 @@
     "@openzeppelin/test-helpers": "^0.5.6",
     "chai": "^4.2.0",
     "husky": "^4.2.5",
-    "mocha": "^8.0.1"
+    "mocha": "^8.1.0"
   }
 }
