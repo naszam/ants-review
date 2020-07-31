@@ -90,6 +90,8 @@ contract AntsReview is AntsReviewRoles {
   event ReviewUpdated(uint antId, uint reviewId, string reviewHash);
   event AntReviewAccepted(uint antId, uint reviewId, address approver, uint amount);
   event AntReviewChanged(uint antId, address issuer, address payable[] issuers, string paperHash, string requirementsHash, uint64 deadline);
+  event ApproverAdded(uint antId, uint issuerId, address approver);
+  event ApproverRemoved(uint antId, uint issuerId, address approver);
 
   constructor(address ants_) public {
     ants = AntsToken(ants_);
@@ -176,8 +178,8 @@ contract AntsReview is AntsReviewRoles {
 
   /// @dev Getters
 
-  function getApprover(uint _antId) external view whenNotPaused returns (address) {
-    return approvers[_antId].at(0);
+  function getApprover(uint _antId, uint _approverId) external view whenNotPaused returns (address approver) {
+    return approvers[_antId].at(_approverId);
   }
 
 
@@ -218,6 +220,57 @@ contract AntsReview is AntsReviewRoles {
       emit AntReviewIssued(antId, _issuers, _paperHash, _requirementsHash, _deadline);
 
       return true;
+  }
+
+  function changeAntReview(
+      uint _antId,
+      uint _issuerId,
+      address payable[] calldata _issuers,
+      string calldata _paperHash,
+      string calldata _requirementsHash,
+      uint64 _deadline)
+      external
+      hasIssuer(_antId, _issuerId)
+      whenNotPaused()
+      returns (bool)
+  {
+    antreviews[_antId].issuers = _issuers;
+    antreviews[_antId].paperHash = _paperHash;
+    antreviews[_antId].requirementsHash = _requirementsHash;
+    antreviews[_antId].deadline = _deadline;
+
+    emit AntReviewChanged(_antId, msg.sender, _issuers, _paperHash, _requirementsHash, _deadline);
+    return true;
+  }
+
+  function _addApprover(uint _antId, address _account) private whenNotPaused returns (bool) {
+    return approvers[_antId].add(_account);
+  }
+
+  function addApprover(uint _antId, uint _issuerId, address _account)
+      external
+      antReviewExists(_antId)
+      hasIssuer(_antId, _issuerId)
+      whenNotPaused()
+      returns (bool)
+  {
+    require(!approvers[_antId].contains(_account), "Account is already an approver");
+    require(approvers[_antId].add(_account));
+    emit ApproverAdded(_antId, _issuerId, _account);
+    return true;
+  }
+
+  function removeApprover(uint _antId, uint _issuerId, address _account)
+      external
+      antReviewExists(_antId)
+      hasIssuer(_antId, _issuerId)
+      whenNotPaused()
+      returns (bool)
+  {
+    require(approvers[_antId].contains(_account), "Account is not an approver");
+    require(approvers[_antId].remove(_account));
+    emit ApproverRemoved(_antId, _issuerId, _account);
+    return true;
   }
 
   function contribute(uint _antId, uint _amount)
@@ -319,55 +372,6 @@ contract AntsReview is AntsReviewRoles {
 
       emit AntReviewAccepted(_antId, _reviewId, msg.sender, _amount);
       return true;
-  }
-
-  function changeAntReview(
-      uint _antId,
-      uint _issuerId,
-      address payable[] calldata _issuers,
-      string calldata _paperHash,
-      string calldata _requirementsHash,
-      uint64 _deadline)
-      external
-      hasIssuer(_antId, _issuerId)
-      whenNotPaused()
-      returns (bool)
-  {
-    antreviews[_antId].issuers = _issuers;
-    antreviews[_antId].paperHash = _paperHash;
-    antreviews[_antId].requirementsHash = _requirementsHash;
-    antreviews[_antId].deadline = _deadline;
-
-    emit AntReviewChanged(_antId, msg.sender, _issuers, _paperHash, _requirementsHash, _deadline);
-    return true;
-  }
-
-  function _addApprover(uint _antId, address _account) private whenNotPaused returns (bool) {
-    return approvers[_antId].add(_account);
-  }
-
-  function addApprover(uint _antId, uint _issuerId, address _account)
-      external
-      antReviewExists(_antId)
-      hasIssuer(_antId, _issuerId)
-      whenNotPaused()
-      returns (bool)
-  {
-    require(!approvers[_antId].contains(_account), "Account is already an approver");
-    require(approvers[_antId].add(_account));
-    return true;
-  }
-
-  function removeApprover(uint _antId, uint _issuerId, address _account)
-      external
-      antReviewExists(_antId)
-      hasIssuer(_antId, _issuerId)
-      whenNotPaused()
-      returns (bool)
-  {
-    require(approvers[_antId].contains(_account), "Account is not an approver");
-    require(approvers[_antId].remove(_account));
-    return true;
   }
 
 }
