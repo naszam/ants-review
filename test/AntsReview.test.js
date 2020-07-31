@@ -23,6 +23,7 @@ const issuers = [issuer, issuer1, issuer2];
 const paperHash = "QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4";
 const requirementsHash = "QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ";
 const reviewHash = "Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u";
+const reviewHash2 = "QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D"
 const antId = "0";
 const reviewId = "0";
 const contributionId = "0";
@@ -132,7 +133,7 @@ const allowance = ether('10');
   // Check fulfillAntReview() for success when a peer_reviewer is fulfilling an AntReview
   // Check fulfillAntReview() for sucessfully emit event when the AntReview is Fulfilled
   // Check fulfillAntReview() for failure when a random address try to fulfill an AntReview
-  describe("fulfillAntReview", async function () {
+  describe("fulfillAntReview()", async function () {
 
     beforeEach(async function () {
       await antsreview.addIssuer(issuer, {from: owner});
@@ -142,7 +143,7 @@ const allowance = ether('10');
 
     it("peer_reviewers should be able to fulfill an AntReview", async function () {
       await antsreview.fulfillAntReview(antId, reviewHash, {from: peer_reviewer});
-      const receipt = await antsreview.peer_reviews(antId, 0, {from: other});
+      const receipt = await antsreview.peer_reviews(antId, reviewId, {from: other});
       expect(receipt.accepted).to.equal(false);
       expect(receipt.peer_reviewer).to.equal(peer_reviewer);
       expect(receipt.reviewHash).to.equal(reviewHash);
@@ -150,11 +151,36 @@ const allowance = ether('10');
 
     it("should emit the appropriate event when the AntReview is fulfilled", async () => {
       const receipt = await antsreview.fulfillAntReview(antId, reviewHash, {from: peer_reviewer});
-      expectEvent(receipt, "AntReviewFulfilled", { antId: antId, reviewId: '0', peer_reviewer: peer_reviewer, reviewHash: reviewHash });
+      expectEvent(receipt, "AntReviewFulfilled", { antId: antId, reviewId: reviewId, peer_reviewer: peer_reviewer, reviewHash: reviewHash });
     })
 
     it("random address should not be able to fulfill an AntReview", async () => {
       await expectRevert(antsreview.fulfillAntReview(antId, reviewHash, {from: other}), 'Caller is not a peer-reviewer');
+    })
+  })
+
+  describe("updateReview()", async function () {
+
+    beforeEach(async function () {
+      await antsreview.addIssuer(issuer, {from: owner});
+      await antsreview.addPeerReviewer(peer_reviewer, {from: owner});
+      await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+      await antsreview.fulfillAntReview(antId, reviewHash, {from: peer_reviewer});
+    });
+
+    it("peer_reviewers should be able to update a Review", async function () {
+      await antsreview.updateReview(antId, reviewId, reviewHash2, {from: peer_reviewer});
+      const receipt = await antsreview.peer_reviews(antId, reviewId, {from: other});
+      expect(receipt.reviewHash).to.equal(reviewHash2);
+    })
+
+    it("should emit the appropriate event when a Review is updated", async () => {
+      const receipt = await antsreview.updateReview(antId, reviewId, reviewHash2, {from: peer_reviewer});
+      expectEvent(receipt, "ReviewUpdated", { antId: antId, reviewId: reviewId, reviewHash: reviewHash2});
+    })
+
+    it("random address should not be able to fulfill an AntReview", async () => {
+      await expectRevert(antsreview.updateReview(antId, reviewId, reviewHash2, {from: other}), 'Caller is not the submitter');
     })
   })
 
