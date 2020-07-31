@@ -14,13 +14,13 @@ const AntsReview = contract.fromArtifact('AntsReview');
 let antsreview;
 
 describe('AntsReview', function () {
-const [ owner, issuer, peer_reviewer, approver, anter, other, issuer1, issuer2, issuer3, issuer4, issuer5 ] = accounts;
+const [ owner, issuer, approver, peer_reviewer, anter, other, approver2, issuer1, issuer2, issuer3 ] = accounts;
 
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
-const issuers = [issuer, issuer1, issuer2];
-const issuers2 = [issuer3, issuer4, issuer4];
+const issuers = [issuer, issuer1];
+const issuers2 = [issuer2, issuer3];
 const paperHash = "QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4";
 const paperHash2 = "QmXnKpwTjTVGynndbzQSRb4yz7ebYgWfocSgfztsx8s2Zo";
 const requirementsHash = "QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ";
@@ -30,6 +30,7 @@ const reviewHash2 = "QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D"
 const antId = "0";
 const reviewId = "0";
 const issuerId = "1";
+const approverId = "1";
 const contributionId = "0";
 const amount = ether('100');
 const tokens = ether('1');
@@ -67,7 +68,7 @@ const allowance = ether('10');
       expect(receipt.requirementsHash).to.equal(requirementsHash);
       expect(receipt.deadline).to.be.bignumber.equal(deadline);
       expect(receipt.balance).to.be.bignumber.equal('0');
-      expect(await antsreview.getApprover(antId, {from: other})).to.equal(approver);
+      expect(await antsreview.getApprover(antId, '0', {from: other})).to.equal(approver);
     })
 
     it("should emit the appropriate event when an AntReview is issued", async function () {
@@ -107,6 +108,31 @@ const allowance = ether('10');
     })
 
   })
+
+  describe("addApprover()", async function () {
+
+    beforeEach(async function () {
+      await antsreview.addIssuer(issuer, {from: owner});
+      await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+    });
+
+    it("issuer should be able to add a new Approver", async function () {
+      await antsreview.addApprover(antId, issuerId, approver2, {from: issuer1});
+      const receipt = await antsreview.getApprover(antId, approverId, {from: other});
+      expect (receipt).to.equal(approver2);
+    })
+
+    it("should emit the appropriate event when an approver is added", async function () {
+      const receipt = await antsreview.addApprover(antId, issuerId, approver2, {from: issuer1});
+      expectEvent(receipt, "ApproverAdded", { antId: antId, issuerId: issuerId, approver: approver2 })
+      })
+
+    it("random address should not be able to add an approver", async function () {
+      await expectRevert(antsreview.addApprover(antId, issuerId, approver2, {from: other}), 'Caller is not the issuer');
+    })
+
+  })
+
 
   describe("contribute()", async function () {
 
