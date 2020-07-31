@@ -190,7 +190,7 @@ contract AntsReview is AntsReviewRoles {
   /// @param _paperHash The IPFS Hash of the Scientific Paper
   /// @param _requirementsHash The IPFS Hash of the Peer-Review Requirements
   /// @param _deadline The unix timestamp after which fulfillments will no longer be accepted
-  /// @return antId If the AntReview is successfully issued
+  /// @return True If the AntReview is successfully issued
   function issueAntReview(
       address payable[] calldata _issuers,
       address _approver,
@@ -222,6 +222,15 @@ contract AntsReview is AntsReviewRoles {
       return true;
   }
 
+  /// @notice Change an AntReview
+  /// @dev Access restricted to Issuer
+  /// @param _antId The AntReview Id
+  /// @param _issuerId The Issuer Id
+  /// @param _issuers The issuers of the AntReview
+  /// @param _paperHash The IPFS Hash of the Scientific Paper
+  /// @param _requirementsHash The IPFS Hash of the Peer-Review Requirements
+  /// @param _deadline The unix timestamp after which fulfillments will no longer be accepted
+  /// @return True If the AntReview is successfully changed
   function changeAntReview(
       uint _antId,
       uint _issuerId,
@@ -373,5 +382,23 @@ contract AntsReview is AntsReviewRoles {
       emit AntReviewAccepted(_antId, _reviewId, msg.sender, _amount);
       return true;
   }
+
+  function withdrawAntReview(uint _antId, uint _issuerId, uint _amount)
+      external
+      antReviewExists(_antId)
+      hasIssuer(_antId, _issuerId)
+      whenNotPaused()
+      returns (bool)
+  {
+    require(now > antreviews[_antId].deadline, "Deadline has not elapsed");
+    require(antreviews[_antId].balance >= _amount, "Amount exceed AntReview balance");
+
+    antreviews[_antId].balance = antreviews[_antId].balance.sub(_amount);
+
+    require(ants.transfer(msg.sender, _amount));
+
+    return true;
+  }
+
 
 }
