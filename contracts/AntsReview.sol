@@ -170,7 +170,7 @@ contract AntsReview is AntsReviewRoles {
 
   modifier hasIssuer(uint _antId, uint _issuerId)
   {
-    require(antreviews[_antId].issuers[_issuerId] == msg.sender);
+    require(antreviews[_antId].issuers[_issuerId] == msg.sender, "Caller is not the issuer");
     _;
   }
 
