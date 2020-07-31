@@ -47,7 +47,7 @@ contract AntsReview is AntsReviewRoles {
   /// @dev Token
   AntsToken internal immutable ants;
 
-  /// @dev AntReview Counter
+  /// @dev Counter
   Counters.Counter public antReviewIdTracker;
 
   /// @dev Storage
@@ -253,10 +253,21 @@ contract AntsReview is AntsReviewRoles {
     return true;
   }
 
+  /// @notice Add Approver
+  /// @dev Internal function used in issueAntReview()
+  /// @param _antId The AntReview Id
+  /// @param _account The account to be added as Approver
+  /// @return True if the account is successfully added as Approver
   function _addApprover(uint _antId, address _account) private whenNotPaused returns (bool) {
     return approvers[_antId].add(_account);
   }
 
+  /// @notice Add Approver
+  /// @dev Access restricted to Issuers
+  /// @param _antId The AntReview Id
+  /// @param _issuerId The Issuer Id
+  /// @param _account The account to be added as Approver
+  /// @return True if the account is successfully added as Approver
   function addApprover(uint _antId, uint _issuerId, address _account)
       external
       antReviewExists(_antId)
@@ -270,6 +281,12 @@ contract AntsReview is AntsReviewRoles {
     return true;
   }
 
+  /// @notice Remove Approver
+  /// @dev Access restricted to Issuers
+  /// @param _antId The AntReview Id
+  /// @param _issuerId The Issuer Id
+  /// @param _account The account to be removed as Approver
+  /// @return True if the account is successfully removed as Approver
   function removeApprover(uint _antId, uint _issuerId, address _account)
       external
       antReviewExists(_antId)
@@ -283,6 +300,11 @@ contract AntsReview is AntsReviewRoles {
     return true;
   }
 
+  /// @notice Contribute to an AntReview
+  /// @dev Linked to ANTS token
+  /// @param _antId The AntReview Id
+  /// @param _amount The Contribution amount
+  /// @return True if the account is the contribution is successfully added
   function contribute(uint _antId, uint _amount)
     external
     antReviewExists(_antId)
@@ -300,6 +322,11 @@ contract AntsReview is AntsReviewRoles {
     return true;
   }
 
+  /// @notice Refund Contributors
+  /// @dev Access restricted to Contributor
+  /// @param _antId The AntReview Id
+  /// @param _contributionId The Contribution Id
+  /// @return True if the contribution is successfully refunded
   function refund(uint _antId, uint _contributionId)
     external
     antReviewExists(_antId)
@@ -326,7 +353,7 @@ contract AntsReview is AntsReviewRoles {
 
   /// @notice Submit a fulfillment for the given antReview
   /// @dev Access restricted to Peer-Reviewer
-  /// @param _antId The index of the antReview to be fufilled
+  /// @param _antId The AntReview Id
   /// @param _reviewHash The IPFS Hash of the peer-review
   /// @return True If the AntReview is successfully fulfilled
   function fulfillAntReview(uint256 _antId, string calldata _reviewHash)
@@ -344,6 +371,12 @@ contract AntsReview is AntsReviewRoles {
     return true;
   }
 
+  /// @notice Update AntReview
+  /// @dev Access restricted to Peer_Reviewers
+  /// @param _antId The AntReview Id
+  /// @param _reviewId The Peer_Review Id
+  /// @param _reviewHash The IPFS Hash of the updated Peer_Review
+  /// @return True If the Peer_Review is successfully updated
   function updateReview(uint _antId, uint _reviewId, string calldata _reviewHash)
     external
     onlySubmitter(_antId, _reviewId)
@@ -362,8 +395,8 @@ contract AntsReview is AntsReviewRoles {
 
   /// @notice Accept a given Peer-Review
   /// @dev Access restricted to Issuer
-  /// @param _antId the index of the antReview
-  /// @param _reviewId the index of the fulfillment being accepted
+  /// @param _antId The AntReview Id
+  /// @param _reviewId The Peer_Review Id
   /// @return True If the AntReview is successfully being accepted
   function acceptAntReview(uint _antId, uint _reviewId, uint _amount)
       external
@@ -384,6 +417,12 @@ contract AntsReview is AntsReviewRoles {
       return true;
   }
 
+  /// @notice Withdraw AntReview
+  /// @dev Access restricted to Issuer
+  /// @param _antId The AntReview Id
+  /// @param _issuerId The Issuer Id
+  /// @param _amount The amount to withdraw
+  /// @return True If the AntReview is successfully withdrawn
   function withdrawAntReview(uint _antId, uint _issuerId, uint _amount)
       external
       antReviewExists(_antId)
