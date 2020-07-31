@@ -92,6 +92,7 @@ contract AntsReview is AntsReviewRoles {
   event AntReviewChanged(uint antId, address issuer, address payable[] issuers, string paperHash, string requirementsHash, uint64 deadline);
   event ApproverAdded(uint antId, uint issuerId, address approver);
   event ApproverRemoved(uint antId, uint issuerId, address approver);
+  event AntReviewWithdrawn(uint antId, address issuer, uint amount, uint balance);
 
   constructor(address ants_) public {
     ants = AntsToken(ants_);
@@ -396,7 +397,7 @@ contract AntsReview is AntsReviewRoles {
     antreviews[_antId].balance = antreviews[_antId].balance.sub(_amount);
 
     require(ants.transfer(msg.sender, _amount));
-
+    emit AntReviewWithdrawn(_antId, msg.sender, _amount, antreviews[_antId].balance);
     return true;
   }
 
