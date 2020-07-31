@@ -133,6 +133,31 @@ const allowance = ether('10');
 
   })
 
+  describe("removeApprover()", async function () {
+
+    beforeEach(async function () {
+      await antsreview.addIssuer(issuer, {from: owner});
+      await antsreview.issueAntReview(issuers, approver, paperHash, requirementsHash, deadline, {from: issuer});
+      await antsreview.addApprover(antId, issuerId, approver2, {from: issuer1});
+    });
+
+    it("issuer should be able to remove an Approver", async function () {
+      await antsreview.removeApprover(antId, issuerId, approver, {from: issuer1});
+      const receipt = await antsreview.getApprover(antId, '0', {from: other});
+      expect (receipt).to.equal(approver2)
+    })
+
+    it("should emit the appropriate event when an approver is removed", async function () {
+      const receipt = await antsreview.removeApprover(antId, issuerId, approver, {from: issuer1});
+      expectEvent(receipt, "ApproverRemoved", { antId: antId, issuerId: issuerId, approver: approver })
+      })
+
+    it("random address should not be able to remove an approver", async function () {
+      await expectRevert(antsreview.removeApprover(antId, issuerId, approver, {from: other}), 'Caller is not the issuer');
+    })
+
+  })
+
 
   describe("contribute()", async function () {
 
