@@ -4,7 +4,7 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { BN, constants, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
+const { constants, expectEvent, expectRevert, ether } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
 const { expect } = require('chai');
@@ -19,7 +19,7 @@ const [ owner, minter, other ] = accounts;
 const name = 'Ants-Review';
 const symbol = 'ANTS';
 
-const amount = new BN('5000');
+const amount = ether('100');
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const MINTER_ROLE = web3.utils.soliditySha3('MINTER_ROLE');
