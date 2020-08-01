@@ -53,12 +53,18 @@ module.exports = {
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
      },
-     
+
      rinkeby: {
       provider: () => new HDWalletProvider(mnemonic, infuraURL),
       network_id: 4, // Rinkeby's network id
       gas: 5500000,
      },
+
+     kovan: {
+      provider: () => new HDWalletProvider(mnemonic, infuraURL),
+      network_id: 42, // Kovan's network id
+      gas: 9000000,
+    },
 
     // Another network with more advanced options...
     // advanced: {
