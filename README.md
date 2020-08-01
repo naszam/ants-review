@@ -15,18 +15,21 @@
 > A Protocol for Open Anonymous Scientific Peer-Reviews on Ethereum  
 > :1st_place_medal: 1st Place at [ETHTurin Hackathon](https://ethlocal.co/ethturin/hacks)
 
-The Project implements a basic Bounty-like contract called AntsReview to allow anyone to issue an AntReview in ETH, a bounty for peer-review in scientific publication, linked to requirements stored on ipfs which anyone can fufill by submitting the ipfs hash which contains evidence of their fufillment.  
-After the submission of successful peer-reviews, they will be audited by an external Editor and payed by the Issuer.  
-To incentivise ethical behaviour the system will implement a quadratic funding on AntsReview.
+The Project implements a Bounty-like protocol called Ants-Review to allow issuers to issue an AntReview, a bounty for peer-review in scientific publication, linked to requirements stored on ipfs which peer-reviewers can fufill by submitting the ipfs hash which contains evidence of their fufillment.  
+After the submission of successful peer-reviews, they will be approved by an approver and payed in ANTS.  
 
-The Project is intended to be used as a template for developing the idea presented in the white paper, extending its functionality via the following steps:
-
-- Quadratic Funding Gitcoin-like for Ants-Review.
+Project (MVP) feautures:
 - ERC20 token, name Ants-Review, symbol ANTS.
-- zkANTS, allowing private Ants transactions on Ethereum using ZK-SNARKs via AZTEC Protocol.
 - Timestamped on Ethereum via PoE (Proof of Existence).
 - Storing on IPFS.
+
+Future integrations & features:
+
+- Quadratic Funding Gitcoin-like for Ants-Review.
+- zkANTS, allowing private Ants transactions on Ethereum using ZK-SNARKs via AZTEC Protocol.
+- De-Fi services like Dai, Chai, MakerDAO DSR, ...
 - ENS, allowing human-readable Ethereum addresses
+- Quadratic Funding Gitcoin-like for Ants-Review.
 - Upgradability, to allow the logic to be extended and improved.
 - ...
 
