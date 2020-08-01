@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.11;
+pragma solidity 0.6.12;
 
 ///@title Ants-Review
 ///@author Nazzareno Massari @naszam
@@ -25,7 +25,7 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   AntsToken internal immutable ants;
 
   /// @dev Events
-  event Withdrawal(address indexed to);
+  event Withdrawal(address account);
   event Deposit(address indexed from, uint amount);
 
 
@@ -47,9 +47,10 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   /// @dev Checks if balance is more or equal to 1 Ant
   /// @return True If 1 Ant is successfully withdrawn
   function withdraw() external returns (bool) {
-      require(ants.balanceOf(address(this)) >= 1 ether, "Insufficient balance in faucet for withdrawal 1 Ant");
+      require(ants.balanceOf(address(this)) >= 10, "Insufficient balance of ANTS in the faucet");
 
-      ants.transfer(msg.sender, 1 ether);
+      ants.transfer(msg.sender, 10 ether);
+
       emit Withdrawal(msg.sender);
       return true;
   }
@@ -57,7 +58,7 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() external {
-    require(hasRole(PAUSER_ROLE, msg.sender), "AntFaucet: must have pauser role to pause");
+    require(hasRole(PAUSER_ROLE, msg.sender), "AntsFaucet: must have pauser role to pause");
     ants.transfer(owner(), ants.balanceOf(address(this)));
     _pause();
   }
@@ -65,7 +66,7 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   /// @notice Unpause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function unpause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "AntFaucet: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "AntsFaucet: must have pauser role to unpause");
         _unpause();
   }
 

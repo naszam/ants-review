@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.11;
+pragma solidity 0.6.12;
 
 ///@title Ants-Review
 ///@author Nazzareno Massari @naszam
@@ -109,14 +109,14 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
-      require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to pause");
+      require(hasRole(PAUSER_ROLE, msg.sender), "AntsReview: must have pauser role to pause");
       _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function unpause() external {
-          require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to unpause");
+          require(hasRole(PAUSER_ROLE, msg.sender), "AntsReview: must have pauser role to unpause");
           _unpause();
     }
 }

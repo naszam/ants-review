@@ -4,7 +4,7 @@
   "description": "Bounty-like system for Open Anonymous Scientific Peer-Reviews",
   "main": "truffle-config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx mocha --exit --recursive --parallel"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,16 @@
   "homepage": "https://github.com/naszam/ants-review#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^3.1.0",
-    "@truffle/hdwallet-provider": "^1.0.38",
+    "@truffle/hdwallet-provider": "^1.0.40",
     "ganache-cli": "^6.9.1",
-    "truffle": "^5.1.34",
+    "truffle": "^5.1.37",
     "truffle-flattener": "^1.4.4"
   },
   "devDependencies": {
-    "husky": "^4.2.5"
+    "@openzeppelin/test-environment": "^0.1.4",
+    "@openzeppelin/test-helpers": "^0.5.6",
+    "chai": "^4.2.0",
+    "husky": "^4.2.5",
+    "mocha": "^8.1.0"
   }
 }

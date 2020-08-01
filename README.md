@@ -1,7 +1,7 @@
 [![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
-[![#npm 12.16.2](https://img.shields.io/badge/npm-v12.16.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
+[![#npm 12.16.3](https://img.shields.io/badge/npm-v12.16.3-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
-[![#solc v0.6.11](https://img.shields.io/badge/solc-v0.6.11-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.11)
+[![#solc v0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)
 
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethlocal.co/ethturin/hacks)
@@ -66,12 +66,12 @@ Clone this GitHub repository.
     ```
     npm install -g ganache-cli
     ```
-    - Slither (optional): 
-    ```
+    - Slither (optional):
+    ```sh
     pip3 install slither-analyzer
     ```
-    - MythX CLI (optional): 
-    
+    - MythX CLI (optional):
+
     ```sh
      $ git clone git://github.com/dmuhs/mythx-cli
      $ sudo python setup.py install
@@ -90,11 +90,12 @@ Clone this GitHub repository.
      ```sh
      $ truffle migrate
      ```
-   - Test the smart contracts using Truffle & Ganache with the following command (global dependency):
+   - Test the smart contracts using Mocha & OpenZeppelin Test Environment with the following command:
      ```sh
-     $ truffle test
+     $ npm test
+     ```
    - Analyze the smart contracts using Slither with the following command (optional):
-      ```
+      ```sh
       $ slither .
       ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
@@ -139,15 +140,15 @@ Deploy
   - Import Ganache GUI mnemonic into MetaMask.
   - Connect MetaMask to Ganache GUI, adding a custom RPC specifing the Ganache GUI's RPC server URL.
   - Deploy the smart contracts to Ganache GUI:
-    ```
+    ```sh
     $ truffle migrate
     ```
   - Move to client directory on the project:
-    ```
+    ```sh
     $ cd client
     ```
   - Install dependencies:
-    ```
+    ```sh
     $ yarn install
     ```
   - Start the Local Web Server:
@@ -158,7 +159,7 @@ Deploy
 
 Interacting with the PoC:
 =========================
-    
+
   - The User (Author) can issue a new AntReview, specifying:
     - IPFS Hash of requirements (e.g. QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4);
     - Timestamp of the deadline ([timestamp generator](https://www.unixtimestamp.com/));
@@ -172,7 +173,7 @@ Interacting with the PoC:
   - Cancel AntReview by specifying the AntReview Id (to be used after the deadline, if the AntReview has not received any fulfillments)
   - The Issuer will get back the reward of the AntReview Id specified.
   - Done.  
-  
+
 About
 =====
 ## Inspiration & References
