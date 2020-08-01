@@ -3,6 +3,8 @@
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc v0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)
+[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](#project-deployed-on-kovan)
+
 
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethlocal.co/ethturin/hacks)
 [![DOI](https://zenodo.org/badge/258342275.svg)](https://zenodo.org/badge/latestdoi/258342275)  
@@ -104,14 +106,14 @@ Clone this GitHub repository.
      ```
 Deploy
 ======
-## Deploying on Rinkeby's Testnet
+## Deploying on Kovan's Testnet
   - Get an Ethereum Account on Metamask.
   - On the landing page, click “Get Chrome Extension.”
   - Create a .secret file cointaining the menomic.
-  - Get some test ether from a [Rinkeby's faucet](https://faucet.rinkeby.io/).
+  - Get some test ether from a [Kovan's faucet](https://faucet.kovan.network/).
   - Signup [Infura](https://infura.io/).
   - Create new project.
-  - Copy the rinkeby URL into truffle-config.js.
+  - Copy the kovan URL into truffle-config.js.
   - Uncomment the following lines in truffle-config.js:
     ```
     // const HDWalletProvider = require("@truffle/hdwallet-provider");
@@ -127,11 +129,15 @@ Deploy
     ```
   - Deploy the smart contract using Truffle & Infura with the following command:
     ```sh
-    $ truffle migrate --network rinkeby
+    $ truffle migrate --network kovan
     ```
-
- The Project's smart contract have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
- The ABIs are available to test the project on Rinkeby's Network.
+ ## Project (PoC) deployed on Rinkeby
+ [AntsReview.sol](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
+ 
+ ## Project deployed on Kovan
+ [ANTS.sol](https://kovan.etherscan.io/address/)
+ [AntsFaucet.sol](https://kovan.etherscan.io/address/)
+ [AntsReview.sol](https://kovan.etherscan.io/address/)
 
  Using the DApp
  ==============
