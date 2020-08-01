@@ -2,8 +2,8 @@
 [![#npm 12.16.3](https://img.shields.io/badge/npm-v12.16.3-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc v0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
-[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)
 [![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](#project-deployed-on-kovan)
+[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)
 
 
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethlocal.co/ethturin/hacks)
@@ -135,9 +135,9 @@ Deploy
  [AntsReview.sol](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
  
  ## Project deployed on Kovan
- [ANTS.sol](https://kovan.etherscan.io/address/)
- [AntsFaucet.sol](https://kovan.etherscan.io/address/)
- [AntsReview.sol](https://kovan.etherscan.io/address/)
+ [ANTS.sol](https://kovan.etherscan.io/address/) 
+ [AntsFaucet.sol](https://kovan.etherscan.io/address/) 
+ [AntsReview.sol](https://kovan.etherscan.io/address/) 
 
  Using the DApp
  ==============
