@@ -134,7 +134,7 @@ Deploy
  ## Project (PoC) deployed on Rinkeby
  [AntsReview.sol](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
  
- ## Project deployed on Kovan
+ ## Project (MVP) deployed on Kovan
  [ANTS.sol](https://kovan.etherscan.io/address/)  
  [AntsFaucet.sol](https://kovan.etherscan.io/address/)  
  [AntsReview.sol](https://kovan.etherscan.io/address/)  
