@@ -20,7 +20,8 @@ After the submission of successful peer-reviews, they will be approved by an app
 
 Project (MVP) feautures:
 - ERC20 token, name Ants-Review, symbol ANTS.
-- Timestamped on Ethereum via PoE (Proof of Existence).
+- ANTS Faucet on Kovan.
+- IPFS Hash Timestamped on Ethereum via PoE (Proof of Existence).
 - Storing on IPFS.
 
 Future integrations & features:
@@ -37,14 +38,31 @@ Future integrations & features:
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
 [Demo (PoC)](https://youtu.be/uMqksNytsMY)  
 
-![Smart Contracts Flow-Chart](AntsReview.png)
-
 ## Sections
+* [Building Blocks](#building-blocks)
 * [Setup](#setup)
 * [Deploy](#deploy)
 * [Using the DApp](#using-the-dapp)
 * [Interacting with the PoC](#interacting-with-the-poc)
 * [About](#about)
+
+Building Blocks
+===============
+
+![Smart Contracts Flow-Chart](AntsReview.png)
+
+### [AntsReview](./contracts/AntsReview.sol)
+> AntsReview a bounty-like system for scientific peer-reviews rewarded in ANTS
+
+### [AntsReviewRoles](./contracts/AntsReviewRoles.sol)
+> AntsReviewRoles Access Management for Default Admin, Issuer, Peer-Reviewer and Pauser Role
+
+### [ANTS](./contracts/ANTS.sol)
+> ANTS Ants-Review's native token
+
+### [AntsFaucet](./contracts/AntsFaucet.sol)
+> AntsFaucet ANTS Faucet
+
 
 Setup
 =====
