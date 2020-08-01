@@ -156,9 +156,9 @@ Deploy
  [AntsReview.sol](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)  
  
  ## Project (MVP) deployed on Kovan  
- [AntsReview.sol](https://kovan.etherscan.io/address/)  
- [ANTS.sol](https://kovan.etherscan.io/address/)  
- [AntsFaucet.sol](https://kovan.etherscan.io/address/)
+ [AntsReview.sol](https://kovan.etherscan.io/address/0x85be8F04482cBB920550d5469E4dEdD6e1788121)  
+ [ANTS.sol](https://kovan.etherscan.io/address/0x7395e83BC988F3f2A9413920D510eC7D47610D08)  
+ [AntsFaucet.sol](https://kovan.etherscan.io/address/0xA7ea29C2994700f39801740bd0cf580f96997Dbd)
 
  Using the DApp
  ==============
