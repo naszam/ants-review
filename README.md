@@ -19,7 +19,7 @@ The Project implements a Bounty-like protocol called Ants-Review to allow issuer
 After the submission of successful peer-reviews, they will be approved by an approver and payed in ANTS.  
 
 Project (MVP) feautures:
-- ERC20 token, name Ants-Review, symbol ANTS.
+- ERC20 token, name: Ants-Review, symbol: ANTS.
 - ANTS Faucet on Kovan.
 - IPFS Hash Timestamped on Ethereum via PoE (Proof of Existence).
 - Storing on IPFS.
