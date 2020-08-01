@@ -153,7 +153,7 @@ Deploy
     $ truffle migrate --network kovan
     ```
  ## Project (PoC) deployed on Rinkeby
- [AntsReview.sol](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F).  
+ [AntsReview.sol](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)  
  
  ## Project (MVP) deployed on Kovan  
  [AntsReview.sol](https://kovan.etherscan.io/address/)  
