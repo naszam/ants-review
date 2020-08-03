@@ -23,6 +23,7 @@ Project (MVP) feautures:
 - ANTS Faucet on Kovan.
 - IPFS Hash Timestamped on Ethereum via PoE (Proof of Existence).
 - Storing on IPFS.
+- UI Deployed on Fleek.
 
 Future integrations & features:
 
@@ -32,6 +33,9 @@ Future integrations & features:
 - Quadratic Funding Gitcoin-like for Ants-Review.
 - Upgradability, to allow the logic to be extended and improved.
 - ...
+
+## Mentors
+- Mark Beylin, [@mbeylin](https://github.com/mbeylin)
 
 [White Paper](https://zenodo.org/record/3828087#.Xr8XVXVKg5k)  
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
