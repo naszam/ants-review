@@ -90,7 +90,7 @@ AntsReviewRoles inherits AccessControl module by OpenZeppelin, allowing the owne
 
 ANTS is the ERC20 token used by the Ants-Review Protocol.  
 It allows the owner of the contract, set as Default Admin, Minter and Pauser to add and remove a Minter via **addMinter()**, **removeMinter()** functions.
-The minter is able create new ANTS tokens via **mint()** and the holder to burn them via the **burn()** function.
+The minter is able create new ANTS tokens via **mint()** and the holder to burn them via the **burn()** function.  
 
 During deployment the contract sets the following ERC20 metadata:
 - name: "Ants-Review"
@@ -99,7 +99,7 @@ During deployment the contract sets the following ERC20 metadata:
 ### [AntsFaucet](./contracts/AntsFaucet.sol)
 > AntsFaucet ANTS Faucet
 
-AntsFaucet implements an ANTS Faucet to be used on Kovan to test the Ants-Review Protocol.
+AntsFaucet implements an ANTS Faucet to be used on Kovan to test the Ants-Review Protocol.  
 Anyone can get 10 ANTS by calling the **withdraw()** function.
 
 Setup
