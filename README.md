@@ -133,11 +133,10 @@ Clone this GitHub repository.
     $ sudo python3 setup.py install
     ```
     - MythX CLI (optional):
-
     ```sh
-     $ git clone git://github.com/dmuhs/mythx-cli
-     $ sudo python setup.py install
-     ```
+    $ git clone git://github.com/dmuhs/mythx-cli
+    $ sudo python setup.py install
+    ```
 ## Running the project with local test network (ganache-cli)
 
    - Start ganache-cli with the following command (global dependency):
