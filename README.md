@@ -129,7 +129,8 @@ Clone this GitHub repository.
     ```
     - Slither (optional):
     ```sh
-    pip3 install slither-analyzer
+    $ git clone https://github.com/crytic/slither.git && cd slither
+    $ sudo python3 setup.py install
     ```
     - MythX CLI (optional):
 
