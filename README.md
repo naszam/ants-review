@@ -27,6 +27,7 @@ Project (MVP) feautures:
 
 Future integrations & features:
 
+- OpenGSN for meta-transactions.
 - zkANTS, allowing private Ants transactions on Ethereum using ZK-SNARKs via AZTEC Protocol.
 - De-Fi services like Dai, Chai, MakerDAO DSR, ...
 - ENS, allowing human-readable Ethereum addresses
