@@ -59,11 +59,23 @@ Building Blocks
 ### [AntsReview](./contracts/AntsReview.sol)
 > AntsReview a bounty-like system for scientific peer-reviews rewarded in ANTS
 
+AntReview implements a bounty for scientific peer-reviews called AntReview where 
+
 ### [AntsReviewRoles](./contracts/AntsReviewRoles.sol)
 > AntsReviewRoles Access Management for Default Admin, Issuer, Peer-Reviewer and Pauser Role
 
+AntsReviewRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin and Pauser and to add Issuers and Peer-Reviewers via **addIssuer()** and **addPeerReviewer()** and to remove these roles via **removeIssuer()**, **removePeerReviewer()** functions.
+
 ### [ANTS](./contracts/ANTS.sol)
 > ANTS Ants-Review's native token
+
+ANTS is the ERC20 token used by the Ants-Review protocol.  
+It allows the owner of the contract, set as Default Admin, Minter and Pauser to add and remove a Minter via **addMinter()**, **removeMinter()** functions.
+The minter is able create new ANTS tokens via **mint()** and the holder to burn them via **burn()** function.
+
+During deployment the contract sets the following ERC20 metadata:
+- name: "Ants-Review"
+- symbol: "ANTS"  
 
 ### [AntsFaucet](./contracts/AntsFaucet.sol)
 > AntsFaucet ANTS Faucet
