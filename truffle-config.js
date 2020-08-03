@@ -18,7 +18,7 @@
  *
  */
 
- const path = require("path");
+// const path = require("path");
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
@@ -29,7 +29,7 @@
 
 module.exports = {
 
-  contracts_build_directory: path.join(__dirname, "client/src/contracts"),
+//  contracts_build_directory: path.join(__dirname, "poc-ui/src/contracts"),
 
   /**
    * Networks define how you connect to your ethereum client and let you set the
