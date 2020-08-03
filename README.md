@@ -76,7 +76,7 @@ There are several core actions in the lifecycle of an AntReview, which can be pe
   - **contribute()** called by any address that can send some ANTS to the AntReview of interest.
   - **refund()** called by any *Contributors* that can get a refund once the deadline is elapsed with no peer-reviews accepted.
   - **fulfillAntReview()** called by any *Peer-Reviewer* that can fulfill an AntReview, specyfing the IPFS hash of the peer-review.
-  - **updateAntReview()** called by any *Submitters* to update a specific Peer-Review, by specifying the new IPFS hash of the peer-review.
+  - **updateAntReview()** called by any *Submitters* to update a specific Peer-Review, by specifying the new IPFS hash of the updated peer-review.
   - **acceptAntReview()** called by any *Approver* to accept a peer-review for a specific AntReview and paying an amount of ANTS as reward.
   - **withdrawReview()** called by any *issuers* specified in an AntReview that can withdraw an amount from the AntReview once the deadline is elapsed to get the residual balance.
 
