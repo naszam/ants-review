@@ -64,7 +64,7 @@ AntReview implements a bounty for scientific peer-reviews called AntReview where
 ### [AntsReviewRoles](./contracts/AntsReviewRoles.sol)
 > AntsReviewRoles Access Management for Default Admin, Issuer, Peer-Reviewer and Pauser Role
 
-AntsReviewRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin and Pauser and to add Issuers and Peer-Reviewers via **addIssuer()** and **addPeerReviewer()** and to remove these roles via **removeIssuer()**, **removePeerReviewer()** functions.
+AntsReviewRoles inherits AccessControl module by OpenZeppelin, allowing the owner of the contract to be set as Default Admin and Pauser and to add Issuers and Peer-Reviewers via **addIssuer()** and **addPeerReviewer()** and to remove these roles via **removeIssuer()**, **removePeerReviewer()** functions.
 
 ### [ANTS](./contracts/ANTS.sol)
 > ANTS Ants-Review's native token
