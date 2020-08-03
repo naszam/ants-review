@@ -62,7 +62,7 @@ Building Blocks
 AntReview implements a bounty for scientific peer-reviews called AntReview where there are several key types of users:
   
   - AntReview **Issuers** are addresses, added by the owner of the contract, that can issue an AntReview via the function *issueAntReview()*.
-  - AntReview **Approvers** are addresses added by issuers when issuing an AntReview or with the function *addApprover()*.
+  - AntReview **Approvers** are addresses added by Issuers when they issue an AntReview or with the function *addApprover()*.
   - AntReview **Contributors** are any address which has made a contribution of ANTS to a given AntReview.
   - AntReview **Peer-Reviewers** are addresses, added by the owner of the contract, that can fulfill an AntReview via the function *fulfillAntReview()*.
   - AntReview **Submitters** are peer-reviers that submit a peer-review that can update their review via the function *updateReview()*.
