@@ -23,7 +23,7 @@ Project (MVP) feautures:
 - ANTS Faucet on Kovan.
 - IPFS Hash Timestamped on Ethereum via PoE (Proof of Existence).
 - Storing on IPFS.
-- UI Deployed on Fleek.
+- UI Deployed on IPFS via [Fleek](https://fleek.co/).
 
 Future integrations & features:
 
