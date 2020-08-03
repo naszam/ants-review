@@ -39,11 +39,11 @@ contract ANTS is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
       _;
   }
 
-  /// @notice Mint new WFIL
+  /// @notice Mint new ANTS
   /// @dev Access restricted only for Minters
   /// @param to Address of the recipient
-  /// @param amount Amount of WFIL issued
-  /// @return True if WFIL is successfully minted
+  /// @param amount Amount of ANTS issued
+  /// @return True if ANTS is successfully minted
   function mint(address to, uint256 amount) external onlyMinter returns (bool) {
       _mint(to, amount);
       return true;
