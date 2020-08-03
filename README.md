@@ -59,7 +59,26 @@ Building Blocks
 ### [AntsReview](./contracts/AntsReview.sol)
 > AntsReview a bounty-like system for scientific peer-reviews rewarded in ANTS
 
-AntReview implements a bounty for scientific peer-reviews called AntReview where 
+AntReview implements a bounty for scientific peer-reviews called AntReview where there are several key types of users:
+  
+  - AntReview **Issuers** are addresses, added by the owner of the contract, that can issue an AntReview via the function *issueAntReview()*.
+  - AntReview **Approvers** are addresses added by issuers when issuing an AntReview or with the function *addApprover()*.
+  - AntReview **Contributors** are any address which has made a contribution of ANTS to a given AntReview.
+  - AntReview **Peer-Reviewers** are addresses, added by the owner of the contract, that can fulfill an AntReview via the function *fulfillAntReview()*.
+  - AntReview **Submitters** are peer-reviers that submit a peer-review that can update their review via the function *updateReview()*.
+  
+There are several core actions in the lifecycle of an AntReview, which can be performed by certain users:
+
+  - **issueAntReview()** called by any Issuers to issu an AntReview, specifying the paper and requirements IPFS hash as well as issuers, approver and the deadline.
+  - **changeAntReview()** called by any Issuers specified in an AntReview that can update the details of the AntReview.
+  - **addApprover()** called by any issuers specified in an AntReview that can add an Approver.
+  - **removeApprover()** called by any issuers specified in an AntReview that can remove an Approver.
+  - **contribute()** called by any address that can send some ANTS to the AntReview of interest.
+  - **refund()** called by any contributors that can get a refund once the deadline is elapsed with no peer-reviews accepted.
+  - **fulfillAntReview()** called by any Peer-Reviewer that can fulfill an AntReview, specyfing the IPFS hash of the peer-review.
+  - **updateAntReview()** called by any Submitters to update a specific Peer-Review, by specifying the new IPFS hash of the peer-review.
+  - **acceptAntReview()** called by any Approver to accept a peer-review for a specific AntReview and paying an amount of ANTS as reward.
+  - **withdrawReview()** called by any issuers specified in an AntReview that can withdraw an amount from the AntReview once the deadline is elapsed to get the residual balance.
 
 ### [AntsReviewRoles](./contracts/AntsReviewRoles.sol)
 > AntsReviewRoles Access Management for Default Admin, Issuer, Peer-Reviewer and Pauser Role
@@ -69,9 +88,9 @@ AntsReviewRoles inherits AccessControl module by OpenZeppelin, allowing the owne
 ### [ANTS](./contracts/ANTS.sol)
 > ANTS Ants-Review's native token
 
-ANTS is the ERC20 token used by the Ants-Review protocol.  
+ANTS is the ERC20 token used by the Ants-Review Protocol.  
 It allows the owner of the contract, set as Default Admin, Minter and Pauser to add and remove a Minter via **addMinter()**, **removeMinter()** functions.
-The minter is able create new ANTS tokens via **mint()** and the holder to burn them via **burn()** function.
+The minter is able create new ANTS tokens via **mint()** and the holder to burn them via the **burn()** function.
 
 During deployment the contract sets the following ERC20 metadata:
 - name: "Ants-Review"
@@ -80,6 +99,8 @@ During deployment the contract sets the following ERC20 metadata:
 ### [AntsFaucet](./contracts/AntsFaucet.sol)
 > AntsFaucet ANTS Faucet
 
+AntsFaucet implements an ANTS Faucet to be used on Kovan to test the Ants-Review Protocol.
+Anyone can get 10 ANTS by calling the **withdraw()** function.
 
 Setup
 =====
