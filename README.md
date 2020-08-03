@@ -43,6 +43,7 @@ Future integrations & features:
 * [Setup](#setup)
 * [Deploy](#deploy)
 * [Using the DApp](#using-the-dapp)
+* [Front-end](#front-end)
 * [Interacting with the PoC](#interacting-with-the-poc)
 * [About](#about)
 
@@ -182,7 +183,11 @@ Deploy
     ```sh
     $ npm run start
     ```  
- The DApp (PoC) has been deployed on IPFS via [Fleek](https://fleek.co/): https://antsreview.on.fleek.co
+
+Front-end
+=========
+- [PoC-UI](https://antsreview.on.fleek.co)
+- [MVP-UI](https://muddy-bonus-1012.on.fleek.co/)
 
 Interacting with the PoC:
 =========================
