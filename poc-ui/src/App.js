@@ -187,7 +187,7 @@ handleChange(event)
       <Card maxWidth={'320px'} mx={'auto'} p={3} px={4}>
         <NetworkIndicator
           currentNetwork={this.state.networkId}
-          requiredNetwork={4}
+          requiredNetwork={42}
         />
       </Card>
       <Heading as={"h4"}> Current Ethereum Address: {this.state.accounts} </Heading>
