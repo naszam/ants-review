@@ -20,6 +20,7 @@
     "@openzeppelin/contracts": "^3.1.0",
     "@truffle/hdwallet-provider": "^1.0.40",
     "ganache-cli": "^6.9.1",
+    "serialize-javascript": "^4.0.0",
     "truffle": "^5.1.37",
     "truffle-flattener": "^1.4.4"
   },
