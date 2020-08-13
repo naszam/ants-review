@@ -249,6 +249,8 @@ About
 
 [![Awesome AntsReview](https://img.shields.io/badge/Awesome-AntsReview-orange)](https://github.com/naszam/awesome-antsreview/blob/master/README.md#references)
 
+- [Standard Bounties](https://github.com/Bounties-Network/StandardBounties/blob/master/contracts/StandardBounties.sol)
+- [Discover](https://github.com/dap-ps/discover/blob/master/contracts/Discover.sol)
 
 ## Authors
 Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
