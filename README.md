@@ -35,7 +35,7 @@ Future integrations & features:
 - Upgradability, to allow the logic to be extended and improved.
 - ...
 
-![Demo MVP](demo_mvp.gif)
+![Demo MVP](mvp.gif)
 
 ## Mentors
 - Mark Beylin, [@mbeylin](https://github.com/mbeylin)
