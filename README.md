@@ -224,7 +224,7 @@ Deploy
 Front-end
 =========
 - [PoC-UI](https://antsreview-poc.on.fleek.co)
-- [MVP-UI](https://antsreview.on.fleek.co/)
+- [MVP-UI](https://ants-review.on.fleek.co/)
 
 Interacting with the PoC:
 =========================
