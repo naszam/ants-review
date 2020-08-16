@@ -39,6 +39,7 @@ Future integrations & features:
 
 ## Mentors
 - Mark Beylin, [@mbeylin](https://github.com/mbeylin)
+- Andy Tudhope, [@andytudhope](https://github.com/andytudhope)
 
 [White Paper](https://zenodo.org/record/3828087#.Xr8XVXVKg5k)  
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
