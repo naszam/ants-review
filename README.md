@@ -35,6 +35,8 @@ Future integrations & features:
 - Upgradability, to allow the logic to be extended and improved.
 - ...
 
+![Demo MVP](demo_mvp.gif)
+
 ## Mentors
 - Mark Beylin, [@mbeylin](https://github.com/mbeylin)
 
@@ -60,13 +62,13 @@ Building Blocks
 > AntsReview a bounty-like system for scientific peer-reviews rewarded in ANTS
 
 AntReview implements a bounty for scientific peer-reviews called AntReview where there are several key types of users:
-  
+
   - AntReview **Issuers** are addresses, added by the owner of the contract, that can issue an AntReview via the function *issueAntReview()*.
   - AntReview **Approvers** are addresses added by Issuers when they issue an AntReview or with the function *addApprover()*.
   - AntReview **Contributors** are any address which has made a contribution of ANTS to a given AntReview.
   - AntReview **Peer-Reviewers** are addresses, added by the owner of the contract, that can fulfill an AntReview via the function *fulfillAntReview()*.
   - AntReview **Submitters** are peer-reviers that submit a peer-review that can update their review via the function *updateReview()*.
-  
+
 There are several core actions in the lifecycle of an AntReview, which can be performed by certain users:
 
   - **issueAntReview()** called by any Issuers to issu an AntReview, specifying the paper and requirements IPFS hash as well as issuers, approver and the deadline.
@@ -192,7 +194,7 @@ Deploy
     ```
  ## Project (PoC) deployed on Rinkeby
  [AntsReview.sol](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)  
- 
+
  ## Project (MVP) deployed on Kovan  
  [AntsReview.sol](https://kovan.etherscan.io/address/0x85be8F04482cBB920550d5469E4dEdD6e1788121)  
  [ANTS.sol](https://kovan.etherscan.io/address/0x7395e83BC988F3f2A9413920D510eC7D47610D08)  
