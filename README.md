@@ -223,8 +223,8 @@ Deploy
 
 Front-end
 =========
-- [PoC-UI](https://antsreview.on.fleek.co)
-- [MVP-UI](https://muddy-bonus-1012.on.fleek.co/)
+- [PoC-UI](https://antsreview-poc.on.fleek.co)
+- [MVP-UI](https://antsreview.on.fleek.co/)
 
 Interacting with the PoC:
 =========================
