@@ -44,6 +44,7 @@ Future integrations & features:
 [White Paper](https://zenodo.org/record/3828087#.Xr8XVXVKg5k)  
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
 [Demo (PoC)](https://youtu.be/uMqksNytsMY)  
+[Pich Deck](https://www.beautiful.ai/player/-MEwnYOfba26O3Zg0WX9)
 
 ## Sections
 * [Building Blocks](#building-blocks)
@@ -257,6 +258,7 @@ About
 
 ## Authors
 Project created by Team MetaBounty for ETHTurin 2020 Hackathon.  
-Research and Design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
+Research, Design by [Bianca Trovò](https://www.linkedin.com/in/bianca-m-trovo/)  
 Smart Contracts and Architecture by [Nazzareno Massari](http://nazzarenomassari.com)  
+UI/UX by [Mitrasish Mukherjee](https://www.linkedin.com/in/mmitrasish/)  
 Pixel Art by [Marcelo Colmenero](https://www.instagram.com/isometricpixelart/?hl=en)  
