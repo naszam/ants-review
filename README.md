@@ -44,7 +44,7 @@ Future integrations & features:
 [White Paper](https://zenodo.org/record/3828087#.Xr8XVXVKg5k)  
 [Presentation](https://zenodo.org/record/3828067#.Xr8Pv3VKg5k)  
 [Demo (PoC)](https://youtu.be/uMqksNytsMY)  
-[Pich Deck](https://www.beautiful.ai/player/-MEwnYOfba26O3Zg0WX9)
+[Pich Deck](https://www.beautiful.ai/player/-MEwnYOfba26O3Zg0WX9)  
 [FDAPP 2020](https://www.youtube.com/watch?v=x_1Pqh6a3U4&feature=youtu.be&t=12281)
 
 ## Sections
