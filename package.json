@@ -17,7 +17,7 @@
     "lint:ts:fix": "yarn lint:ts --fix",
     "typecheck": "yarn tsc --noEmit",
     "test": "hardhat test",
-    "fuzz": "echidna-test . --contract BadgeRolesEchidnaTest --config echidna.config.yml",
+    "fuzz": "echidna-test . --contract AntsReviewEchidnaTest --config echidna.config.yml",
     "gas": "cross-env REPORT_GAS=true hardhat test",
     "dev": "hardhat node",
     "deploy:local": "yarn hardhat run scripts/deploy.ts --network localhost",
