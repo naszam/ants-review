@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.12;
+pragma solidity 0.8.4;
 
 ///@title Ants-Review
 ///@author Nazzareno Massari @naszam
@@ -9,7 +9,7 @@ pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
 contract AntsReviewRoles is Ownable, AccessControl, Pausable {
 
@@ -19,7 +19,7 @@ contract AntsReviewRoles is Ownable, AccessControl, Pausable {
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
 
-  constructor() public {
+  constructor() {
           _setupRole(DEFAULT_ADMIN_ROLE, owner());
           _setupRole(PAUSER_ROLE, owner());
   }

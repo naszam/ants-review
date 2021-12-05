@@ -1,6 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.12;
-pragma experimental ABIEncoderV2;
+pragma solidity 0.8.4;
 
 /// @title Ants-Review
 /// @author Nazzareno Massari @naszam
@@ -20,10 +19,10 @@ pragma experimental ABIEncoderV2;
 
 
 import "./AntsReviewRoles.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/EnumerableSet.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 
 
@@ -36,7 +35,7 @@ interface AntsToken {
 contract AntsReview is AntsReviewRoles {
 
   using SafeMath for uint256;
-  using Address for address payable;
+  using Address for address;
   using Counters for Counters.Counter;
   using EnumerableSet for EnumerableSet.AddressSet;
 
@@ -60,7 +59,7 @@ contract AntsReview is AntsReviewRoles {
 
   /// @dev Structs
   struct AntReview {
-      address payable[] issuers;
+      address[] issuers;
       string paperHash;
       string requirementsHash;
       uint256 deadline;
@@ -70,12 +69,12 @@ contract AntsReview is AntsReviewRoles {
 
   struct Peer_Review {
       bool accepted;
-      address payable peer_reviewer;
+      address peer_reviewer;
       string reviewHash;
   }
 
   struct Contribution {
-    address payable contributor;
+    address contributor;
     uint amount;
     bool refunded;
   }
@@ -83,18 +82,18 @@ contract AntsReview is AntsReviewRoles {
 
   /// @dev Events
 
-  event AntReviewIssued(uint antId, address payable[] issuers, string paperHash, string requirementsHash, uint64 deadline);
+  event AntReviewIssued(uint antId, address[] issuers, string paperHash, string requirementsHash, uint64 deadline);
   event ContributionAdded(uint antId, uint contributionId, address contributor, uint amount);
   event ContributionRefunded(uint antId, uint contributionId, address contributor);
   event AntReviewFulfilled(uint antId, uint reviewId, address peer_reviewer, string reviewHash);
   event ReviewUpdated(uint antId, uint reviewId, string reviewHash);
   event AntReviewAccepted(uint antId, uint reviewId, address approver, uint amount);
-  event AntReviewChanged(uint antId, address issuer, address payable[] issuers, string paperHash, string requirementsHash, uint64 deadline);
+  event AntReviewChanged(uint antId, address issuer, address[] issuers, string paperHash, string requirementsHash, uint64 deadline);
   event ApproverAdded(uint antId, uint issuerId, address approver);
   event ApproverRemoved(uint antId, uint issuerId, address approver);
   event AntReviewWithdrawn(uint antId, address issuer, uint amount, uint balance);
 
-  constructor(address ants_) public {
+  constructor(address ants_) {
     ants = AntsToken(ants_);
   }
 
@@ -128,12 +127,12 @@ contract AntsReview is AntsReviewRoles {
   }
 
   modifier validateDeadline(uint256 _deadline) {
-      require(_deadline > now);
+      require(_deadline > block.timestamp);
       _;
   }
 
   modifier isBeforeDeadline(uint256 _antId) {
-    require(now < antreviews[_antId].deadline);
+    require(block.timestamp < antreviews[_antId].deadline);
     _;
   }
 
@@ -193,7 +192,7 @@ contract AntsReview is AntsReviewRoles {
   /// @param _deadline The unix timestamp after which fulfillments will no longer be accepted
   /// @return True If the AntReview is successfully issued
   function issueAntReview(
-      address payable[] calldata _issuers,
+      address[] calldata _issuers,
       address _approver,
       string calldata _paperHash,
       string calldata _requirementsHash,
@@ -235,7 +234,7 @@ contract AntsReview is AntsReviewRoles {
   function changeAntReview(
       uint _antId,
       uint _issuerId,
-      address payable[] calldata _issuers,
+      address[] calldata _issuers,
       string calldata _paperHash,
       string calldata _requirementsHash,
       uint64 _deadline)
@@ -312,7 +311,7 @@ contract AntsReview is AntsReviewRoles {
     whenNotPaused()
     returns (bool)
   {
-    contributions[_antId].push(Contribution(msg.sender, _amount, false));
+    contributions[_antId].push(Contribution((msg.sender), _amount, false));
     antreviews[_antId].balance = antreviews[_antId].balance.add(_amount);
 
     require(ants.transferFrom(msg.sender, address(this), _amount));
@@ -336,7 +335,7 @@ contract AntsReview is AntsReviewRoles {
     whenNotPaused()
     returns (bool)
   {
-    require(now > antreviews[_antId].deadline, "Deadline has not elapsed");
+    require(block.timestamp > antreviews[_antId].deadline, "Deadline has not elapsed");
 
     Contribution storage contribution = contributions[_antId][_contributionId];
 
@@ -430,7 +429,7 @@ contract AntsReview is AntsReviewRoles {
       whenNotPaused()
       returns (bool)
   {
-    require(now > antreviews[_antId].deadline, "Deadline has not elapsed");
+    require(block.timestamp > antreviews[_antId].deadline, "Deadline has not elapsed");
     require(antreviews[_antId].balance >= _amount, "Amount exceed AntReview balance");
 
     antreviews[_antId].balance = antreviews[_antId].balance.sub(_amount);

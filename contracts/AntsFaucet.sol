@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.12;
+pragma solidity 0.8.4;
 
 ///@title Ants-Review
 ///@author Nazzareno Massari @naszam
@@ -9,7 +9,7 @@ pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
 interface AntsToken {
   function transfer(address recipient, uint amount) external returns (bool);
@@ -29,7 +29,7 @@ contract AntsFaucet is Ownable, AccessControl, Pausable {
   event Deposit(address indexed from, uint amount);
 
 
-  constructor(address ants_) public {
+  constructor(address ants_) {
     _setupRole(DEFAULT_ADMIN_ROLE, owner());
     _setupRole(PAUSER_ROLE, owner());
 
