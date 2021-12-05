@@ -1,0 +1,8 @@
+{
+  "name": "ants-review",
+  "version": "1.0.0",
+  "description": "Ants-Review: A Privacy-Oriented Protocol for Incentivized Open Peer Reviews on Ethereum",
+  "repository": "https://github.com/naszam/ants-review.git",
+  "author": "Nazzareno Massari <nazzareno@nazzarenomassari.com>",
+  "license": "AGPL-3.0"
+}
