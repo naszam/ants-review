@@ -51,7 +51,7 @@ contract AntsReview is AntsReviewRoles {
 
   /// @dev Storage
   mapping (uint256 => AntReview) public antreviews;
-  mapping (uint256 => Peer_Review[]) public peer_reviews;
+  mapping (uint256 => PeerReview[]) public reviews;
   mapping (uint256 => Contribution[]) public contributions;
 
   mapping (uint256 => EnumerableSet.AddressSet) private approvers;
@@ -67,9 +67,9 @@ contract AntsReview is AntsReviewRoles {
       uint256 balance;
   }
 
-  struct Peer_Review {
+  struct PeerReview {
       bool accepted;
-      address peer_reviewer;
+      address reviewers;
       string reviewHash;
   }
 
@@ -85,7 +85,7 @@ contract AntsReview is AntsReviewRoles {
   event AntReviewIssued(uint antId, address[] issuers, string paperHash, string requirementsHash, uint64 deadline);
   event ContributionAdded(uint antId, uint contributionId, address contributor, uint amount);
   event ContributionRefunded(uint antId, uint contributionId, address contributor);
-  event AntReviewFulfilled(uint antId, uint reviewId, address peer_reviewer, string reviewHash);
+  event AntReviewFulfilled(uint antId, uint reviewId, address reviewers, string reviewHash);
   event ReviewUpdated(uint antId, uint reviewId, string reviewHash);
   event AntReviewAccepted(uint antId, uint reviewId, address approver, uint amount);
   event AntReviewChanged(uint antId, address issuer, address[] issuers, string paperHash, string requirementsHash, uint64 deadline);
@@ -112,7 +112,7 @@ contract AntsReview is AntsReviewRoles {
   }
 
   modifier reviewExists(uint256 _antId, uint256 _reviewId){
-    require(_reviewId < peer_reviews[_antId].length);
+    require(_reviewId < reviews[_antId].length);
     _;
   }
 
@@ -122,7 +122,7 @@ contract AntsReview is AntsReviewRoles {
   }
 
   modifier peerReviewNotYetAccepted(uint256 _antId, uint256 _reviewId) {
-    require(peer_reviews[_antId][_reviewId].accepted == false);
+    require(reviews[_antId][_reviewId].accepted == false);
     _;
   }
 
@@ -160,7 +160,7 @@ contract AntsReview is AntsReviewRoles {
 
   modifier onlySubmitter(uint _antId, uint _reviewId)
   {
-    require(msg.sender == peer_reviews[_antId][_reviewId].peer_reviewer, "Caller is not the submitter");
+    require(msg.sender == reviews[_antId][_reviewId].reviewers, "Caller is not the submitter");
     _;
   }
 
@@ -364,18 +364,18 @@ contract AntsReview is AntsReviewRoles {
     whenNotPaused()
     returns (bool)
   {
-    peer_reviews[_antId].push(Peer_Review(false, msg.sender, _reviewHash));
+    reviews[_antId].push(PeerReview(false, msg.sender, _reviewHash));
 
-    emit AntReviewFulfilled(_antId, peer_reviews[_antId].length.sub(1), msg.sender, _reviewHash);
+    emit AntReviewFulfilled(_antId, reviews[_antId].length.sub(1), msg.sender, _reviewHash);
     return true;
   }
 
   /// @notice Update AntReview
-  /// @dev Access restricted to Peer_Reviewers
+  /// @dev Access restricted to Reviewers
   /// @param _antId The AntReview Id
-  /// @param _reviewId The Peer_Review Id
-  /// @param _reviewHash The IPFS Hash of the updated Peer_Review
-  /// @return True If the Peer_Review is successfully updated
+  /// @param _reviewId The PeerReview Id
+  /// @param _reviewHash The IPFS Hash of the updated PeerReview
+  /// @return True If the PeerReview is successfully updated
   function updateReview(uint _antId, uint _reviewId, string calldata _reviewHash)
     external
     onlySubmitter(_antId, _reviewId)
@@ -385,7 +385,7 @@ contract AntsReview is AntsReviewRoles {
     whenNotPaused()
     returns (bool)
   {
-    peer_reviews[_antId][_reviewId].reviewHash = _reviewHash;
+    reviews[_antId][_reviewId].reviewHash = _reviewHash;
 
     emit ReviewUpdated(_antId, _reviewId, _reviewHash);
     return true;
@@ -395,7 +395,7 @@ contract AntsReview is AntsReviewRoles {
   /// @notice Accept a given Peer-Review
   /// @dev Access restricted to Issuer
   /// @param _antId The AntReview Id
-  /// @param _reviewId The Peer_Review Id
+  /// @param _reviewId The PeerReview Id
   /// @return True If the AntReview is successfully being accepted
   function acceptAntReview(uint _antId, uint _reviewId, uint _amount)
       external
@@ -409,7 +409,7 @@ contract AntsReview is AntsReviewRoles {
       antreviews[_antId].status = AntReviewStatus.PAID;
       antreviews[_antId].balance = antreviews[_antId].balance.sub(_amount);
 
-      require(ants.transfer(peer_reviews[_antId][_reviewId].peer_reviewer, _amount));
+      require(ants.transfer(reviews[_antId][_reviewId].PeerReviewer, _amount));
 
 
       emit AntReviewAccepted(_antId, _reviewId, msg.sender, _amount);
