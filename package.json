@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.0",
-    "hardhat": "^2.7.0"
+    "hardhat": "^2.7.0",
+    "solhint-plugin-prettier": "^0.0.5"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.0",
