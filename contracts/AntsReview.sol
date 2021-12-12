@@ -409,7 +409,7 @@ contract AntsReview is AntsReviewRoles {
       antreviews[_antId].status = AntReviewStatus.PAID;
       antreviews[_antId].balance = antreviews[_antId].balance.sub(_amount);
 
-      require(ants.transfer(reviews[_antId][_reviewId].PeerReviewer, _amount));
+      require(ants.transfer(reviews[_antId][_reviewId].reviewers, _amount));
 
 
       emit AntReviewAccepted(_antId, _reviewId, msg.sender, _amount);
