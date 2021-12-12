@@ -1,7 +1,15 @@
 {
   "extends": "solhint:recommended",
+  "plugins": ["prettier"],
   "rules": {
-    "compiler-version": ["error", "^0.8.0"],
-    "func-visibility": ["warn", { "ignoreConstructors": true }]
+    "compiler-version": ["error", "0.8.4"],
+    "reason-string": "off",
+    "payable-fallback": "off",
+    "no-inline-assembly": "off",
+    "const-name-snakecase": "off",
+    "func-name-mixedcase": "off",
+    "state-visibility": "off",
+    "not-rely-on-time": "off",
+    "func-visibility": ["error", { "ignoreConstructors": true }]
   }
 }
