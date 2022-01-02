@@ -1,11 +1,8 @@
-[![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
-[![#npm 12.16.3](https://img.shields.io/badge/npm-v12.16.3-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
-[![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
+[![#ubuntu 20.04.3](https://img.shields.io/badge/ubuntu-v20.04.3-orange?style=plastic)](https://wiki.ubuntu.com/Releases)
+[![#node 16.13.1](https://img.shields.io/badge/node-v16.13.1-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![built-with openzeppelin](https://img.shields.io/badge/built%20with-OpenZeppelin-3677FF?style=plastic)](https://docs.openzeppelin.com/)
-[![#solc v0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
-[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](#project-mvp-deployed-on-kovan)
-[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x6956dF88120c44fb446761947cD4B83b553F229F)
-
+[![#solc v0.8.4](https://img.shields.io/badge/solc-v0.8.4-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.8.4)
+[![#license AGPLv3](https://img.shields.io/badge/license-AGPLv3-purple?style=plastic)](https://www.gnu.org/licenses/agpl-3.0)
 
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethlocal.co/ethturin/hacks)
 [![DOI](https://zenodo.org/badge/258342275.svg)](https://zenodo.org/badge/latestdoi/258342275)  
