@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/naszam/ants-review#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^3.1.0",
+    "@openzeppelin/contracts": "^4.4.2",
     "@truffle/hdwallet-provider": "^1.0.43",
     "ganache-cli": "^6.10.1",
     "node-fetch": "^2.6.1",
